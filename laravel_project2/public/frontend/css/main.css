@@ -1,0 +1,163 @@
+* {
+    scroll-behavior: smooth;
+}
+
+body {
+    /*padding khoi navbar*/
+    padding-top: 58.23px;
+}
+
+/*font danh cho 1 vai cho can chu dep*/
+@import url('https://fonts.googleapis.com/css2?family=Lora&display=swap');
+.luxury-font {
+    font-family: 'Lora', serif;
+}
+
+.text-justify {
+    text-align: justify;
+}
+
+.scroll-to-top {
+    z-index: 10;
+    bottom: 2rem;
+    right: 2rem;
+    cursor: pointer;
+    transition: all 0.3s ease-in-out;
+}
+
+nav {
+    transition: all 0.5s ease-in-out;
+}
+
+.search-form {
+    margin-right: calc(var(--bs-gutter-x) * 0.5);
+}
+
+video {
+    transition: all 0.3s ease-in-out;
+}
+
+.expand {
+    overflow: hidden;
+    transition: all 300ms ease-in-out;
+    padding-left: 1rem;
+}
+
+.expand-icon {
+    transition: all 300ms ease-in-out;
+}
+
+.h-pointer {
+    cursor: pointer;
+}
+
+.product-item {
+    border: 1px solid white;
+    transition: all 300ms ease-in-out;
+}
+
+.product-item:hover {
+    background-color: whitesmoke;
+}
+
+.product-item img {
+    transition: all 300ms ease-in-out;
+}
+
+.product-item img:hover {
+    cursor: pointer;
+    transform: scale(1.1);
+    transition: all 300ms ease-in-out;
+}
+
+.product-item-btn {
+    transition: all 200ms ease-in-out;
+}
+
+.product-item-btn:hover {
+    transform: scale(1.1);
+    cursor: pointer;
+}
+
+/*WIDTH*/
+.w-10 {
+    width: 10% !important;
+}
+
+.w-20 {
+    width: 20% !important;
+}
+
+.w-30 {
+    width: 30% !important;
+}
+
+.w-40 {
+    width: 40% !important;
+}
+
+.w-45 {
+    width: 45% !important;
+}
+
+.w-60 {
+    width: 60% !important;
+}
+
+.w-70 {
+    width: 70% !important;
+}
+
+.w-80 {
+    width: 80% !important;
+}
+
+.w-90 {
+    width: 90% !important;
+}
+
+/*HEIGHT*/
+.h-10 {
+    height: 10% !important;
+}
+
+.h-20 {
+    height: 20% !important;
+}
+
+.h-30 {
+    height: 30% !important;
+}
+
+.h-40 {
+    height: 40% !important;
+}
+
+.h-60 {
+    height: 60% !important;
+}
+
+.h-70 {
+    height: 70% !important;
+}
+
+.h-80 {
+    height: 80% !important;
+}
+
+.h-85 {
+    height: 85% !important;
+}
+
+.h-90 {
+    height: 90% !important;
+}
+
+.min-vh-50 {
+    min-height: 50vh !important
+}
+
+.min-vh-80 {
+    min-height: 80vh !important
+}
+
