@@ -17,9 +17,8 @@
         <tr>
             <td> {{ $doctor -> id }}</td>
             <td> {{ $doctor -> name }}</td>
-            <td> {{ $doctor -> gender_id }}</td>
             <td> {{ $doctor -> email }}</td>
-            <td> {{ $doctor -> specialization }}</td>
+            <td> {{ $doctor -> specialization -> name }}</td>
             <td> {{ $doctor -> contact_number }}</td>
             <td> {{ $doctor -> address }}</td>
             <td>

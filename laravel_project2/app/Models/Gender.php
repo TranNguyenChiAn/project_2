@@ -11,4 +11,8 @@ class Gender extends Model
 
     protected $fillable = 'name';
     protected $table = 'genders';
+
+    public function Doctor(){
+        return $this->hasMany(Doctor::class);
+    }
 }

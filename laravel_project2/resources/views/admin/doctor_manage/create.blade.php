@@ -8,8 +8,8 @@
     @if($errors->has('name'))
         {{ $errors->first('name') }}
     @endif<br>
-    Gender: <input type="radio" name="gender" value="1"> Female
-            <input type="radio" name="gender" value="2"> Male
+    Gender: <input type="radio" name="gender" value="1"> Male
+            <input type="radio" name="gender" value="2"> Female
     @if($errors->has('gender'))
         {{ $errors->first('gender') }}
     @endif<br>

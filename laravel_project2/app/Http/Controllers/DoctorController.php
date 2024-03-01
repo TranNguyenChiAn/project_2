@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Http\Controllers\Controller;
 use App\Models\Doctor;
 use App\Models\Gender;
+use App\Models\Specialization;
 use Illuminate\Http\Request;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\Redirect;
@@ -16,7 +17,7 @@ use App\Requests\StoreDoctorRequest;
 class DoctorController extends Controller
 {
     public function index() {
-        $doctors = Doctor::all();
+        $doctors = Doctor::with('specialization')->get();
 
         return view('admin.doctor_manage.index', [
             'doctors' => $doctors
@@ -79,7 +80,7 @@ class DoctorController extends Controller
 
         $doctor->update($array);
 
-        return Redirect::route('home');
+        return Redirect::route('doctor');
     }
 
     public function destroy(Doctor $doctor)
