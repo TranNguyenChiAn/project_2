@@ -17,6 +17,7 @@ use App\Requests\StoreDoctorRequest;
 class DoctorController extends Controller
 {
     public function index() {
+
         $doctors = Doctor::with('specialization')->get();
 
         return view('admin.doctor_manage.index', [
@@ -26,9 +27,11 @@ class DoctorController extends Controller
 
     public function create() {
         $genders = Gender::all();
+        $specialization = Specialization::all();
 
         return view('admin.doctor_manage.create',[
-            'genders' => $genders
+            'genders' => $genders,
+            'specialization' => $specialization
         ]);
     }
 
@@ -45,6 +48,7 @@ class DoctorController extends Controller
             $array = Arr::add($array, 'name', $request->name);
             $array = Arr::add($array, 'email', $request->email);
             $array = Arr::add($array, 'email', $request->gender);
+            $array = Arr::add($array, 'email', $request->specialization);
             $array = Arr::add($array, 'contact_number', $request->contact_number);
             $array = Arr::add($array, '', $request->address);
 
@@ -75,6 +79,7 @@ class DoctorController extends Controller
         $array = [];
         $array = Arr::add($array, 'name', $request->name);
         $array = Arr::add($array, 'email', $request->email);
+        $array = Arr::add($array, 'email', $request->gender);
         $array = Arr::add($array, 'specialization', $request->specialization);
         $array = Arr::add($array, 'address', $request->address);
 

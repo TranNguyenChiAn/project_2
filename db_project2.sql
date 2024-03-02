@@ -1,7 +1,6 @@
 create database project2;
 use project2;
 
-
 create table admins(
 	id INT auto_increment,
     name VARCHAR(100) NOT NULL,
@@ -24,7 +23,42 @@ create table genders(
     name VARCHAR(20) NOT NULL
 );
 
-insert into genders (name) values ('Female'), ('Male');
+insert into genders (name) values ('Male'), ('Female');
+
+create table specialization(
+	id INT auto_increment primary key,
+    name VARCHAR(255) NOT NULL
+);
+
+insert into specialization( name) Values ('Xương khớp'), ('Da liễu'), ('Răng-Hàm-Mặt'), ('Tai-Mũi-Họng'), ('Tim'), ('Tiết niệu'), ('Thần kinh');
+select * from specialization;
+
+CREATE TABLE doctors (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    name VARCHAR(255) NOT NULL,
+    gender_id INT NOT NULL,
+	email TEXT UNIQUE NOT NULL,
+    password VARCHAR(255) NOT NULL,
+    specialization_id INT NOT NULL,
+    contact_number VARCHAR(15) UNIQUE NOT NULL,
+    address TEXT NOT NULL,
+    image text,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+    foreign key (specialization_id) references specialization(id) ON DELETE CASCADE,
+    foreign key (gender_id) references genders(id) ON DELETE CASCADE
+);
+
+
+
+INSERT INTO doctors (name, gender_id, email, password, specialization_id, contact_number, address, image) VALUES
+('Nguyễn Văn An', 1, 'ngvaanh@gmail.com', '123456', 1, '0901234567', 'TP.HCM', '#'),
+('Trần Thị Bảo', 2, 'trthbao@gmail.com', '123456', 2, '0912345678', 'HN', '#'),
+('Lê Văn Cương', 1, 'levacuong@gmail.com', '123456', 3, '0923456789', 'HP', '#');
+
+select * from doctors;
+
+drop table doctors;
 
 create table customers(
 	id INT auto_increment primary key,
@@ -63,29 +97,6 @@ insert into consulting_rooms ( floor,  room ) Values
 (3, 302),
 (3, 303);
 
-CREATE TABLE doctors (
-    id INT AUTO_INCREMENT PRIMARY KEY,
-    name VARCHAR(255) NOT NULL,
-	email TEXT NOT NULL,
-    password VARCHAR(255) NOT NULL,
-    specialization VARCHAR(255) NOT NULL,
-    contact_number VARCHAR(15) NOT NULL,
-    address TEXT NOT NULL,
-    image text,
-    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
-);
-
--- email, so dien thoai phai de unique
-
-INSERT INTO doctors (name, email, password, specialization, contact_number, address, image) VALUES
-('Nguyễn Văn An', 'ngvaanh@gmail.com', '123456','Chuyên môn Tim', '0901234567', 'TP.HCM', '#'),
-('Trần Thị Bảo', 'trthbao@gmail.com', '123456','Chuyên môn Răng - Hàm Mặt', '0912345678', 'HN', '#'),
-('Lê Văn Cương', 'levacuong@gmail.com', '123456','Chuyên môn Da liễu', '0923456789', 'HP', '#');
-
-select * from doctors;
-
- 
 
 CREATE TABLE patients (
     id INT AUTO_INCREMENT PRIMARY KEY,

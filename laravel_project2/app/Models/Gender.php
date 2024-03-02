@@ -9,8 +9,9 @@ class Gender extends Model
 {
     use HasFactory;
 
-    protected $fillable = 'name';
     protected $table = 'genders';
+    protected $primaryKey = 'id';
+    protected $fillable = 'name';
 
     public function Doctor(){
         return $this->hasMany(Doctor::class);
