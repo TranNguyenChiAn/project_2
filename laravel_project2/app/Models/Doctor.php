@@ -11,14 +11,14 @@ class Doctor extends Model
 
 
     protected $table = 'doctors';
+    public $timestamps = false;
     protected $fillable = ['name', 'email','gender_id', 'specialization_id', 'contact_number','address', 'image'];
 
     public function gender(){
-        return $this->belongsTo('App\Gender');
+        return $this->belongsTo(Gender::class);
     }
-
     public function specialization(){
-        return $this->belongsTo('App\Specialization');
+        return $this->belongsTo(Specialization::class);
     }
 
 }

@@ -27,7 +27,7 @@ class StoreDoctorRequest extends Controller
             'name' => ['required'],
             'email' => ['required'],
             'gender' => ['required'],
-            'password' => ['required'],
+            'specialization' =>['required'],
             'contact_number' => ['required'],
             'address' => ['required'],
         ];
@@ -39,7 +39,7 @@ class StoreDoctorRequest extends Controller
             'name.required' => 'Name is required',
             'email.required' => 'Email is required',
             'gender.required' => 'Gender is required',
-            'password.required' => 'Password is required',
+            'specialization' => 'Specialization is required',
             'contact_number.required' => 'Phone is required',
             'address.required' => 'Address is required'
         ];

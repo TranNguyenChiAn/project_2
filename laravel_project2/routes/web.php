@@ -2,6 +2,7 @@
 
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\DoctorController;
+use App\Http\Controllers\SpecializationController;
 
 /*
 |--------------------------------------------------------------------------
@@ -25,3 +26,5 @@ Route::get('/{doctor}/edit', [DoctorController::class, 'edit'])->name('doctor.ed
 Route::put('/{doctor}/update', [DoctorController::class, 'update'])->name('doctor.update');
 Route::delete('{doctor}', [DoctorController::class, 'destroy'])->name('doctor.destroy');
 
+//      Specialization
+Route::get('/specialization', [SpecializationController::class, 'index'])->name('specialization');

@@ -10,14 +10,12 @@ class Specialization extends Model
     use HasFactory;
 
     protected $table = 'specialization';
-
     protected $primaryKey = 'id';
-    protected $fillable = 'name';
+    protected $fillable = ['name'];
 
-    public function Doctor()
-    {
+
+    public function Doctor(){
         return $this->hasMany(Doctor::class);
     }
-
 
 }

@@ -8,6 +8,7 @@
             <td>Name</td>
             <td>Email</td>
             <td>Specialization</td>
+            <td>Gender</td>
             <td>Contact number</td>
             <td>Address</td>
             <td>Edit</td>
@@ -19,6 +20,7 @@
             <td> {{ $doctor -> name }}</td>
             <td> {{ $doctor -> email }}</td>
             <td> {{ $doctor -> specialization -> name }}</td>
+            <td> {{ $doctor -> gender -> name }}</td>
             <td> {{ $doctor -> contact_number }}</td>
             <td> {{ $doctor -> address }}</td>
             <td>
