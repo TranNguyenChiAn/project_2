@@ -55,26 +55,29 @@ class DoctorController extends Controller
      * @return \Illuminate\Http\Response
      */
 
-    public function store(Doctor $doctors, Request $request){
-        $doctor = new Doctor();
-        $doctor->name = $request->name; 
-        $doctor-> email = $request->email;
-        $doctor->gender_id = $request->gender->id;
-        $doctor->specialization_id = $request->specialization->id;
-        $doctor->contact_number = $request->contact_number;
+    public function store(Request $request){
 
-        $doctors->save();
+        $array = [];
+        $array = Arr::add($array, 'name', $request->name);
+        $array = Arr::add($array, 'email', $request->email);
+        $array = Arr::add($array, 'password', $request->password);
+        $array = Arr::add($array, 'gender_id', $request->gender_id);
+        $array = Arr::add($array, 'specialization_id', $request->specialization_id);
+        $array = Arr::add($array, 'contact_number', $request->contact_number);
+        $array = Arr::add($array, 'address', $request->address);
+            //Lấy dữ liệu từ form và lưu lên db
+        Doctor::create($array);
 
-        return view('admin.products_manage.index',[
-            'doctors' => $doctors
-        ]);
+        return Redirect::route('doctor');
     }
 
     public function edit(Doctor $doctor, Request $request)
     {
+        $specialization = Specialization::all();
         //Gọi đến view để sửa
         return view('admin.doctor_manage.edit', [
-            'doctor' => $doctor
+            'doctor' => $doctor,
+            'specialization' => $specialization,
         ]);
     }
 
@@ -84,8 +87,8 @@ class DoctorController extends Controller
         $array = [];
         $array = Arr::add($array, 'name', $request->name);
         $array = Arr::add($array, 'email', $request->email);
-        $array = Arr::add($array, 'email', $request->gender);
         $array = Arr::add($array, 'specialization', $request->specialization);
+        $array = Arr::add($array, 'contact_number', $request->contact_number);
         $array = Arr::add($array, 'address', $request->address);
 
         $doctor->update($array);

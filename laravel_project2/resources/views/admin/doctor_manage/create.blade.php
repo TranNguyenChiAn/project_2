@@ -20,28 +20,26 @@
                     {{ $errors->first('email') }}
                 @endif<br>
             </div>
-            <div class="col-md-5">
+            <div class="col-md-6">
+                <label class="form-label">Password </label>
+                <input class="form-control" placeholder="Password" type="password" name="password">
+            </div>
+            <div class="col-md-4">
                 <label class="form-label"> Gender:</label>
                 @foreach($genders as $gender)
-                    <input type="radio" name="gender" value="{{ $gender -> id}}" required> {{ $gender -> name}}
+                    <input type="radio" name="gender_id" value="{{ $gender -> id}}" required> {{ $gender -> name}}
                 @endforeach
-                @if($errors->has('gender'))
-                    {{ $errors->first('gender') }}
-                @endif
-                <br>
+
             </div>
             <div class="col-md-5">
                 <label class="form-label">Specialization</label>
-                <select class="form-control dropdown" required>
+                <select class="form-control dropdown" required name="specialization_id">
                     <option> --Choose-- </option>
                     @foreach($specialization as $specialization)
-                        <option> {{ $specialization -> name}} </option>
+                        <option value="{{ $specialization -> id}}"> {{ $specialization -> name}} </option>
                     @endforeach
                 </select>
 
-                @if($errors->has('specialization'))
-                    {{ $errors->first('specialization') }}
-                @endif
             </div>
             <div class="col-md-6">
                 <label class="form-label">Contact number</label>

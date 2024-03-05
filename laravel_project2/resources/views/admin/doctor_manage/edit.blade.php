@@ -18,7 +18,16 @@
             </div>
             <div class="col-md-6">
                 <label class="form-label">Specialization</label>
-                <input class="form-control" type="text" name="specialization" value="{{ $doctor->specialization }}"><br>
+                <select class="form-control" type="text" name="specialization" >
+                    @foreach($specialization as $specialization)
+                        <option class="form-control" value="{{ $specialization->id }}"
+                        @if($doctor->specialization_id == $specialization->id)
+                            {{ 'selected' }}
+                            @endif
+                        >
+                        {{ $specialization -> name}}
+                    @endforeach
+                </select><br>
             </div>
             <div class="col-md-6">
                 <label class="form-label">Contact number</label>
@@ -29,9 +38,8 @@
                 <input class="form-control" type="text" name="address" value="{{ $doctor->address }}"><br>
             </div>
             <div class="w-75 d-flex justify-content-end">
-                <button class="btn btn-primary col-2">Update</button>
+                <button class="btn btn-primary col-2" type="submit">Update</button>
             </div>
-            <div></div>
         </form>
     </div>
 </section>

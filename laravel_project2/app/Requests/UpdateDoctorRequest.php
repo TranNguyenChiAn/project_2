@@ -26,7 +26,6 @@ class UpdateDoctorRequest extends FormRequest
         return [
             'name' => ['required'],
             'email' => ['required'],
-            'password' => ['required'],
             'contact_number' => ['required'],
             'address' => ['required'],
             'specialization' => ['required'],
@@ -40,7 +39,6 @@ class UpdateDoctorRequest extends FormRequest
             'name.required' => 'First Name is required',
             'name.regex' => 'First Name is not correct format',
             'email.required' => 'Email is required',
-            'password.required' => 'Password is required',
             'contact_number.required' => 'Phone is required',
             'contact_number.regex' => 'Phone is not correct format',
             'address.required' => 'Address is required',

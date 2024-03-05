@@ -12,7 +12,7 @@ class Doctor extends Model
 
     protected $table = 'doctors';
     public $timestamps = false;
-    protected $fillable = ['name', 'email','gender_id', 'specialization_id', 'contact_number','address', 'image'];
+    protected $fillable = ['name', 'email','password','gender_id', 'specialization_id', 'contact_number','address', 'image'];
 
     public function gender(){
         return $this->belongsTo(Gender::class);

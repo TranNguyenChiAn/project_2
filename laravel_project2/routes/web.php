@@ -23,7 +23,7 @@ Route::get('/doctor', [DoctorController::class, 'index'])->name('doctor');
 Route::get('/create', [DoctorController::class, 'create'])->name('doctor.create');
 Route::post('/create', [DoctorController::class, 'store'])->name('doctor.store');
 Route::get('/{doctor}/edit', [DoctorController::class, 'edit'])->name('doctor.edit');
-Route::put('/{doctor}/update', [DoctorController::class, 'update'])->name('doctor.update');
+Route::put('/{doctor}/edit', [DoctorController::class, 'update'])->name('doctor.update');
 Route::delete('{doctor}', [DoctorController::class, 'destroy'])->name('doctor.destroy');
 
 //      Specialization
