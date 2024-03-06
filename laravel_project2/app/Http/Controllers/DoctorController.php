@@ -18,7 +18,6 @@ use Illuminate\Support\Facades\Storage;
 use App\Requests\UpdateDoctorRequest;
 use App\Requests\StoreDoctorRequest;
 
-use PhpParser\Comment\Doc;
 
 class DoctorController extends Controller
 {
