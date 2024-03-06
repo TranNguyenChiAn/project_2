@@ -3,7 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Http\Controllers\Controller;
-use App\Http\Requests\UpdateCustomerRequest;
+use App\Requests\UpdateCustomerRequest;
 use App\Models\Customer;
 
 use Illuminate\Http\Request;
@@ -32,16 +32,24 @@ class CustomerController extends Controller
         ]);
     }
 
-    public function update(UpdateCustomerRequest $request, Customer $customers)
+    /**
+     * Update the specified resource in storage.
+     *
+     * @param  \App\Requests\UpdateCustomerRequest  $request
+     * @param  \App\Models\Customer  $customer
+     * @return \Illuminate\Http\Response
+     */
+
+    public function update(UpdateCustomerRequest $request, Customer $customer)
     {
         //Lấy dữ liệu trong form và update lên db
-        $array = [];
-        $array = Arr::add($array, 'name', $request->name);
-        $array = Arr::add($array, 'email', $request->email);
-        $array = Arr::add($array, 'phone', $request->phone);
-        $array = Arr::add($array, 'address', $request->address);
+//        $array = [];
+//        $array = Arr::add($array, 'name', $request->name);
+//        $array = Arr::add($array, 'email', $request->email);
+//        $array = Arr::add($array, 'phone', $request->phone);
+//        $array = Arr::add($array, 'address', $request->address);
 
-        $customers->update($array);
+        $customer->update($request->all());
 
         return Redirect::route('customer.index');
     }
