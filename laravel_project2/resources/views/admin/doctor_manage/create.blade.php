@@ -1,6 +1,24 @@
 @vite(["resources/sass/app.scss", "resources/js/app.js"])
 @include('admin.layout.nav')
 
+<script type="text/javascript">
+    function chooseFile() {
+        let fileSelected = document.getElementById('imageFile').files;
+        if (fileSelected.length > 0) {
+            let fileToLoad = fileSelected[0];
+            let fileReader = new FileReader();
+            fileReader.onload = function(fileLoaderEvent) {
+                let srcData = fileLoaderEvent.target.result;
+                let newImage = document.createElement('img');
+                newImage.src = srcData;
+
+                document.getElementById('image').innerHTML = newImage.outerHTML;
+            }
+            fileReader.readAsDataURL(fileToLoad);
+        }
+    }
+</script>
+
 <section class="position-absolute start-50 translate-middle-x" style="font-size: 18px">
     <h1 align="center" style="font-weight: bold;color: #2f2ffe; margin-top: 30px"> Add a doctor </h1>
     <br>
@@ -55,8 +73,8 @@
             <div class="col-md-6">
                 <br>
                 <label class="form-label"> Image:</label>
-                <input type="file" name="image" id="image" accept="image/*">
-                <img style="object-fit: cover; width: 150px; height: 150px">
+                <input type="file" name="image" id="imageFile" accept="image/*">
+                <img id="image" style="object-fit: cover; width: 150px; height: 150px">
             </div>
 
 

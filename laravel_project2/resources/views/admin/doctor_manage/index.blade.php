@@ -1,19 +1,19 @@
 @vite(["resources/sass/app.scss", "resources/js/app.js"])
 @include('admin.layout.nav')
-<section style="margin-left: 260px; margin-right: 30px">
+<section style="margin-left: 260px; margin-right: 30px; padding: 18px">
     <h2> MANAGE DOCTORS </h2>
     <table class="table table-hover">
         <tr>
-            <td>ID</td>
-            <td>Name</td>
-            <td>Email</td>
-            <td>Image</td>
-            <td>Specialization</td>
-            <td>Gender</td>
-            <td>Contact number</td>
-            <td>Address</td>
-            <td>Edit</td>
-            <td>Delete</td>
+            <th>ID</th>
+            <th>Name</th>
+            <th>Email</th>
+            <th>Image</th>
+            <th>Specialization</th>
+            <th>Gender</th>
+            <th>Contact number</th>
+            <th>Address</th>
+            <th>Edit</th>
+            <th>Delete</th>
         </tr>
         @foreach($doctors as $doctor)
         <tr>
@@ -22,7 +22,7 @@
             <td> {{ $doctor -> email }}</td>
             <td>
                 <img src="{{ asset('./images/'. $doctor->image)}}"
-                     style="height: 100px; width: 80px; object-fit: cover">
+                     style="height: 100px; object-fit: cover">
             </td>
             <td> {{ $doctor -> specialization -> name }}</td>
             <td> {{ $doctor -> gender -> name }}</td>
@@ -41,11 +41,17 @@
         </tr>
         @endforeach
     </table>
-
     <br>
-    <button class="btn btn-primary" type="submit">
-        <a class="nav-link" href="{{ route('doctor.create')}}">
-            Add a doctor
-        </a>
-    </button>
+    <div class=" d-flex justify-content-end">
+        <button class="btn btn-primary" type="submit">
+            <a class="nav-link" href="{{ route('doctor.create')}}">
+                Add a doctor
+            </a>
+        </button>
+    </div>
+
+    <div class="pagination page-item d-flex justify-content-center">
+        {{ $doctors -> links() }}
+    </div>
+
 </section>

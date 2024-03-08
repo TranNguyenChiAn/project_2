@@ -4,6 +4,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\DoctorController;
 use App\Http\Controllers\SpecializationController;
 use App\Http\Controllers\CustomerController;
+use App\Http\Controllers\ClientController;
 
 /*
 |--------------------------------------------------------------------------
@@ -16,17 +17,20 @@ use App\Http\Controllers\CustomerController;
 |
 */
 
-Route::get('/', [DoctorController::class, 'index'])->name('doctor');
+Route::get('/', [DoctorController::class, 'index'])->name('home');
 
-//     DOCTOR
-Route::get('/doctor', [DoctorController::class, 'index'])->name('doctor');
-Route::get('/create', [DoctorController::class, 'create'])->name('doctor.create');
-Route::post('/create', [DoctorController::class, 'store'])->name('doctor.store');
-Route::get('/{doctor}/edit', [DoctorController::class, 'edit'])->name('doctor.edit');
-Route::put('/{doctor}/edit', [DoctorController::class, 'update'])->name('doctor.update');
-Route::delete('{doctor}', [DoctorController::class, 'destroy'])->name('doctor.destroy');
+//     DOCTOR Manage
+Route::prefix('/doctor')->group(function (){
+    Route::get('/doctor', [DoctorController::class, 'index'])->name('doctor');
+    Route::get('/create', [DoctorController::class, 'create'])->name('doctor.create');
+    Route::post('/create', [DoctorController::class, 'store'])->name('doctor.store');
+    Route::get('/{doctor}/edit', [DoctorController::class, 'edit'])->name('doctor.edit');
+    Route::put('/{doctor}/edit', [DoctorController::class, 'update'])->name('doctor.update');
+    Route::delete('{doctor}', [DoctorController::class, 'destroy'])->name('doctor.destroy');
+});
 
-////     Customer
+
+////     Customer Manage
 Route::prefix('/customer')->group(function(){
     Route::get('/index', [CustomerController::class,'index'])->name('customer.index');
     Route::get('/create', [CustomerController::class, 'create'])->name('customer.create');
@@ -37,7 +41,7 @@ Route::prefix('/customer')->group(function(){
 });
 
 
-//      Specialization
+//      Specialization Manage
 Route::prefix('specialization')->group(function(){
     Route::get('/index', [SpecializationController::class, 'index'])->name('specialization.index');
     Route::get('/create', [SpecializationController::class, 'create'])->name('specialization.create');
@@ -51,7 +55,7 @@ Route::prefix('specialization')->group(function(){
 
 });
 
-//      Appointment
+//      Appointment Manage
 Route::prefix('appointment')->group(function(){
     Route::get('/index', [DoctorController::class, 'index'])->name('appointment.index');
     Route::get('/create', [DoctorController::class, 'create'])->name('appointment.create');
@@ -59,6 +63,17 @@ Route::prefix('appointment')->group(function(){
     Route::get('{doctor}/edit', [DoctorController::class, 'edit'])->name('appointment.edit');
     Route::put('{doctor}/edit', [DoctorController::class, 'update'])->name('appointment.update');
     Route::delete('{doctor}', [DoctorController::class, 'destroy'])->name('appointment.destroy');
+});
+
+
+//      Customer
+Route::prefix('client')->group(function(){
+    Route::get('/index', [ClientController::class, 'index'])->name('client.index');
+    Route::get('/create', [ClientController::class, 'create'])->name('client.create');
+    Route::post('/create', [ClientController::class, 'store'])->name('client.store');
+    Route::get('{doctor}/edit', [ClientController::class, 'edit'])->name('client.edit');
+    Route::put('{doctor}/edit', [ClientController::class, 'update'])->name('client.update');
+    Route::delete('{doctor}', [ClientController::class, 'destroy'])->name('client.destroy');
 });
 
 

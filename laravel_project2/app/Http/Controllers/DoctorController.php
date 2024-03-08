@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\StoreDoctorRequest;
 use App\Http\Requests\UpdateDoctorRequest;
 use App\Models\Doctor;
 use App\Models\Gender;
@@ -20,8 +21,7 @@ class DoctorController extends Controller
 
         $doctors = Doctor::with('specialization')
         ->with('gender')
-            ->orderBy('id','desc')
-        -> paginate(5);
+        ->orderBy('id','desc');
 
 
         return view('admin.doctor_manage.index', [
@@ -48,7 +48,7 @@ class DoctorController extends Controller
      * @return \Illuminate\Http\Response
      */
 
-    public function store(Request $request, Doctor $doctor){
+    public function store(Request $request){
 
         $image = $request->file('image');
         $imageName = $image->getClientOriginalName();
@@ -62,11 +62,10 @@ class DoctorController extends Controller
         $array = Arr::add($array, 'specialization_id', $request->specialization_id);
         $array = Arr::add($array, 'contact_number', $request->contact_number);
         $array = Arr::add($array, 'address', $request->address);
-        $array = Arr::add($array, 'image',$imageName);
+        $array = Arr::add($array, 'image', $imageName);
 
             //Lấy dữ liệu từ form và lưu lên db
         Doctor::create($array);
-        $doctor->save();
 
         return Redirect::route('doctor');
     }

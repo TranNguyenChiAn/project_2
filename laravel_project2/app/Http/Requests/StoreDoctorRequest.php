@@ -30,6 +30,7 @@ class StoreDoctorRequest extends Controller
             'specialization' =>['required'],
             'contact_number' => ['required'],
             'address' => ['required'],
+            'image' => ['required'],
         ];
     }
 
@@ -41,7 +42,8 @@ class StoreDoctorRequest extends Controller
             'gender.required' => 'Gender is required',
             'specialization.required' => 'Specialization is required',
             'contact_number.required' => 'Phone is required',
-            'address.required' => 'Address is required'
+            'address.required' => 'Address is required',
+            'image.required' => 'Image is required'
         ];
     }
 }
