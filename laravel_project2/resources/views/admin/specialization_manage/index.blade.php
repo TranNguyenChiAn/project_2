@@ -1,7 +1,8 @@
 @vite(["resources/sass/app.scss", "resources/js/app.js"])
 @include('admin.layout.nav')
+
 <section style="margin-left: 272px; margin-right: 30px">
-    <h2> MANAGE DOCTORS </h2>
+    <h2> MANAGE SPECIALIZATIONS </h2>
     <table class="table table-striped">
         <tr>
             <td>ID</td>
@@ -14,10 +15,12 @@
                 <td> {{ $specialization -> id }}</td>
                 <td> {{ $specialization -> name }}</td>
                 <td>
-                    <a class="nav-link link-primary" href=""> Edit </a>
+                    <a class="nav-link link-primary" href="{{ route('specialization.edit', $specialization)}}">
+                        Edit
+                    </a>
                 </td>
                 <td>
-                    <form method="post" action="">
+                    <form method="post" action="{{ route('specialization.destroy', $specialization)}}">
                         @csrf
                         @method('DELETE')
                         <button type="submit" class="btn btn-danger">Delete</button>
@@ -28,7 +31,7 @@
     </table>
     <br>
     <button class="btn btn-primary" type="submit">
-        <a class="nav-link" href="">
+        <a class="nav-link" href="{{ route('specialization.create')}}">
             Add a Specialization
         </a>
     </button>

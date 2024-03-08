@@ -1,7 +1,7 @@
 @vite(["resources/sass/app.scss", "resources/js/app.js"])
 @include('admin.layout.nav')
 <section style="margin-left: 272px; margin-right: 30px">
-    <h2> MANAGE DOCTORS </h2>
+    <h2> MANAGE CUSTOMERS </h2>
     <table class="table table-striped">
         <tr>
             <td>ID</td>

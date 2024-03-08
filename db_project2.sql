@@ -16,7 +16,6 @@ insert into admins(name, email, password) values
 ('Duong Minh', 'luuduongminh@gmail.com', '132654'),
 ('Thanh Hoang', 'lethanhhoang@gmail.com', '132654');
 
-select * from customers;
 
 create table genders(
 	id INT auto_increment primary key,
@@ -24,6 +23,7 @@ create table genders(
 );
 
 insert into genders (name) values ('Male'), ('Female');
+select * from genders;
 
 create table specialization(
 	id INT auto_increment primary key,
@@ -49,16 +49,16 @@ CREATE TABLE doctors (
     foreign key (gender_id) references genders(id) ON DELETE CASCADE
 );
 
-
-
 INSERT INTO doctors (name, gender_id, email, password, specialization_id, contact_number, address, image) VALUES
 ('Nguyễn Văn An', 1, 'ngvaanh@gmail.com', '123456', 1, '0901234567', 'TP.HCM', '#'),
 ('Trần Thị Bảo', 2, 'trthbao@gmail.com', '123456', 2, '0912345678', 'HN', '#'),
 ('Lê Văn Cương', 1, 'levacuong@gmail.com', '123456', 3, '0923456789', 'HP', '#');
 
+Update doctors
+Set image = 'doctor_female.webp' where id = 6;
+
 select * from doctors;
 
-drop table doctors;
 
 create table customers(
 	id INT auto_increment primary key,
@@ -97,23 +97,27 @@ insert into consulting_rooms ( floor,  room ) Values
 (3, 302),
 (3, 303);
 
+select * from genders;
+
 
 CREATE TABLE patients (
     id INT AUTO_INCREMENT PRIMARY KEY,
     name VARCHAR(255) NOT NULL,
     email TEXT NOT NULL,
+    gender_id INT NOT NULL,
     insurance_number VARCHAR(20),
     phone_number VARCHAR(15) NOT NULL,
     address TEXT NOT NULL,
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
+    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+    FOREIGN KEY (gender_id) references genders(id) ON DELETE CASCADE
 );
 
 
-INSERT INTO patients (name, email, insurance_number, phone_number, address) VALUES
-('Nguyễn Thị Anh', 'ngthanh@gmail.com', 'BN12345', '0987654321', 'HP'),
-('Trần Văn Bình', 'trvabinh@gmail.com', 'BN67890', '0976543210', 'HN'),
-('Lê Thị Chi', 'lethchi@gmail.com','BN54321', '0965432109', 'TP.HCM');
+INSERT INTO patients (name, email,gender_id, insurance_number, phone_number, address) VALUES
+('Nguyễn Thị Anh', 'ngthanh@gmail.com', 2, 'BN12345', '0987654321', 'HP'),
+('Trần Văn Bình', 'trvabinh@gmail.com', 1, 'BN67890', '0976543210', 'HN'),
+('Lê Thị Chi', 'lethchi@gmail.com', 2, 'BN54321', '0965432109', 'TP.HCM');
 
 
 CREATE TABLE appointments (

@@ -10,6 +10,7 @@ class Specialization extends Model
     use HasFactory;
 
     protected $table = 'specialization';
+    public $timestamps = false;
     protected $primaryKey = 'id';
     protected $fillable = ['name'];
 

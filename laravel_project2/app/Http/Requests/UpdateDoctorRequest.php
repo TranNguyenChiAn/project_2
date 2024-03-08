@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Requests;
+namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
 
@@ -29,6 +29,8 @@ class UpdateDoctorRequest extends FormRequest
             'contact_number' => ['required'],
             'address' => ['required'],
             'specialization' => ['required'],
+            'gender' => ['required'],
+            'image' => ['required'],
             //
         ];
     }
@@ -42,7 +44,8 @@ class UpdateDoctorRequest extends FormRequest
             'contact_number.required' => 'Phone is required',
             'contact_number.regex' => 'Phone is not correct format',
             'address.required' => 'Address is required',
-            'specialization.required' => 'Status is required',
+            'specialization.required' => 'Specialization is required',
+            'gender.required' => 'Gender is required',
         ];
     }
 }

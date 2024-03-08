@@ -20,7 +20,7 @@
             </a>
         </li>
         <li>
-            <a href="#" class="nav-link link-dark">
+            <a href="{{ route('appointment.index') }}" class="nav-link link-dark">
                 <svg class="bi me-2" width="16" height="16"><use xlink:href="#table"></use></svg>
                 Appointments
             </a>
@@ -38,7 +38,8 @@
             </a>
         </li>
         <li>
-            <a href="{{ route('specialization') }}" class="nav-link link-dark">
+{{--            cap nhat link route sau do hienn tai route chua duoc sync trong IDE--}}
+            <a href="{{ route('specialization.index') }}" class="nav-link link-dark">
                 <svg class="bi me-2" width="16" height="16">
                     <use xlink:href="#speedometer2"></use>
                 </svg>
