@@ -6,16 +6,17 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\UpdateSpecializationRequest;
 use App\Models\Specialization;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Redirect;
 use Illuminate\Support\Arr;
 
 class SpecializationController extends Controller
 {
     public function index(){
-        $specialization = Specialization::get()->sortBy('id')->all();;
+        $specialization = Specialization::all();
 
         return view('admin.specialization_manage.index', [
-                'specialization' => $specialization
+            'specialization' => $specialization
             ]);
     }
 

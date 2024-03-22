@@ -73,7 +73,7 @@
             <div class="col-md-6">
                 <br>
                 <label class="form-label"> Image:</label>
-                <input type="file" name="image" id="imageFile" accept="image/*">
+                <input type="file" name="image" id="imageFile" accept="image/*" >
                 <img id="image" style="object-fit: cover; width: 150px; height: 150px">
             </div>
 

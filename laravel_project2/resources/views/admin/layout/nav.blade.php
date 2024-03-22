@@ -38,12 +38,19 @@
             </a>
         </li>
         <li>
-{{--            cap nhat link route sau do hienn tai route chua duoc sync trong IDE--}}
             <a href="{{ route('specialization.index') }}" class="nav-link link-dark">
                 <svg class="bi me-2" width="16" height="16">
                     <use xlink:href="#speedometer2"></use>
                 </svg>
                 Specialization
+            </a>
+        </li>
+        <li>
+            <a href="{{ route('admin.logout') }}" class="nav-link link-dark">
+                <svg class="bi me-2" width="16" height="16">
+                    <use xlink:href="#speedometer2"></use>
+                </svg>
+                Logout
             </a>
         </li>
     </ul>

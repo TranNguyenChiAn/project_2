@@ -50,8 +50,8 @@
         </button>
     </div>
 
-    <div class="pagination page-item d-flex justify-content-center">
-        {{ $doctors -> links() }}
+    <div class="pt-3 w-10">
+        {{$doctors->links()}}
     </div>
 
 </section>

@@ -16,6 +16,8 @@ $(document).ready(function () {
             $("#mini-cart-container").fadeOut();
         }
     });
+
+    $('[data-toggle="tooltip"]').tooltip()
 });
 
 // Function to load Mini Cart content via Ajax

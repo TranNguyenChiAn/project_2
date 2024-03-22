@@ -18,8 +18,7 @@ class ClientController extends Controller
         $doctors = Doctor::with('specialization')
             ->with('gender')
             ->orderBy('id', 'desc')
-            ->simplePaginate(3)
-            ->withQueryString();
+            ->get();
 
 
         return view('customer.homepage.index', [
@@ -28,4 +27,16 @@ class ClientController extends Controller
             'specialization' => $specialization
         ]);
     }
+
+    public function appointmentForm()
+    {
+        $genders = Gender::all();
+        $specialization = Specialization::all();
+        return view('customer.appointment.form', [
+            'genders' => $genders,
+            'specialization' => $specialization
+        ]);
+    }
+
+
 }

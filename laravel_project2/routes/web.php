@@ -5,22 +5,24 @@ use App\Http\Controllers\DoctorController;
 use App\Http\Controllers\SpecializationController;
 use App\Http\Controllers\CustomerController;
 use App\Http\Controllers\ClientController;
+use App\Http\Controllers\AppointmentController;
+use App\Http\Middleware\CheckLoginCustomer;
+use App\Http\Middleware\CheckLoginAdmin;
+use App\Http\Controllers\AdminController;
 
-/*
-|--------------------------------------------------------------------------
-| Web Routes
-|--------------------------------------------------------------------------
-|
-| Here is where you can register web routes for your application. These
-| routes are loaded by the RouteServiceProvider and all of them will
-| be assigned to the "web" middleware group. Make something great!
-|
-*/
 
-Route::get('/', [DoctorController::class, 'index'])->name('home');
+Route::get('/', [ClientController::class, 'index'])->name('home');
+
+//   RESISTER AND LOGIN
+Route::get('/login', [AdminController::class, 'login'])->name('admin.login');
+Route::post('/login', [AdminController::class, 'loginProcess'])->name('admin.loginProcess');
+
+Route::get('/logout', [AdminController::class, 'logout'])->name('admin.logout');
+Route::get('/forgot_password', [AdminController::class, 'forgotPassword'])->name('admin.forgotPassword');
+
 
 //     DOCTOR Manage
-Route::prefix('/doctor')->group(function (){
+Route::middleware(CheckLoginAdmin::class)->group(function (){
     Route::get('/doctor', [DoctorController::class, 'index'])->name('doctor');
     Route::get('/create', [DoctorController::class, 'create'])->name('doctor.create');
     Route::post('/create', [DoctorController::class, 'store'])->name('doctor.store');
@@ -57,7 +59,7 @@ Route::prefix('specialization')->group(function(){
 
 //      Appointment Manage
 Route::prefix('appointment')->group(function(){
-    Route::get('/index', [DoctorController::class, 'index'])->name('appointment.index');
+    Route::get('/index', [AppointmentController::class, 'index'])->name('appointment.index');
     Route::get('/create', [DoctorController::class, 'create'])->name('appointment.create');
     Route::post('/create', [DoctorController::class, 'store'])->name('appointment.store');
     Route::get('{doctor}/edit', [DoctorController::class, 'edit'])->name('appointment.edit');
@@ -66,15 +68,27 @@ Route::prefix('appointment')->group(function(){
 });
 
 
-//      Customer
-Route::prefix('client')->group(function(){
+//      Client
+Route::middleware(CheckLoginCustomer::class)->group(function(){
     Route::get('/index', [ClientController::class, 'index'])->name('client.index');
+
     Route::get('/create', [ClientController::class, 'create'])->name('client.create');
     Route::post('/create', [ClientController::class, 'store'])->name('client.store');
+
     Route::get('{doctor}/edit', [ClientController::class, 'edit'])->name('client.edit');
     Route::put('{doctor}/edit', [ClientController::class, 'update'])->name('client.update');
+
     Route::delete('{doctor}', [ClientController::class, 'destroy'])->name('client.destroy');
+
+    Route::get('appointment',[ClientController::class, 'appointmentForm'])->name('client.appointment');
 });
+
+//   RESISTER AND LOGIN
+Route::get('/login', [CustomerController::class, 'login'])->name('customer.login');
+Route::post('/login', [CustomerController::class, 'loginProcess'])->name('customer.loginProcess');
+
+Route::get('/logout', [CustomerController::class, 'logout'])->name('customer.logout');
+Route::get('/forgot_password', [CustomerController::class, 'forgotPassword'])->name('customer.forgotPassword');
 
 
 

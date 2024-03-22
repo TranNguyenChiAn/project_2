@@ -21,7 +21,9 @@ class DoctorController extends Controller
 
         $doctors = Doctor::with('specialization')
         ->with('gender')
-        ->orderBy('id','desc');
+            ->orderBy('id','desc')
+        -> paginate(3)
+        ->withQueryString();
 
 
         return view('admin.doctor_manage.index', [
@@ -84,11 +86,15 @@ class DoctorController extends Controller
 
     public function update(UpdateDoctorRequest $request, Doctor $doctor)
     {
-        $image = $request->file('image');
-        $imageName = $image->getClientOriginalName();
+        if ($request->file('image') != null) {
+            $image = $request->file('image');
+            $imageName = $image->getClientOriginalName();
 
-        // Lưu ảnh vào thư mục public/images
-        $image->move(public_path('images'), $imageName);
+            // Lưu ảnh vào thư mục public/images
+            $image->move(public_path('images'), $imageName);
+        }else{
+            $imageName = $doctor -> image;
+        }
 
         //Lấy dữ liệu trong form và update lên db
         $array = [];

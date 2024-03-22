@@ -16,7 +16,9 @@ insert into admins(name, email, password) values
 ('Duong Minh', 'luuduongminh@gmail.com', '132654'),
 ('Thanh Hoang', 'lethanhhoang@gmail.com', '132654');
 
+update admins set password = '123456' where id = 1;
 
+select * from admins;
 create table genders(
 	id INT auto_increment primary key,
     name VARCHAR(20) NOT NULL
@@ -30,7 +32,15 @@ create table specialization(
     name VARCHAR(255) NOT NULL
 );
 
-insert into specialization( name) Values ('Xương khớp'), ('Da liễu'), ('Răng-Hàm-Mặt'), ('Tai-Mũi-Họng'), ('Tim'), ('Tiết niệu'), ('Thần kinh');
+insert into specialization( name) Values 
+('Xương khớp'), 
+('Da liễu'), 
+('Răng-Hàm-Mặt'), 
+('Tai-Mũi-Họng'), 
+('Tim'), 
+('Tiết niệu'), 
+('Thần kinh');
+
 select * from specialization;
 
 CREATE TABLE doctors (
@@ -53,11 +63,6 @@ INSERT INTO doctors (name, gender_id, email, password, specialization_id, contac
 ('Nguyễn Văn An', 1, 'ngvaanh@gmail.com', '123456', 1, '0901234567', 'TP.HCM', '#'),
 ('Trần Thị Bảo', 2, 'trthbao@gmail.com', '123456', 2, '0912345678', 'HN', '#'),
 ('Lê Văn Cương', 1, 'levacuong@gmail.com', '123456', 3, '0923456789', 'HP', '#');
-
-Update doctors
-Set image = 'doctor_female.webp' where id = 6;
-
-select * from doctors;
 
 
 create table customers(
@@ -114,15 +119,16 @@ CREATE TABLE patients (
 );
 
 
-INSERT INTO patients (name, email,gender_id, insurance_number, phone_number, address) VALUES
-('Nguyễn Thị Anh', 'ngthanh@gmail.com', 2, 'BN12345', '0987654321', 'HP'),
-('Trần Văn Bình', 'trvabinh@gmail.com', 1, 'BN67890', '0976543210', 'HN'),
-('Lê Thị Chi', 'lethchi@gmail.com', 2, 'BN54321', '0965432109', 'TP.HCM');
+INSERT INTO patients (name, age, gender_id, insurance_number, phone_number, address) VALUES
+('Nguyễn Thị Anh', 12, 2, 'BN12345', '0987654321', 'HP'),
+('Trần Văn Bình', 36, 1, 'BN67890', '0976543210', 'HN'),
+('Lê Thị Chi', 9, 2, 'BN54321', '0965432109', 'TP.HCM');
 
 
 CREATE TABLE appointments (
     id INT AUTO_INCREMENT PRIMARY KEY,
     doctor_id INT NOT NULL,
+    admin_id INT NOT NULL,
     patient_id INT NOT NULL,
     appointment_time DATETIME NOT NULL,
     room_id INT NOT NULL,
@@ -132,13 +138,10 @@ CREATE TABLE appointments (
     updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
     FOREIGN KEY (doctor_id) REFERENCES doctors(id) ON DELETE CASCADE,
     FOREIGN KEY (patient_id) REFERENCES patients(id) ON DELETE CASCADE,
-    FOREIGN KEY (room_id) REFERENCES consulting_rooms(id) ON DELETE CASCADE
+    FOREIGN KEY (room_id) REFERENCES consulting_rooms(id) ON DELETE CASCADE,
+    foreign key (admin_id) references admins(id) ON DELETE CASCADE
 );
 
-INSERT INTO appointments (doctor_id, patient_id, appointment_time, room_id, status) VALUES
-(1, 1, '2024-03-01 10:00:00', 2, 'confirmed'),
-(2, 2, '2024-03-02 14:30:00', 3, 'pending'),
-(3, 3, '2024-03-03 16:45:00', 5, 'canceled');
 
 
 
