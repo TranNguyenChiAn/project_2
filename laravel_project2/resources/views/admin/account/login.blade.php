@@ -15,18 +15,24 @@
 
                         <div class="form-outline mb-4">
                             <label class="form-label" for="form2Example18">Email address</label>
-                            <input type="email" name="email" class="form-control form-control-lg"
-                                   id="validationCustom01" required />
+                            <input type="email" name="email" class="form-control form-control-lg" required />
                         </div>
 
                         <div class="form-outline mb-4">
                             <label class="form-label" for="form2Example28">Password</label>
-                            <input type="password" name="password"  id="validationCustom02"
+                            <input type="password" name="password"
                                    required class="form-control form-control-lg" />
                         </div>
 
                         <div class="pt-2 mb-4">
                             <button class="btn btn-info btn-lg" style="width:22rem;color: white; font-weight: bold" type="submit">Login</button>
+                        </div>
+
+                        <div class="pt-2 mb-4">
+                            <a class="nav-link link-dark" href="{{ route('password.request') }}"
+                               style="font-weight: bold" type="submit">
+                                Forget password
+                            </a>
                         </div>
                     </form>
                 </div>

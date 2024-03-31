@@ -74,7 +74,12 @@
             <div class="col-md-6">
                 <label class="form-label"> Image:</label>
                 <input type="file" name="image" id="imageFile" accept="image/*" onchange="chooseFile(this)">
-                <div id="image" height="150px">
+                <style>
+                    #image img {
+                        height: 200px;
+                    }
+                </style>
+                <div id="image">
                     <img style="object-fit: cover; width: 150px; height: 150px"
                          src="{{ asset('./images/' . $doctor->image) }}"
                     >

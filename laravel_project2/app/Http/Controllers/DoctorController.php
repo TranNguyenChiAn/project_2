@@ -69,7 +69,7 @@ class DoctorController extends Controller
             //Lấy dữ liệu từ form và lưu lên db
         Doctor::create($array);
 
-        return Redirect::route('doctor');
+        return Redirect::route('admin.doctor');
     }
 
     public function edit(Doctor $doctor, Request $request)
@@ -104,19 +104,17 @@ class DoctorController extends Controller
         $array = Arr::add($array, 'contact_number', $request->contact_number);
         $array = Arr::add($array, 'address', $request->address);
         $array = Arr::add($array, 'gender', $request->gender);
-
-        $doctor->image = $imageName;
-        $doctor->save();
+        $array = Arr::add($array, 'image', $imageName);
 
         $doctor->update($array);
 
-        return Redirect::route('doctor');
+        return Redirect::route('admin.doctor');
     }
 
     public function destroy(Doctor $doctor)
     {
         $doctor->delete();
-        return Redirect::route('doctor')->with('success', 'Delete a doctor successfully!');
+        return Redirect::route('admin.doctor')->with('success', 'Delete a doctor successfully!');
 
     }
 

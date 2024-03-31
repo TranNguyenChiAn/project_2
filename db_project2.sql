@@ -108,7 +108,7 @@ select * from genders;
 CREATE TABLE patients (
     id INT AUTO_INCREMENT PRIMARY KEY,
     name VARCHAR(255) NOT NULL,
-    email TEXT NOT NULL,
+    date_birth DATE NOT NULL,
     gender_id INT NOT NULL,
     insurance_number VARCHAR(20),
     phone_number VARCHAR(15) NOT NULL,
@@ -118,12 +118,14 @@ CREATE TABLE patients (
     FOREIGN KEY (gender_id) references genders(id) ON DELETE CASCADE
 );
 
+select * from patients;
 
 INSERT INTO patients (name, age, gender_id, insurance_number, phone_number, address) VALUES
-('Nguyễn Thị Anh', 12, 2, 'BN12345', '0987654321', 'HP'),
-('Trần Văn Bình', 36, 1, 'BN67890', '0976543210', 'HN'),
-('Lê Thị Chi', 9, 2, 'BN54321', '0965432109', 'TP.HCM');
+('Nguyễn Thị Anh', '2012-04-23', 2, 'BN12345', '0987654321', 'HP'),
+('Trần Văn Bình', '1992-12-12', 1, 'BN67890', '0976543210', 'HN'),
+('Lê Thị Chi', '2009-02-09', 2, 'BN54321', '0965432109', 'TP.HCM');
 
+update patients set date_birth = '2009-02-09' where id = 3;
 
 CREATE TABLE appointments (
     id INT AUTO_INCREMENT PRIMARY KEY,
@@ -141,6 +143,15 @@ CREATE TABLE appointments (
     FOREIGN KEY (room_id) REFERENCES consulting_rooms(id) ON DELETE CASCADE,
     foreign key (admin_id) references admins(id) ON DELETE CASCADE
 );
+
+alter table appointments change room_id room_id INT;
+
+select * from appointments;
+
+alter table appointments drop column time;
+
+
+select * from appointments;
 
 
 

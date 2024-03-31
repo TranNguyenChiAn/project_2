@@ -22,7 +22,7 @@
 <section class="position-absolute start-50 translate-middle-x" style="font-size: 18px">
     <h1 align="center" style="font-weight: bold;color: #2f2ffe; margin-top: 30px"> Add a doctor </h1>
     <br>
-    <div class="row g-6 bg-white ">
+    <div class="row g-6 bg-white">
         <form class="row g-3 bg-white" method="post" action="{{ route('doctor.store') }}"
               style="padding: 10px 24px"
               enctype="multipart/form-data">
@@ -73,7 +73,12 @@
             <div class="col-md-6">
                 <br>
                 <label class="form-label"> Image:</label>
-                <input type="file" name="image" id="imageFile" accept="image/*" >
+                <input type="file" name="image" id="imageFile" accept="image/*" onchange="chooseFile(this)">
+                <style>
+                    #image img {
+                        height: 200px;
+                    }
+                </style>
                 <img id="image" style="object-fit: cover; width: 150px; height: 150px">
             </div>
 

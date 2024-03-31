@@ -12,7 +12,7 @@
             </a>
         </li>
         <li>
-            <a href="{{ route('doctor') }}" class="nav-link link-dark">
+            <a href="{{ route('admin.doctor') }}" class="nav-link link-dark">
                 <svg class="bi me-2" width="16" height="16">
                     <use xlink:href="#speedometer2"></use>
                 </svg>
@@ -53,6 +53,7 @@
                 Logout
             </a>
         </li>
+
     </ul>
     <hr>
 </div>

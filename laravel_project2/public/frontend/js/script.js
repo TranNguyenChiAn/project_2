@@ -51,3 +51,31 @@ function updateCart() {
         }
     });
 }
+
+// Sử dụng Fetch API
+fetch('/get-dates')
+    .then(response => response.json())
+    .then(data => {
+        // Xử lý dữ liệu
+        data.forEach(date => {
+            // Lấy timestamp từ mô hình Laravel
+            let timestamp = Date.parse(date.appointment_time);
+
+            // Tạo đối tượng Date từ timestamp
+            let jsDate = new Date(timestamp);
+
+            // Lấy thông tin ngày và giờ
+            let year = jsDate.getFullYear();
+            let month = jsDate.getMonth() + 1;
+            let day = jsDate.getDate();
+            let hour = jsDate.getHours();
+            let minute = jsDate.getMinutes();
+            let second = jsDate.getSeconds();
+
+            // Hiển thị ngày và giờ
+            console.log("Ngày: " + day + "/" + month + "/" + year);
+            console.log("Giờ: " + hour + ":" + minute + ":" + second);
+        });
+    })
+    .catch(error => console.error('Lỗi:', error));
+

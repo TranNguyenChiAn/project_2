@@ -10,6 +10,7 @@ use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Redirect;
+use Illuminate\Support\Facades\Validator;
 
 class AdminController extends Controller
 {
@@ -20,23 +21,34 @@ class AdminController extends Controller
     public function loginProcess(Request $request)
     {
 
-        $account = $request->only(['email', 'password']);
-        $check = Auth::guard('admin')->attempt($account);
+        $validator = Validator::make($request->all(), [
+            'email'=>'required',
+            'password'=> 'required'
+        ], [
+            'email.required'=>'Email can not be empty',
+            'password.required'=>'Password can not be empty',
+        ]);
 
-        if ($check) {
-            //Lấy thông tin của admin đang login
-            $admin = Auth::guard('admin')->user();
-            //Cho login
-            Auth::guard('admin')->login($admin);
-            //Ném thông tin admin đăng nhập lên session
-            session(['admin' => $admin]);
-            return Redirect::route('doctor');
-        } else {
-            //cho quay về trang login
-            return Redirect::back() ->with('alert','Wrong password');
+        if($validator->fails()){
+            return redirect()->route('admin.login')->withErrors($validator)->withInput();
         }
-    }
 
+        $loginInfor = ['email' => $request->email, 'password' => $request->password];
+
+        if(Auth::guard('admin')->attempt($loginInfor)){
+
+            //Lấy thông tin của customer đang login
+            $customer = Auth::guard('admin')->user();
+            //Cho login
+            Auth::guard('admin')->login($customer);
+            //Ném thông tin customer đăng nhập lên session
+            session(['admin' => $customer]);
+//            $request->session()->regenerate();
+            return redirect()->route('admin.doctor');
+        }
+        return Redirect::back() ->with('alert','Wrong password');
+
+    }
 
     public function logout()
     {
@@ -45,10 +57,6 @@ class AdminController extends Controller
         return Redirect::route('admin.login');
     }
 
-    public function forgotPassword()
-    {
-        return view('admin.account.login');
-    }
 }
 
 

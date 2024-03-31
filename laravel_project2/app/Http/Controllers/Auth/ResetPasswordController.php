@@ -3,27 +3,39 @@
 namespace App\Http\Controllers\Auth;
 
 use App\Http\Controllers\Controller;
-use Illuminate\Foundation\Auth\ResetsPasswords;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Auth;
+use App\Models\Admin;
 
 class ResetPasswordController extends Controller
 {
-    /*
-    |--------------------------------------------------------------------------
-    | Password Reset Controller
-    |--------------------------------------------------------------------------
-    |
-    | This controller is responsible for handling password reset requests
-    | and uses a simple trait to include this behavior. You're free to
-    | explore this trait and override any methods you wish to tweak.
-    |
-    */
+    public function showResetForm(Request $request, $token)
+    {
+        return view('admin.account.reset_password')->with(
+            ['token' => $token, 'email' => $request->email]
+        );
+    }
 
-    use ResetsPasswords;
+    public function reset(Request $request)
+    {
+        $request->validate([
+            'email' => 'required|email',
+            'password' => 'required|confirmed|min:8',
+        ]);
 
-    /**
-     * Where to redirect users after resetting their password.
-     *
-     * @var string
-     */
-    protected $redirectTo = '/home';
+        // Tìm người dùng với email tương ứng
+        $admin = Admin::where('email', $request->email)->first();
+
+        // Cập nhật mật khẩu mới cho người dùng
+        $admin->update([
+            'password' => Hash::make($request->password),
+            'password_reset_token' => null
+        ]);
+
+        // Đăng nhập người dùng sau khi đặt lại mật khẩu thành công
+        Auth::login($admin);
+
+        return redirect('/doctor')->with('status', 'Mật khẩu đã được đặt lại thành công.');
+    }
 }

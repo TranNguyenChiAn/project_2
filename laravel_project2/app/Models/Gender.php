@@ -13,7 +13,11 @@ class Gender extends Model
     protected $primaryKey = 'id';
     protected $fillable = ['name'];
 
-    public function Doctor(){
+    public function doctor(){
         return $this->hasMany(Doctor::class);
+    }
+
+    public function patient(){
+        return $this->hasMany(Patient::class);
     }
 }
