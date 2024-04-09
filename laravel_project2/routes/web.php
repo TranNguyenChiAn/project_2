@@ -6,6 +6,7 @@ use App\Http\Controllers\SpecializationController;
 use App\Http\Controllers\CustomerController;
 use App\Http\Controllers\ClientController;
 use App\Http\Controllers\AppointmentController;
+use App\Http\Controllers\PatientContronller;
 use App\Http\Middleware\CheckLoginCustomer;
 use App\Http\Middleware\CheckLoginAdmin;
 use App\Http\Controllers\AdminController;
@@ -17,7 +18,7 @@ use App\Models\Appointment;
 Route::get('/', [ClientController::class, 'index'])->name('home');
 
 //   RESISTER AND LOGIN
-Route::get('/login', [AdminController::class, 'login'])->name('admin.login')->middleware('checklogout');
+Route::get('/login', [AdminController::class, 'login'])->name('admin.login');
 Route::post('/login', [AdminController::class, 'loginProcess'])->name('admin.loginProcess');
 Route::get('/logout', [AdminController::class, 'logout'])->name('admin.logout');
 
@@ -75,7 +76,8 @@ Route::middleware(CheckLoginAdmin::class)->group(function(){
     Route::prefix('appointment')->group(function () {
         Route::get('/index', [AppointmentController::class, 'index'])->name('appointment.index');
         Route::get('/create', [AppointmentController::class, 'create'])->name('appointment.create');
-        Route::get('/events', [AppointmentController::class, 'getEvents']);
+        Route::get('/events', [AppointmentController::class, 'getEvents'])->name('appointment.getEvent');
+        Route::get('/showData', [AppointmentController::class, 'showData'])->name('appointment.showData');
         Route::post('/create', [AppointmentController::class, 'store'])->name('appointment.store');
         Route::get('{appointment}/edit', [AppointmentController::class, 'edit'])->name('appointment.edit');
         Route::put('{appointment}/edit', [AppointmentController::class, 'update'])->name('appointment.update');
@@ -83,20 +85,33 @@ Route::middleware(CheckLoginAdmin::class)->group(function(){
     });
 });
 
+//  PATIENT MANAGE
+Route::middleware(CheckLoginAdmin::class)->group(function(){
+    Route::prefix('patient')->group(function () {
+        Route::get('/index', [PatientContronller::class, 'index'])->name('patient.index');
+        Route::get('{patient}/edit', [PatientContronller::class, 'edit'])->name('patient.edit');
+        Route::put('{patient}/edit', [PatientContronller::class, 'update'])->name('patient.update');
+        Route::delete('{patient}', [PatientContronller::class, 'destroy'])->name('patient.destroy');
+    });
+});
+
 
 //      Client
 Route::prefix('customer')->group(function(){
-    Route::get('/index', [ClientController::class, 'index'])->name('client.index');
+    Route::get('/index', [ClientController::class, 'index'])->name('index');
 
-    Route::get('/create', [ClientController::class, 'create'])->name('client.create');
-    Route::post('/create', [ClientController::class, 'store'])->name('client.store');
+    Route::get('/register', [ClientController::class, 'register'])->name('register');
+    Route::post('/register', [ClientController::class, 'register'])->name('register');
 
-    Route::get('{doctor}/edit', [ClientController::class, 'edit'])->name('client.edit');
-    Route::put('{doctor}/edit', [ClientController::class, 'update'])->name('client.update');
+    Route::get('{profile}/edit', [ClientController::class, 'edit'])->name('profile.edit');
+    Route::put('{profile}/edit', [ClientController::class, 'update'])->name('profile.update');
 
     Route::delete('{doctor}', [ClientController::class, 'destroy'])->name('client.destroy');
+    Route::get('/specialization_{id}', [DoctorController::class, 'filter'])->name('filter');
 
-    Route::get('appointment',[ClientController::class, 'appointmentForm'])->name('client.appointment');
+    Route::get('appointment',[ClientController::class, 'appointmentForm'])->name('showForm');
+    Route::post('appointment',[ClientController::class, 'storeForm'])->name('storeForm');
+
 });
 
 

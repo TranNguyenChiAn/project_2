@@ -120,7 +120,7 @@ CREATE TABLE patients (
 
 select * from patients;
 
-INSERT INTO patients (name, age, gender_id, insurance_number, phone_number, address) VALUES
+INSERT INTO patients (name, date_birth, gender_id, insurance_number, phone_number, address) VALUES
 ('Nguyễn Thị Anh', '2012-04-23', 2, 'BN12345', '0987654321', 'HP'),
 ('Trần Văn Bình', '1992-12-12', 1, 'BN67890', '0976543210', 'HN'),
 ('Lê Thị Chi', '2009-02-09', 2, 'BN54321', '0965432109', 'TP.HCM');
@@ -132,7 +132,7 @@ CREATE TABLE appointments (
     doctor_id INT NOT NULL,
     admin_id INT NOT NULL,
     patient_id INT NOT NULL,
-    appointment_time DATETIME NOT NULL,
+    appointment_time TEXT NOT NULL,
     room_id INT NOT NULL,
     status ENUM('confirmed', 'pending', 'canceled') DEFAULT 'pending',
     note TEXT,
@@ -144,7 +144,7 @@ CREATE TABLE appointments (
     foreign key (admin_id) references admins(id) ON DELETE CASCADE
 );
 
-alter table appointments change room_id room_id INT;
+alter table appointments change appointment_time appointment_time timestamp;
 
 select * from appointments;
 
@@ -152,6 +152,7 @@ alter table appointments drop column time;
 
 
 select * from appointments;
+delete from appointments;
 
 
 

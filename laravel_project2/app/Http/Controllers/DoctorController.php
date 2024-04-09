@@ -13,6 +13,7 @@ use Illuminate\Support\Facades\Redirect;
 use Illuminate\Support\Facades\Storage;
 
 
+
 class DoctorController extends Controller
 {
     public function index() {
@@ -27,6 +28,24 @@ class DoctorController extends Controller
 
 
         return view('admin.doctor_manage.index', [
+            'doctors' => $doctors,
+            'genders' => $genders,
+            'specialization' => $specialization
+        ]);
+    }
+
+    public function filter(int $id) {
+        $genders = Gender::all();
+        $specialization = Specialization::all();
+
+        $doctors = Doctor::with('specialization')
+            ->with('gender')
+            ->where('specialization_id', '=', $id)
+            ->paginate(8)
+            ->withQueryString();
+
+
+        return view('customer.homepage.filter', [
             'doctors' => $doctors,
             'genders' => $genders,
             'specialization' => $specialization
@@ -54,7 +73,7 @@ class DoctorController extends Controller
 
         $image = $request->file('image');
         $imageName = $image->getClientOriginalName();
-        $image->move(public_path('images'), $imageName);
+        $image->move(public_path('doctors'), $imageName);
 
         $array = [];
         $array = Arr::add($array, 'name', $request->name);
@@ -91,7 +110,7 @@ class DoctorController extends Controller
             $imageName = $image->getClientOriginalName();
 
             // Lưu ảnh vào thư mục public/images
-            $image->move(public_path('images'), $imageName);
+            $image->move(public_path('doctors'), $imageName);
         }else{
             $imageName = $doctor -> image;
         }

@@ -1,9 +1,6 @@
 @vite(["resources/sass/app.scss", "resources/js/app.js"])
 @include('admin.layout.nav')
 
-
-
-
 <!DOCTYPE html>
 <html lang="en">
 <head>

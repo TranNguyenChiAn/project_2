@@ -13,10 +13,10 @@ use Illuminate\Support\Arr;
 class SpecializationController extends Controller
 {
     public function index(){
-        $specialization = Specialization::all();
+        $specializations = Specialization::paginate(5);
 
         return view('admin.specialization_manage.index', [
-            'specialization' => $specialization
+            'specializations' => $specializations
             ]);
     }
 

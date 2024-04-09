@@ -17,8 +17,23 @@ use Illuminate\Support\Facades\Redirect;
 class AppointmentController extends Controller
 {
     public function index() {
+        $appointment = Appointment::with('patient')
+        ->get();
 
-        return view('admin.appointment_management.index');
+        return view('admin.appointment_management.index', [
+            'appointment' => $appointment,
+        ]);
+    }
+
+    public function showData(){
+        $appointment = Appointment::with('patient')
+            ->get();
+        $eventArray = [];
+        while ($row = $appointment){
+            $eventArray = $row;
+            $event = json_encode($eventArray);
+            echo $event;
+        }
     }
 
     public function create() {
@@ -69,12 +84,7 @@ class AppointmentController extends Controller
     }
 
     public function getEvents(){
-        $appointments = Appointment::all()->map(function($appointment) {
-            return [
-                'appointment_time' => $appointment->apointment_time, // format date,
-                'status' => $appointment->status
-            ];
-        });
+        $appointments = Appointment::all();
         return response()->json($appointments);
     }
 

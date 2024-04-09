@@ -10,7 +10,7 @@
             <td>Edit</td>
             <td>Delete</td>
         </tr>
-        @foreach($specialization as $specialization)
+        @foreach($specializations as $specialization)
             <tr>
                 <td> {{ $specialization -> id }}</td>
                 <td> {{ $specialization -> name }}</td>
@@ -30,9 +30,14 @@
         @endforeach
     </table>
     <br>
+    <div class="d-flex justify-content-center pt-3 w-10">
+        {{$specializations->links()}}
+    </div>
+    <br>
     <button class="btn btn-primary" type="submit">
         <a class="nav-link" href="{{ route('specialization.create')}}">
             Add a Specialization
         </a>
     </button>
+
 </section>

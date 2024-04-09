@@ -1,6 +1,10 @@
 @vite(["resources/sass/app.scss", "resources/js/app.js"])
 @include('customer.layout.nav')
 
+<title>Homepage</title>
+<section>
+    <img src="{{ asset('./images/banner_doctor.webp') }}" width="100%">
+</section>
 <section class="pt-0 pt-sm-5">
     <div class="container">
         <!-- Title -->
