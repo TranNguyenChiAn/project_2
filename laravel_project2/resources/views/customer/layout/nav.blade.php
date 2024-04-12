@@ -7,7 +7,7 @@
     <div>
         <ul class="nav">
             <li class="nav-item d-flex">
-                <a class="nav-link link-dark px-0" href="{{ route('index') }}"> PRODUCT </a>
+                <a class="nav-link link-dark px-0" href="{{ route('index') }}"> DOCTORS </a>
                 <button class="nav-link link-dark dropdown-toggle p-2" role="button" data-bs-toggle="dropdown"
                         aria-expanded="false"></button>
                 @php

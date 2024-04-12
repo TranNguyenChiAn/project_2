@@ -71,6 +71,7 @@
                                     <div class="tab-pane fade" id="detail-tab-pane" role="tabpanel" aria-labelledby="detail-tab" tabindex="0">
                                         <div class="mb-3 mt-3">
                                             <label class="fs-4">Doctor</label>
+                                            <option disabled selected> -- Choose doctor --</option>
                                             <select name="doctor_id" class="form-control" required>
                                                 @foreach($doctors as $doctor)
                                                     <option name="doctor_id" value="{{$doctor->id}}">{{$doctor->name}} - Khoa {{$doctor->specialization->name}}</option>

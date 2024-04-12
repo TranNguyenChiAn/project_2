@@ -6,6 +6,7 @@ use App\Http\Requests\StoreDoctorRequest;
 use App\Http\Requests\UpdateDoctorRequest;
 use App\Models\Doctor;
 use App\Models\Gender;
+use App\Models\Shift;
 use App\Models\Specialization;
 use Illuminate\Http\Request;
 use Illuminate\Support\Arr;
@@ -37,6 +38,7 @@ class DoctorController extends Controller
     public function filter(int $id) {
         $genders = Gender::all();
         $specialization = Specialization::all();
+        $shift = Shift::all();
 
         $doctors = Doctor::with('specialization')
             ->with('gender')
@@ -73,7 +75,7 @@ class DoctorController extends Controller
 
         $image = $request->file('image');
         $imageName = $image->getClientOriginalName();
-        $image->move(public_path('doctors'), $imageName);
+        $image->move(public_path('images'), $imageName);
 
         $array = [];
         $array = Arr::add($array, 'name', $request->name);
@@ -110,7 +112,7 @@ class DoctorController extends Controller
             $imageName = $image->getClientOriginalName();
 
             // Lưu ảnh vào thư mục public/images
-            $image->move(public_path('doctors'), $imageName);
+            $image->move(public_path('images'), $imageName);
         }else{
             $imageName = $doctor -> image;
         }

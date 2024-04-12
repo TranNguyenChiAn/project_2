@@ -59,6 +59,25 @@ CREATE TABLE doctors (
     foreign key (gender_id) references genders(id) ON DELETE CASCADE
 );
 
+create table shifts(
+	id INT auto_increment primary key, 
+    start_time TIME NOT NULL,
+    end_time TIME Not NUll,
+    doctor_id INT,
+    foreign key (doctor_id) references doctors(id)
+);
+
+
+insert into shifts (start_time, end_time)  Values 
+('08:00', '09:00'),
+('09:00', '010:00'),
+('10:00', '11:00'),
+('13:00', '14:00'),
+('14:00', '15:00'),
+('15:00', '16:00'),
+('16:00', '17:00'),
+('17:00', '18:00');
+
 INSERT INTO doctors (name, gender_id, email, password, specialization_id, contact_number, address, image) VALUES
 ('Nguyễn Văn An', 1, 'ngvaanh@gmail.com', '123456', 1, '0901234567', 'TP.HCM', '#'),
 ('Trần Thị Bảo', 2, 'trthbao@gmail.com', '123456', 2, '0912345678', 'HN', '#'),

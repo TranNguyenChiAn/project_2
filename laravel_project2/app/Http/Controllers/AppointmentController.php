@@ -13,27 +13,33 @@ use App\Models\Patient;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Redirect;
+use Carbon\Carbon;
 
 class AppointmentController extends Controller
 {
     public function index() {
-        $appointment = Appointment::with('patient')
-        ->get();
+        $appointments = Appointment::with('patient')
+            ->with('doctor')
+            ->orderBy('id', 'desc')
+            ->paginate(5);
 
         return view('admin.appointment_management.index', [
-            'appointment' => $appointment,
+            'appointments' => $appointments,
         ]);
     }
 
     public function showData(){
-        $appointment = Appointment::with('patient')
+        $appointments = Appointment::with('patient')
             ->get();
-        $eventArray = [];
-        while ($row = $appointment){
-            $eventArray = $row;
-            $event = json_encode($eventArray);
-            echo $event;
-        }
+//        $eventArray = [''];
+//        while ($row = $appointments){
+//            $eventArray = $row;
+//            $event = json_encode($eventArray);
+//            echo $event;
+//        }
+        return view('admin.appointment_management.calendar', [
+            'appointments' => $appointments,
+        ]);
     }
 
     public function create() {
@@ -44,12 +50,14 @@ class AppointmentController extends Controller
         ->get();
         $doctors = Doctor::with('specialization')
         ->get();
+        $currentDateTime = Carbon::now()->format('Y-m-d H:i:s');
 
         return view('admin.appointment_management.add', [
             'patients' => $patients,
             'appointments' => $appointments,
             'genders' => $genders,
-            'doctors' => $doctors
+            'doctors' => $doctors,
+            'currentDateTime' => $currentDateTime
         ]);
     }
 
@@ -79,8 +87,6 @@ class AppointmentController extends Controller
 
         return Redirect::route('appointment.index');
 //        dd('$patient', $appointment);
-
-
     }
 
     public function getEvents(){

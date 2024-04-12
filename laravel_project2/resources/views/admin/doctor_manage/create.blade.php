@@ -70,6 +70,7 @@
                 <label class="form-label"> Address </label>
                 <input class="form-control" type="address" name="address" placeholder="Address">
             </div>
+
             <div class="col-md-6">
                 <br>
                 <label class="form-label"> Image:</label>
