@@ -34,6 +34,12 @@
                                 Forget password
                             </a>
                         </div>
+                        <div class="pt-2 mb-4">
+                            <a class="nav-link link-dark" href="{{ route('admin.register') }}"
+                               style="font-weight: bold" type="submit">
+                                Register
+                            </a>
+                        </div>
                     </form>
                 </div>
             </div>

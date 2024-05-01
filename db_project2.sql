@@ -1,6 +1,8 @@
 create database project2;
 use project2;
 
+drop database project2;
+
 create table admins(
 	id INT auto_increment,
     name VARCHAR(100) NOT NULL,
@@ -8,17 +10,9 @@ create table admins(
     password VARCHAR(255) NOT NULL,
     primary key(id)
 );
-
-insert into admins(name, email, password) values 
-('Tu Nguyen', 'trantranchian@gmail.com', '123456'),
-('Chi An', 'chiantrannguyen@gmail.com', '654321'),
-('Hoang Vy', 'phanhoangvy@gmail.com', '654321'),
-('Duong Minh', 'luuduongminh@gmail.com', '132654'),
-('Thanh Hoang', 'lethanhhoang@gmail.com', '132654');
-
-update admins set password = '123456' where id = 1;
-
+insert into admins (name, email, password) values ('Tu Nguyen', 'tunguyen@gmail.com', '123456');
 select * from admins;
+
 create table genders(
 	id INT auto_increment primary key,
     name VARCHAR(20) NOT NULL
@@ -27,20 +21,20 @@ create table genders(
 insert into genders (name) values ('Male'), ('Female');
 select * from genders;
 
+
 create table specialization(
 	id INT auto_increment primary key,
     name VARCHAR(255) NOT NULL
 );
 
 insert into specialization( name) Values 
-('Xương khớp'), 
-('Da liễu'), 
-('Răng-Hàm-Mặt'), 
-('Tai-Mũi-Họng'), 
-('Tim'), 
-('Tiết niệu'), 
-('Thần kinh');
-
+('Rheumatology'), 
+('Dermatology'), 
+('Dentistry '),
+('Cardiology'), 
+('Ophthalmology'),
+('Urology'), 
+('Neurology');
 select * from specialization;
 
 CREATE TABLE doctors (
@@ -53,55 +47,42 @@ CREATE TABLE doctors (
     contact_number VARCHAR(15) UNIQUE NOT NULL,
     address TEXT NOT NULL,
     image text,
-    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
     foreign key (specialization_id) references specialization(id) ON DELETE CASCADE,
     foreign key (gender_id) references genders(id) ON DELETE CASCADE
 );
 
+insert into doctors (name, gender_id, email, password, specialization_id, contact_number) values
+('Tran Canh Nguyen', 1, 'canhnguyen@gmail.com', '123456789', 3, '0987654321');
+
+update doctors set gender_id = 1 where id = 6;
+
+select * from doctors;
+
 create table shifts(
-	id INT auto_increment primary key, 
+	id INT auto_increment,
+    doctor_id INT NOT NULL,
     start_time TIME NOT NULL,
-    end_time TIME Not NUll,
-    doctor_id INT,
+    end_time TIME NOT NULL,
+    primary key(id, doctor_id),
     foreign key (doctor_id) references doctors(id)
 );
 
+drop table shifts;
 
-insert into shifts (start_time, end_time)  Values 
-('08:00', '09:00'),
-('09:00', '010:00'),
-('10:00', '11:00'),
-('13:00', '14:00'),
-('14:00', '15:00'),
-('15:00', '16:00'),
-('16:00', '17:00'),
-('17:00', '18:00');
-
-INSERT INTO doctors (name, gender_id, email, password, specialization_id, contact_number, address, image) VALUES
-('Nguyễn Văn An', 1, 'ngvaanh@gmail.com', '123456', 1, '0901234567', 'TP.HCM', '#'),
-('Trần Thị Bảo', 2, 'trthbao@gmail.com', '123456', 2, '0912345678', 'HN', '#'),
-('Lê Văn Cương', 1, 'levacuong@gmail.com', '123456', 3, '0923456789', 'HP', '#');
-
+select * from shifts;
+SET SQL_SAFE_UPDATES = 0;
+drop table shifts;
 
 create table customers(
 	id INT auto_increment primary key,
     name VARCHAR(100) NOT NULL,
     email VARCHAR(255) NOT NULL unique,
     phone VARCHAR(10),
-    gender_id INT,
     address TEXT,
-    password VARCHAR(255) NOT NULL,
-    foreign key (gender_id) references genders(id) ON delete cascade
+    password VARCHAR(255) NOT NULL
 );
 
-insert into customers(name, email, password, phone, gender_id, address) values 
-('Bao Chau', 'nguyenbaochau@gmail.com', 'guess?', '0123456789', 2, 'TP.HCM'),
-('Hoang Dung', 'phanhoangdung@gmail.com', 'clgtbaochau?', '0123456789', 1, 'TP.HCM'),
-('Thanh Tu', 'caothanhtu@gmail.com', 'nghiemtuchotao', '0987654321', 2, 'TP.HCM'),
-('Le Tien', 'tranletien@gmail.com', 'datpasskieugiday', '01679460283', 1, 'HN'),
-('Tong Tran', 'tongtrankhonkho@gmail.com', 'conanancut', '0868888666', 1, 'HN');
-
+select * from customers;
 
 create table consulting_rooms(
 	id INT auto_increment,
@@ -115,64 +96,50 @@ insert into consulting_rooms ( floor,  room ) Values
 (1, 102),
 (1, 103),
 (2, 201),
-(2, 102),
+(2, 202),
 (2, 203),
 (3, 301),
 (3, 302),
 (3, 303);
 
-select * from genders;
+update consulting_rooms set room = 202 where id = 5;
 
+select * from consulting_rooms;
 
-CREATE TABLE patients (
-    id INT AUTO_INCREMENT PRIMARY KEY,
-    name VARCHAR(255) NOT NULL,
-    date_birth DATE NOT NULL,
-    gender_id INT NOT NULL,
-    insurance_number VARCHAR(20),
-    phone_number VARCHAR(15) NOT NULL,
-    address TEXT NOT NULL,
-    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
-    FOREIGN KEY (gender_id) references genders(id) ON DELETE CASCADE
+create table payment_method(
+	id INT auto_increment primary key,
+    name VARCHAR(100) NOT NULL
 );
+insert into payment_method (name) values ('Cash'), ('Banking'), ('Card'), ('VNPAY');
 
-select * from patients;
-
-INSERT INTO patients (name, date_birth, gender_id, insurance_number, phone_number, address) VALUES
-('Nguyễn Thị Anh', '2012-04-23', 2, 'BN12345', '0987654321', 'HP'),
-('Trần Văn Bình', '1992-12-12', 1, 'BN67890', '0976543210', 'HN'),
-('Lê Thị Chi', '2009-02-09', 2, 'BN54321', '0965432109', 'TP.HCM');
-
-update patients set date_birth = '2009-02-09' where id = 3;
 
 CREATE TABLE appointments (
     id INT AUTO_INCREMENT PRIMARY KEY,
     doctor_id INT NOT NULL,
     admin_id INT NOT NULL,
-    patient_id INT NOT NULL,
-    appointment_time TEXT NOT NULL,
-    room_id INT NOT NULL,
-    status ENUM('confirmed', 'pending', 'canceled') DEFAULT 'pending',
+    customer_name VARCHAR(255) NOT NULL,
+    date_birth DATE NOT NULL,
+    gender_id INT,
+    date DATE NOT NULL,
+    time TIME,
+    room_id INT,
+    status INT,
+    payment_method INT,
     note TEXT,
-    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
     FOREIGN KEY (doctor_id) REFERENCES doctors(id) ON DELETE CASCADE,
-    FOREIGN KEY (patient_id) REFERENCES patients(id) ON DELETE CASCADE,
+    foreign key (gender_id) references genders(id) ON delete cascade,
     FOREIGN KEY (room_id) REFERENCES consulting_rooms(id) ON DELETE CASCADE,
+    FOREIGN KEY (payment_method) REFERENCES payment_method(id) ON DELETE CASCADE,
     foreign key (admin_id) references admins(id) ON DELETE CASCADE
 );
 
-alter table appointments change appointment_time appointment_time timestamp;
+drop table appointments;
+alter table appointments drop column customer_id;
+alter table appointments drop foreign key customer_id;
 
-select * from appointments;
-
-alter table appointments drop column time;
-
-
-select * from appointments;
-delete from appointments;
-
+select doctors.*, shifts.start_time, shifts.end_time 
+from doctors
+join shifts on shifts.doctor_id = doctors.id;
 
 
 

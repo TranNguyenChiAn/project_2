@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\UpdateCustomerRequest;
 use App\Models\Customer;
+use App\Models\Patient;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Redirect;
 
@@ -54,4 +55,26 @@ class CustomerController extends Controller
         return Redirect::route('customer.index');
 
     }
+
+
+//    public function index(){
+//        $patients = Patient::paginate(5);
+//        return view('admin.shift_manage.index', [
+//            'patients' => $patients
+//        ]);
+//    }
+//
+//    public function edit(Patient $patient){
+//        $patients = Patient::all();
+//        return view('admin.shift_manage.edit', [
+//            'patients' => $patients
+//        ]);
+//    }
+//
+//    public function update(){
+//        $patients = Patient::all();
+//        return view('admin.shift_manage.index', [
+//            'patients' => $patients
+//        ]);
+//    }
 }

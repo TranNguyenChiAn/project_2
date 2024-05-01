@@ -8,10 +8,11 @@ use Illuminate\Database\Eloquent\Model;
 class Appointment extends Model
 {
     use HasFactory;
+    public $timestamps = false;
 
     protected $table = 'appointments';
     protected $primaryKey = 'id';
-    protected $fillable = ['doctor_id', 'admin_id', 'patient_id','appointment_time', 'consulting_rooms','status', 'note', 'created_at', 'updated_at'];
+    protected $fillable = ['doctor_id', 'admin_id', 'customer_name','date_birth','gender_id','date', 'time', 'consulting_rooms','status', 'note'];
 
     public function doctor(){
         return $this->belongsTo(Doctor::class);
@@ -23,6 +24,10 @@ class Appointment extends Model
 
     public function admin(){
         return $this->belongsTo(Admin::class);
+    }
+
+    public function room(){
+        return $this->belongsTo(Room::class);
     }
 
 }

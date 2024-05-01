@@ -4,12 +4,16 @@ namespace App\Http\Controllers;
 
 use App\Http\Controllers\Controller;
 use App\Models\Appointment;
+use App\Models\Customer;
 use App\Models\Doctor;
 use App\Models\Gender;
 use App\Models\Patient;
+use App\Models\Shift;
+use App\Models\ShiftDetail;
 use App\Models\Specialization;
 use Illuminate\Http\Request;
 use Illuminate\Support\Arr;
+use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Redirect;
 
@@ -33,22 +37,72 @@ class ClientController extends Controller
         ]);
     }
 
+    public function doctorDetail(Doctor $doctor){
+
+        $doctors = Doctor::with('specialization')
+            ->with('gender')
+            ->where('id', $doctor->id)
+            ->first();
+
+        $shift_details = ShiftDetail::with('doctor')
+            ->with('shift')
+            ->where('doctor_id', $doctor->id)
+            ->get();
+
+        return view('customer.appointment.doctor_detail', [
+            'doctors' => $doctors,
+            'shift_details' => $shift_details
+        ]);
+    }
+
+    public function appointment(){
+        return view('customer.appointment.index');
+    }
+
+    public function doctor_list(){
+        $doctors = Doctor::with('specialization')
+        ->with('shift')
+            ->with('gender')
+        ->get();
+        $shifts = Shift::with('doctor')->get();
 
 
-    public function appointmentForm() {
+        return view('customer.appointment.doctor_list', [
+            'doctors' => $doctors,
+            'shifts' => $shifts
+        ]);
+    }
+
+    public function specialization_list(){
+        $specializations = Specialization::all();
+
+        return view('customer.appointment.specialization_list', [
+            'specializations ' => $specializations
+        ]);
+    }
+
+
+    public function appointmentForm(int $id) {
+        $shift_detail =  ShiftDetail::with('doctor')
+            ->with('shift')
+            ->where('doctor_id' , $id )
+            ->get();
+
         $genders = Gender::all();
-        $patients = Patient::all();
+        $customers = Customer::all();
         $appointments = Appointment::with('doctor')
             ->with('admin')
             ->get();
         $doctors = Doctor::with('specialization')
-            ->get();
+            ->where('id', $id)
+            ->first();
 
         return view('customer.appointment.form', [
-            'patients' => $patients,
+            'customers' => $customers,
             'appointments' => $appointments,
             'genders' => $genders,
-            'doctors' => $doctors
+            'doctors' => $doctors,
+            'shift_detail' => $shift_detail
         ]);
     }
 

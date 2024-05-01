@@ -7,6 +7,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Auth;
 use App\Models\Admin;
+use Illuminate\Support\Facades\Redirect;
 
 class ResetPasswordController extends Controller
 {
@@ -29,13 +30,13 @@ class ResetPasswordController extends Controller
 
         // Cập nhật mật khẩu mới cho người dùng
         $admin->update([
-            'password' => Hash::make($request->password),
+            'password' => Hash::make($request->password_confirmation),
             'password_reset_token' => null
         ]);
 
         // Đăng nhập người dùng sau khi đặt lại mật khẩu thành công
         Auth::login($admin);
 
-        return redirect('/doctor')->with('status', 'Mật khẩu đã được đặt lại thành công.');
+        return Redirect::route('admin.doctor')->with('status', 'Mật khẩu đã được đặt lại thành công.');
     }
 }

@@ -25,7 +25,8 @@ class Doctor extends Model
         return $this->hasMany(Appointment::class);
     }
 
-    public function shift(){
-        return $this->belongsTo(Shift::class);
+    public function shifts()
+    {
+        return $this->belongsToMany(Shift::class, 'shift_details', 'doctor_id', 'shift_id')->withTimestamps();
     }
 }

@@ -37,17 +37,45 @@ class AdminController extends Controller
 
         if(Auth::guard('admin')->attempt($loginInfor)){
 
-            //Lấy thông tin của customer đang login
-            $customer = Auth::guard('admin')->user();
+            //Lấy thông tin của admin đang login
+            $admin = Auth::guard('admin')->user();
             //Cho login
-            Auth::guard('admin')->login($customer);
+            Auth::guard('admin')->login($admin);
             //Ném thông tin customer đăng nhập lên session
-            session(['admin' => $customer]);
+            session(['admin' => $admin]);
 //            $request->session()->regenerate();
             return redirect()->route('admin.doctor');
         }
         return Redirect::back() ->with('alert','Wrong password');
+    }
 
+    public function register (){
+        return view('admin.account.register');
+    }
+
+    public function registerProcess (Request $request){
+        $validator = Validator::make($request->all(), [
+            'name' => 'required|max:255',
+            'email'=>'required|unique:customers',
+            'password'=> 'required'
+        ], [
+            'name.required' => 'Name can not be empty',
+            'email.required'=>'Email can not be empty',
+            'password.required'=>'Password can not be empty',
+            'email.unique'=>'Email has been exist',
+        ]);
+
+        if($validator->fails()){
+            return redirect()->route('admin.register')->withErrors($validator)->withInput();
+        }
+
+        $admin = new Admin();
+        $admin->name = $request->name;
+        $admin->email = $request->email;
+        $admin->setPasswordAttributes($request->password);
+        $admin->save();
+
+        return redirect()->route('admin.login');
     }
 
     public function logout()

@@ -1,17 +1,16 @@
 @vite(["resources/sass/app.scss", "resources/js/app.js"])
 @include('admin.layout.nav')
-<section style="margin-left: 260px; margin-right: 30px; padding: 18px">
-    <h2> MANAGE DOCTORS </h2>
-    <table class="table table-hover">
+<title>Manage doctors</title>
+<section style="margin-left: 260px; margin-right: 30px; padding: 18px; font-family: Inter">
+    <h2 style="font-weight: bold" align="center"> MANAGE DOCTORS </h2>
+    <table class="table table-hover mt-3" style="font-size:13px">
         <tr>
             <th>ID</th>
             <th>Name</th>
             <th>Email</th>
             <th>Image</th>
             <th>Specialization</th>
-            <th>Gender</th>
             <th>Contact number</th>
-            <th>Address</th>
             <th>Edit</th>
             <th>Delete</th>
         </tr>
@@ -22,14 +21,14 @@
             <td> {{ $doctor -> email }}</td>
             <td>
                 <img src="{{ asset('./images/'. $doctor->image)}}"
-                     style="height: 100px; object-fit: cover">
+                     style="height: 80px; object-fit: cover">
             </td>
             <td> {{ $doctor -> specialization -> name }}</td>
-            <td> {{ $doctor -> gender -> name }}</td>
             <td> {{ $doctor -> contact_number }}</td>
-            <td> {{ $doctor -> address }}</td>
             <td>
-                <a class="nav-link link-primary" href="{{ route('doctor.edit', $doctor)}}"> Edit </a>
+                <a class="nav-link link-primary" href="{{ route('doctor.edit', $doctor)}}">
+                    <i class="bi bi-magic h4"></i>
+                </a>
             </td>
             <td>
                 <form method="post" action="{{ route('doctor.destroy', $doctor)}}">
@@ -41,17 +40,17 @@
         </tr>
         @endforeach
     </table>
-    <br>
-    <div class=" d-flex justify-content-end">
-        <button class="btn btn-primary" type="submit">
-            <a class="nav-link" href="{{ route('doctor.create')}}">
-                Add a doctor
-            </a>
-        </button>
+
+    <div class="d-flex justify-content-center pt-3 w-10">
+        {{$doctors->links()}}
     </div>
 
-    <div class="pt-3 w-10">
-        {{$doctors->links()}}
+    <div class=" d-flex justify-content-end">
+        <button class="btn btn-primary" type="submit">
+            <a class="nav-link text-white" href="{{ route('doctor.create')}}">
+                + Add a doctor
+            </a>
+        </button>
     </div>
 
 </section>

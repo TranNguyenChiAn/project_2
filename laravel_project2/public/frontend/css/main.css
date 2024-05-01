@@ -8,7 +8,7 @@ body {
 }
 
 /*font danh cho 1 vai cho can chu dep*/
-@import url('https://fonts.googleapis.com/css2?family=Lora&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Inter&display=swap');
 .luxury-font {
     font-family: 'Lora', serif;
 }

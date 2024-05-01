@@ -7,6 +7,8 @@ use App\Models\Admin;
 use App\Models\Customer;
 use App\Models\Doctor;
 use App\Models\Gender;
+use App\Models\Room;
+use App\Models\Shift;
 use Illuminate\Http\Request;
 use App\Models\Appointment;
 use App\Models\Patient;
@@ -28,6 +30,7 @@ class AppointmentController extends Controller
         ]);
     }
 
+
     public function showData(){
         $appointments = Appointment::with('patient')
             ->get();
@@ -44,49 +47,43 @@ class AppointmentController extends Controller
 
     public function create() {
         $genders = Gender::all();
-        $patients = Patient::all();
+        $shifts = Shift::all();
         $appointments = Appointment::with('doctor')
         ->with('admin')
         ->get();
+        $rooms = Room::all();
         $doctors = Doctor::with('specialization')
         ->get();
-        $currentDateTime = Carbon::now()->format('Y-m-d H:i:s');
 
         return view('admin.appointment_management.add', [
-            'patients' => $patients,
             'appointments' => $appointments,
+            'shifts' => $shifts,
             'genders' => $genders,
             'doctors' => $doctors,
-            'currentDateTime' => $currentDateTime
+            'rooms' => $rooms
         ]);
     }
 
-    public function store(Request $request) {
-
-        $array = [];
-        $array = Arr::add($array, 'name', $request->name);
-        $array = Arr::add($array, 'date_birth', $request->date_birth);
-        $array = Arr::add($array, 'gender_id', $request-> input('gender_id'));
-        $array = Arr::add($array, 'insurance_number', $request->insurance_number);
-        $array = Arr::add($array, 'phone_number', $request->phone_number);
-        $array = Arr::add($array, 'address', $request->address);
-        Patient::create($array);
-
+    public function store(Request $request, Doctor $doctor) {
+        $currentDateTime= Carbon::now();
+        $customerId = $currentDateTime->format('is');
 
         $admin_id = Auth::guard('admin')->id();
-        $maxPatientID = Patient::max('id');
         $appointment = [];
         $appointment = Arr::add($appointment, 'doctor_id', $request->input('doctor_id'));
         $appointment = Arr::add($appointment, 'admin_id', $admin_id);
-        $appointment = Arr::add($appointment, 'patient_id', $maxPatientID);
-        $appointment = Arr::add($appointment, 'appointment_time', $request->date_time);
-        $appointment = Arr::add($appointment, 'status', 'pending');
-        $appointment = Arr::add($appointment, 'status', $request-> status);
+        $appointment = Arr::add($appointment, 'customer_id', $customerId);
+        $appointment = Arr::add($appointment, 'customer_name', $request->customer_name);
+        $appointment = Arr::add($appointment, 'date_birth', $request->date_birth);
+        $appointment = Arr::add($appointment, 'gender_id', $request-> input('gender_id'));
+        $appointment = Arr::add($appointment, 'phone_number', $request->phone_number);
+        $appointment = Arr::add($appointment, 'address', $request->address);
+        $appointment = Arr::add($appointment, 'date', $request->date);
+        $appointment = Arr::add($appointment, 'status', 1);
         $appointment = Arr::add($appointment, 'note', $request->note);
         Appointment::create($appointment);
 
         return Redirect::route('appointment.index');
-//        dd('$patient', $appointment);
     }
 
     public function getEvents(){

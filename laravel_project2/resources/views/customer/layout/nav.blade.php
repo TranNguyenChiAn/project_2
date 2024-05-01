@@ -21,7 +21,7 @@
                 </ul>
             </li>
             <li class="nav-item">
-                <a href="{{route('showForm')}}" class="nav-link link-dark">
+                <a href="{{route('appointment.choose')}}" class="nav-link link-dark">
                     APPOINTMENT
                 </a>
             </li>

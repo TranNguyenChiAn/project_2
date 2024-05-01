@@ -11,19 +11,19 @@
                 <div class="col-md-12">
                     <div class="card mt-5">
                         <div class="card-header">
-                            <h3>Patient Form
+                            <h3>Appointment Form
                                 <a href="{{route('index')}}" class="btn btn-danger btn-sm text-white float-end">BACK</a>
                             </h3>
                         </div>
                         <div class="card-body">
-                            <form action="{{route('storeForm')}}" method="post" enctype="multipart/form-data">
+                            <form action="{{route('appointment.storeForm')}}" method="post" enctype="multipart/form-data">
                                 @csrf
                                 <ul class="nav nav-tabs" id="myTab" role="tablist">
                                     <li class="nav-item" role="presentation">
                                         <button class="nav-link active" id="home-tab" data-bs-toggle="tab"
                                                 data-bs-target="#home-tab-pane" type="button" role="tab"
                                                 aria-controls="home-tab-pane" aria-selected="true">
-                                            Patient
+                                            Customer's information
                                         </button>
                                     </li>
                                     <li class="nav-item" role="presentation">
@@ -70,22 +70,41 @@
                                     </div>
                                     <div class="tab-pane fade" id="detail-tab-pane" role="tabpanel" aria-labelledby="detail-tab" tabindex="0">
                                         <div class="mb-3 mt-3">
-                                            <label class="fs-4">Doctor</label>
-                                            <option disabled selected> -- Choose doctor --</option>
-                                            <select name="doctor_id" class="form-control" required>
-                                                @foreach($doctors as $doctor)
-                                                    <option name="doctor_id" value="{{$doctor->id}}">{{$doctor->name}} - Khoa {{$doctor->specialization->name}}</option>
-                                                @endforeach
-                                            </select>
+                                            <label class="fs-4">Doctor: {{$doctors-> name}}</label>
+{{--                                            <option disabled selected> -- Choose doctor --</option>--}}
+{{--                                            <select name="doctor_id" class="form-control" required>--}}
+{{--                                                @foreach($doctors as $doctor)--}}
+{{--                                                    <option name="doctor_id" value="{{$doctor->id}}">{{$doctor->name}} - Khoa {{$doctor->specialization->name}}</option>--}}
+{{--                                                @endforeach--}}
+{{--                                            </select>--}}
                                         </div>
                                         <div class="mb-3 mt-3">
                                             @php
                                                 $td = strtotime("today");
                                                 $minToday = date("Y-m-d", $td);
                                             @endphp
-                                            <label class="fs-4">Date time</label>
-                                            <input name="date_time" min="{{ $minToday }}" type="datetime-local" class="form-control" required>
+                                            <label class="fs-4">Date</label>
+                                            <input name="date_time" min="{{ $minToday }}" type="date" class="form-control" required>
+                                        </div>
+                                        <div class="mb-3 mt-3">
+                                            <label class="fs-4">Time</label>
+                                            @php
+                                                // Giả sử start_time và end_time được lấy từ cơ sở dữ liệu
+                                                $start_time = $shift_detail->start_time;
 
+                                        // Tạo danh sách các thời gian với mỗi khoảng là 30 phút
+                                                $shifts = [];
+                                                $current_time = $start_time->copy(); // Sử dụng copy để tránh thay đổi start_time gốc
+                                                $interval = 30; // 30 phút
+                                            @endphp
+                                            @while ($current_time->lte($end_time))
+                                                <div class="shift-option">
+                                                    <input type="checkbox" name="selected_shifts[]" value="{{ $current_time->format('H:i') }}"> {{ $current_time->format('H:i') }}
+                                                </div>
+                                                @php
+                                                    $current_time->addMinutes($interval);
+                                                @endphp
+                                            @endwhile
                                         </div>
                                         <div class="mb-3 mt-3">
                                             <label class="fs-4">Note</label>

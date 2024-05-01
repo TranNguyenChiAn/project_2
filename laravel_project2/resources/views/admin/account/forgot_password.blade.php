@@ -12,7 +12,7 @@
 
     <div>
         <button type="submit">
-            Dặt lại mật khẩu
+             Đặt lại mật khẩu
         </button>
     </div>
 </form>

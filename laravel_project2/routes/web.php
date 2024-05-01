@@ -6,7 +6,7 @@ use App\Http\Controllers\SpecializationController;
 use App\Http\Controllers\CustomerController;
 use App\Http\Controllers\ClientController;
 use App\Http\Controllers\AppointmentController;
-use App\Http\Controllers\PatientContronller;
+use App\Http\Controllers\ShiftContronller;
 use App\Http\Middleware\CheckLoginCustomer;
 use App\Http\Middleware\CheckLoginAdmin;
 use App\Http\Controllers\AdminController;
@@ -22,12 +22,15 @@ Route::get('/login', [AdminController::class, 'login'])->name('admin.login');
 Route::post('/login', [AdminController::class, 'loginProcess'])->name('admin.loginProcess');
 Route::get('/logout', [AdminController::class, 'logout'])->name('admin.logout');
 
+Route::get('/register', [AdminController::class, 'register'])->name('admin.register');
+Route::post('/registerProcess', [AdminController::class, 'registerProcess'])->name('admin.registerProcess');
+
 Route::get('/forgot-password', [ForgotPasswordController::class, 'showLinkRequestForm'])->name('password.request');
 Route::post('/forgot-password', [ForgotPasswordController::class, 'sendResetLinkEmail'])->name('password.email');
 Route::get('/reset-password/{token}', [ResetPasswordController::class, 'showResetForm'])->name('password.reset');
 Route::post('/reset-password', [ResetPasswordController::class, 'reset'])->name('password.update');
 
-//     DOCTOR Manage
+//     DOCTOR MANANGE
 Route::middleware(CheckLoginAdmin::class)->group(function (){
     Route::prefix('doctor')->group(function (){
         Route::get('/index', [DoctorController::class, 'index'])->name('admin.doctor');
@@ -85,13 +88,15 @@ Route::middleware(CheckLoginAdmin::class)->group(function(){
     });
 });
 
-//  PATIENT MANAGE
+//  SHIFT MANAGE
 Route::middleware(CheckLoginAdmin::class)->group(function(){
-    Route::prefix('patient')->group(function () {
-        Route::get('/index', [PatientContronller::class, 'index'])->name('patient.index');
-        Route::get('{patient}/edit', [PatientContronller::class, 'edit'])->name('patient.edit');
-        Route::put('{patient}/edit', [PatientContronller::class, 'update'])->name('patient.update');
-        Route::delete('{patient}', [PatientContronller::class, 'destroy'])->name('patient.destroy');
+    Route::prefix('shift')->group(function () {
+        Route::get('/index', [ShiftContronller::class, 'index'])->name('shift.index');
+        Route::get('/create', [ShiftContronller::class, 'create'])->name('shift.create');
+        Route::post('/create', [ShiftContronller::class, 'store'])->name('shift.store');
+        Route::get('edit/{shift}', [ShiftContronller::class, 'edit'])->name('shift.edit');
+        Route::put('edit/{shift}', [ShiftContronller::class, 'update'])->name('shift.update');
+        Route::delete('{shift}', [ShiftContronller::class, 'destroy'])->name('shift.destroy');
     });
 });
 
@@ -100,8 +105,9 @@ Route::middleware(CheckLoginAdmin::class)->group(function(){
 Route::prefix('customer')->group(function(){
     Route::get('/index', [ClientController::class, 'index'])->name('index');
 
+    Route::get('login', [ClientController::class, 'login'])->name('customer.login');
     Route::get('/register', [ClientController::class, 'register'])->name('register');
-    Route::post('/register', [ClientController::class, 'register'])->name('register');
+    Route::post('/register', [ClientController::class, 'registerProcess'])->name('registerProcess');
 
     Route::get('{profile}/edit', [ClientController::class, 'edit'])->name('profile.edit');
     Route::put('{profile}/edit', [ClientController::class, 'update'])->name('profile.update');
@@ -109,8 +115,13 @@ Route::prefix('customer')->group(function(){
     Route::delete('{doctor}', [ClientController::class, 'destroy'])->name('client.destroy');
     Route::get('/specialization_{id}', [DoctorController::class, 'filter'])->name('filter');
 
-    Route::get('appointment',[ClientController::class, 'appointmentForm'])->name('showForm');
-    Route::post('appointment',[ClientController::class, 'storeForm'])->name('storeForm');
+    Route::get("/doctor_{doctor}/detail", [ClientController::class, 'doctorDetail']) -> name('doctor_detail');
+    Route::get('/appointment',[ClientController::class, 'appointment'])->name('appointment.choose');
+    Route::get('/doctor_list',[ClientController::class, 'doctor_list'])->name('appointment.doctor_list');
+    Route::get('/specialization_list',[ClientController::class, 'specialization_list'])
+        ->name('appointment.specialization_list');
+    Route::get('/book_doctor_{id}',[ClientController::class, 'appointmentForm'])->name('appointment.Form');
+    Route::post('/store',[ClientController::class, 'storeForm'])->name('appointment.storeForm');
 
 });
 
