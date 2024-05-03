@@ -30,6 +30,25 @@ class AppointmentController extends Controller
         ]);
     }
 
+    public function edit(Appointment $appointment){
+        $rooms = Room::all();
+
+        return view("admin.appointment_management.edit", [
+            'appointment' => $appointment,
+            'rooms' => $rooms
+        ]);
+
+    }
+
+    public function update(Appointment $appointment, Request $request){
+        $array = [];
+        $array = Arr::add($array, 'room_id', $request->room_id);
+        $array = Arr::add($array, 'status', $request->status);
+        $appointment->update($array);
+
+        return Redirect::route('appointment.index');
+    }
+
 
     public function showData(){
         $appointments = Appointment::with('patient')

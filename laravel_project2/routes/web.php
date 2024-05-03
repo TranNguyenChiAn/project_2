@@ -102,27 +102,34 @@ Route::middleware(CheckLoginAdmin::class)->group(function(){
 
 
 //      Client
-Route::prefix('customer')->group(function(){
+Route::prefix('customer')->group(function () {
     Route::get('/index', [ClientController::class, 'index'])->name('index');
 
-    Route::get('login', [ClientController::class, 'login'])->name('customer.login');
-    Route::get('/register', [ClientController::class, 'register'])->name('register');
-    Route::post('/register', [ClientController::class, 'registerProcess'])->name('registerProcess');
+    Route::get('login', [CustomerController::class, 'login'])->name('customer.login');
+    Route::get('login', [CustomerController::class, 'loginProcess'])->name('customer.loginProcess');
+    Route::get('/register', [CustomerController::class, 'register'])->name('customer.register');
+    Route::post('/register', [CustomerController::class, 'registerProcess'])->name('customer.registerProcess');
 
     Route::get('{profile}/edit', [ClientController::class, 'edit'])->name('profile.edit');
     Route::put('{profile}/edit', [ClientController::class, 'update'])->name('profile.update');
-
-    Route::delete('{doctor}', [ClientController::class, 'destroy'])->name('client.destroy');
     Route::get('/specialization_{id}', [DoctorController::class, 'filter'])->name('filter');
 
-    Route::get("/doctor_{doctor}/detail", [ClientController::class, 'doctorDetail']) -> name('doctor_detail');
-    Route::get('/appointment',[ClientController::class, 'appointment'])->name('appointment.choose');
-    Route::get('/doctor_list',[ClientController::class, 'doctor_list'])->name('appointment.doctor_list');
-    Route::get('/specialization_list',[ClientController::class, 'specialization_list'])
-        ->name('appointment.specialization_list');
-    Route::get('/book_doctor_{id}',[ClientController::class, 'appointmentForm'])->name('appointment.Form');
-    Route::post('/store',[ClientController::class, 'storeForm'])->name('appointment.storeForm');
+    Route::get("/doctor_{doctor}/detail", [ClientController::class, 'doctorDetail'])->name('doctor_detail');
+});
 
+Route::middleware(CheckLoginCustomer::class)->group(function() {
+    Route::prefix('customer')->group(function () {
+
+        Route::delete('{doctor}', [ClientController::class, 'destroy'])->name('client.destroy');
+//
+        Route::get('/appointment', [ClientController::class, 'appointment'])->name('appointment.choose');
+        Route::get('/doctor_list', [ClientController::class, 'doctor_list'])->name('appointment.doctor_list');
+        Route::get('/specialization_list', [ClientController::class, 'specialization_list'])
+            ->name('appointment.specialization_list');
+        Route::get('/book_doctor_{id}', [ClientController::class, 'appointmentForm'])->name('appointment.Form');
+        Route::post('/store', [ClientController::class, 'storeForm'])->name('appointment.storeForm');
+
+    });
 });
 
 

@@ -19,6 +19,7 @@ use Illuminate\Support\Facades\Redirect;
 
 class ClientController extends Controller
 {
+
     public function index()
     {
         $genders = Gender::all();
@@ -82,58 +83,73 @@ class ClientController extends Controller
     }
 
 
-    public function appointmentForm(int $id) {
-        $shift_detail =  ShiftDetail::with('doctor')
+    public function appointmentForm(int $id)
+    {
+        $shift_detail = ShiftDetail::with('doctor')
             ->with('shift')
-            ->where('doctor_id' , $id )
+            ->where('doctor_id', $id)
             ->get();
 
         $genders = Gender::all();
         $customers = Customer::all();
-        $appointments = Appointment::with('doctor')
-            ->with('admin')
-            ->get();
         $doctors = Doctor::with('specialization')
             ->where('id', $id)
             ->first();
+
+        // Lấy danh sách các lịch hẹn của bác sĩ trong ngày cụ thể
+        $appointments = Appointment::where('doctor_id', $doctors->id)
+//            ->whereDate('date', $selected_date)
+            ->pluck('time');
+
+
+        $shift_details = ShiftDetail::with('doctor')
+            ->with('shift')
+            ->where('doctor_id', $doctors->id)
+            ->get();
+
+        // Lọc ra các ca làm việc còn trống
+        $available_times = [];
+        foreach ($shift_details as $shift_detail) {
+            $start = Carbon::parse($shift_detail->shift->start_time);
+            $end = Carbon::parse($shift_detail->shift->end_time);
+            $interval = $start->copy();
+
+            while ($interval->lte($end)) {
+                $appointment_time = $interval->format('H:i:s');
+                if (!$appointments->contains($appointment_time)) {
+                    $available_times[] = $interval->format('H:i:s');
+                }
+                $interval->addMinutes(30);
+            }
+        }
 
         return view('customer.appointment.form', [
             'customers' => $customers,
             'appointments' => $appointments,
             'genders' => $genders,
             'doctors' => $doctors,
-            'shift_detail' => $shift_detail
+            'shift_details' => $shift_details,
+            'availableTime' => $available_times
         ]);
     }
 
     public function storeForm(Request $request) {
-
-        $array = [];
-        $array = Arr::add($array, 'name', $request->name);
-        $array = Arr::add($array, 'date_birth', $request->date_birth);
-        $array = Arr::add($array, 'gender_id', $request-> input('gender_id'));
-        $array = Arr::add($array, 'insurance_number', $request->insurance_number);
-        $array = Arr::add($array, 'phone_number', $request->phone_number);
-        $array = Arr::add($array, 'address', $request->address);
-        Patient::create($array);
-
-
         $admin_id = Auth::guard('admin')->id();
-        $maxPatientID = Patient::max('id');
         $appointment = [];
-        $appointment = Arr::add($appointment, 'doctor_id', $request->input('doctor_id'));
+        $appointment  = Arr::add($appointment, 'customer_name', $request->name);
+        $appointment  = Arr::add($appointment , 'date_birth', $request->date_birth);
+        $appointment  = Arr::add($appointment , 'gender_id', $request-> input('gender_id'));
+        $appointment  = Arr::add($appointment , 'insurance_number', $request->insurance_number);
+        $appointment  = Arr::add($appointment , 'phone', $request->phone_number);
+        $appointment = Arr::add($appointment, 'doctor_id', $request->doctor_id);
         $appointment = Arr::add($appointment, 'admin_id', $admin_id);
-        $appointment = Arr::add($appointment, 'patient_id', $maxPatientID);
-        $appointment = Arr::add($appointment, 'appointment_time', $request->date_time);
-        $appointment = Arr::add($appointment, 'status', 'pending');
-        $appointment = Arr::add($appointment, 'status', $request-> status);
+        $appointment = Arr::add($appointment, 'date', $request->date);
+        $appointment = Arr::add($appointment, 'time', $request->appointment_time);
+        $appointment = Arr::add($appointment, 'status', 1);
         $appointment = Arr::add($appointment, 'note', $request->note);
         Appointment::create($appointment);
 
         return Redirect::route('index');
-//        dd('$patient', $appointment);
-
-
     }
 
 

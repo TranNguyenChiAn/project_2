@@ -30,7 +30,7 @@
             <div class="col-md-6">
                 <label class="form-label align-content-center"> Gender:</label>
                 @foreach($genders as $gender)
-                    <input class="form-check-input" checked type="radio" name="gender_id" value="{{ $gender -> id}}"> {{ $gender -> name}}
+                    <input class="form-check-input form-check" checked type="radio" name="gender_id" value="{{ $gender -> id}}"> {{ $gender -> name}}
                 @endforeach
             </div>
             <div class="col-md-6">

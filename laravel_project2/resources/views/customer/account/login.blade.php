@@ -4,9 +4,6 @@
     <div class="container-fluid">
         <div class="row">
             <div class="col-sm-6 text-black">
-                {{--                <div class="px-5 ms-xl-4">--}}
-                {{--                    <img src="{{ asset('./images/Fu_Xuan.webp') }}" class="rounded-circle" width="50px">--}}
-                {{--                </div>--}}
                 <div class="d-flex align-items-center h-custom-2 px-5 ms-xl-4 mt-5 pt-5 pt-xl-0 mt-xl-n5">
                     <form style="width: 23rem;" class="row g-3 needs-validation" novalidate
                           method="post" action="{{ route('customer.loginProcess') }}">
@@ -32,6 +29,12 @@
                             <a class="nav-link link-dark" href="{{ route('password.request') }}"
                                style="font-weight: bold" type="submit">
                                 Forget password
+                            </a>
+                        </div>
+                        <div class="pt-2 mb-4">
+                            <a class="nav-link link-dark" href="{{ route('customer.register') }}"
+                               style="font-weight: bold" type="submit">
+                                Register
                             </a>
                         </div>
                     </form>

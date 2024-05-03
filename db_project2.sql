@@ -37,6 +37,15 @@ insert into specialization( name) Values
 ('Neurology');
 select * from specialization;
 
+insert into doctors (name, gender_id, email, password, specialization_id, contact_number) values
+('Tran Canh Nguyen', 1, 'canhnguyen@gmail.com', '123456789', 3, '0987654321');
+
+update doctors set gender_id = 1 where id = 6;
+
+select * from doctors;
+insert into doctors (name, gender_id, email, password, specialization_id, contact_number, address) 
+values ('Name', 1, '123@gmail.com', '12jnskdjf', 3, '0897653421', 'HCM');
+
 CREATE TABLE doctors (
     id INT AUTO_INCREMENT PRIMARY KEY,
     name VARCHAR(255) NOT NULL,
@@ -51,21 +60,22 @@ CREATE TABLE doctors (
     foreign key (gender_id) references genders(id) ON DELETE CASCADE
 );
 
-insert into doctors (name, gender_id, email, password, specialization_id, contact_number) values
-('Tran Canh Nguyen', 1, 'canhnguyen@gmail.com', '123456789', 3, '0987654321');
-
-update doctors set gender_id = 1 where id = 6;
-
-select * from doctors;
-
 create table shifts(
-	id INT auto_increment,
-    doctor_id INT NOT NULL,
+	id INT auto_increment primary key,
     start_time TIME NOT NULL,
-    end_time TIME NOT NULL,
-    primary key(id, doctor_id),
-    foreign key (doctor_id) references doctors(id)
+    end_time TIME NOT NULL
 );
+
+create table shift_details (
+	id INT NOT NULL auto_increment,
+    doctor_id INT NOT NULL,
+    shift_id INT NOT NULL,
+    primary key(id, doctor_id, shift_id),
+    foreign key (doctor_id) references doctors(id),
+    foreign key (shift_id) references shifts(id)
+);
+
+select * from shift_details;
 
 drop table shifts;
 
@@ -133,13 +143,14 @@ CREATE TABLE appointments (
     foreign key (admin_id) references admins(id) ON DELETE CASCADE
 );
 
-drop table appointments;
-alter table appointments drop column customer_id;
-alter table appointments drop foreign key customer_id;
+ALTER TABLE appointments
+ADD COLUMN phone VARCHAR(255) NOT NULL AFTER date_birth;
 
 select doctors.*, shifts.start_time, shifts.end_time 
 from doctors
 join shifts on shifts.doctor_id = doctors.id;
+
+select * from appointments;
 
 
 

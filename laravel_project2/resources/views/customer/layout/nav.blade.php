@@ -19,12 +19,12 @@
                         </li>
                     @endforeach
                 </ul>
-            </li>
-            <li class="nav-item">
-                <a href="{{route('appointment.choose')}}" class="nav-link link-dark">
-                    APPOINTMENT
-                </a>
-            </li>
+{{--            </li>--}}
+{{--            <li class="nav-item">--}}
+{{--                <a href="{{route('appointment.choose')}}" class="nav-link link-dark">--}}
+{{--                    APPOINTMENT--}}
+{{--                </a>--}}
+{{--            </li>--}}
             <li class="nav-item">
                 <a href="#" class="nav-link link-dark">
                     CONTACT

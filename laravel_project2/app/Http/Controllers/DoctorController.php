@@ -86,14 +86,12 @@ class DoctorController extends Controller
         //Lấy dữ liệu từ form và lưu lên db
         $doctor = Doctor::create($array);
 
-        $shiftDetails = ShiftDetail::all();
         $selectedShiftIds = $request->input('shifts');
-        foreach ($shiftDetails as $index => $shiftDetail) {
-            // Cập nhật shift_id cho mỗi bản ghi với giá trị tương ứng trong mảng $selectedShiftIds
-            $shiftDetail->create(
+        foreach ($selectedShiftIds as $shiftId) {
+            ShiftDetail::create(
                 [
                     'doctor_id' => $doctor->id,
-                    'shift_id' => $selectedShiftIds[$index % count($selectedShiftIds)]
+                    'shift_id' => $shiftId
                 ]);
         }
 
@@ -133,24 +131,21 @@ class DoctorController extends Controller
             $imageName = $doctor -> image;
         }
 
-        // Assuming the input name is 'shifts[]'
-        $selectedShiftIds = $request->input('shifts');
-        // Lấy danh sách tất cả các bản ghi ShiftDetail có cùng doctor_id
-        $shiftDetails = ShiftDetail::where('doctor_id', $doctor->id)->get();
+        $doctor = Doctor::findOrFail($doctor->id);
+        $shifts = $request->input('shifts');
 
-        if($shiftDetails){
-            foreach ($shiftDetails as $index => $shiftDetail) {
-                $doctorShift = [];
-                $doctorShift = Arr::add($doctorShift, 'doctor_id', $doctor->id);
-                $doctorShift = Arr::add($doctorShift, ['shift_id' => $selectedShiftIds[$index % count($selectedShiftIds)]]);
-                ShiftDetail::create($doctorShift);
-            }
+        // Xóa hết các ca làm việc cũ của bác sĩ
+        $doctor->shifts()->detach();
+
+        // Thêm các ca làm việc mới được chọn cho bác sĩ
+        foreach ($shifts as $shiftId) {
+            ShiftDetail::create(
+                [
+                    'doctor_id' => $doctor->id,
+                    'shift_id' => $shiftId
+                ]);
         }
 
-        foreach ($shiftDetails as $index => $shiftDetail) {
-            // Cập nhật shift_id cho mỗi bản ghi với giá trị tương ứng trong mảng $selectedShiftIds
-            $shiftDetail->update(['shift_id' => $selectedShiftIds[$index % count($selectedShiftIds)]]);
-        }
         //Lấy dữ liệu trong form và update lên db
         $array = [];
         $array = Arr::add($array, 'name', $request->name);
@@ -162,7 +157,7 @@ class DoctorController extends Controller
         $array = Arr::add($array, 'image', $imageName);
         $doctor->update($array);
 
-//        return Redirect::route('admin.doctor');
+        return Redirect::route('admin.doctor');
     }
 
     public function destroy(Doctor $doctor)
