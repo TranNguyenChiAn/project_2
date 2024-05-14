@@ -1,29 +1,19 @@
-<!doctype html>
-<html lang="en">
-<head>
-    <link rel="stylesheet" type="text/css" href="../css/style.css">
-    <meta charset="UTF-8">
-    <meta name="viewport"
-          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
-    <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title> Hien thi so trang </title>
-</head>
-<body>
+@vite(["resources/sass/app.scss", "resources/js/app.js"])
 
-<div align="center">
-<!--        for để hiển thị số trang-->
-<?php
-for($i = 1; $i <= $countPage; $i++){
-    ?>
-    <a style="text-decoration: none; text-decoration-line: none; font-weight: bold; font-family: '#9Slide03 BoosterNextFYBlack'" class="page_number" href="?page=<?= $i ?>&search=<?= $search ?>">
-        &nbsp &nbsp <?= $i ?>  &nbsp;
-    </a>
-
-    <?php
-}
-?>
+<div align="center" style="background-color: #ffffff; height:100px" class="w-100 text-white">
+    <div class="row w-100 align-items-center">
+        <div class="col-2">
+            <p>© Fraud Hospital</p>
+            <p>Đã đăng ký bản quyền.</p>
+        </div>
+        <div class="col-6">
+            <p>Địa chỉ Cơ sở y tế: Địa chỉ công ty: số 458, phố Minh Khai, Phường Vĩnh Tuy,
+                Quận Hai Bà Trưng, Thành phố Hà Nội, Việt Nam</p>
+        </div>
+        <div class="col-4">
+            <p>Chúng tôi cam kết bảo vệ thông tin cá nhân của bạn.</p>
+            <p>Đọc Chính sách Bảo mật để biết thêm chi tiết.</p>
+        </div>
+    </div>
 </div>
-
-</body>
-</html>
 

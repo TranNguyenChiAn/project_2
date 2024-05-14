@@ -8,7 +8,7 @@
                     <form style="width: 23rem;" class="row g-3 needs-validation" novalidate
                           method="post" action="{{ route('customer.loginProcess') }}">
                         @csrf
-                        <h3 class="fw-normal mb-3 pb-3" style="letter-spacing: 1px;">LOG IN</h3>
+                        <h3 class="fw-normal mb-3 pb-3" style="letter-spacing: 1px;">LOG IN CUSTOMER</h3>
 
                         <div class="form-outline mb-4">
                             <label class="form-label" for="form2Example18">Email address</label>
@@ -25,13 +25,11 @@
                             <button class="btn btn-info btn-lg" style="width:22rem;color: white; font-weight: bold" type="submit">Login</button>
                         </div>
 
-                        <div class="pt-2 mb-4">
+                        <div class="d-flex justify-content-between pt-2 mb-4">
                             <a class="nav-link link-dark" href="{{ route('password.request') }}"
                                style="font-weight: bold" type="submit">
                                 Forget password
                             </a>
-                        </div>
-                        <div class="pt-2 mb-4">
                             <a class="nav-link link-dark" href="{{ route('customer.register') }}"
                                style="font-weight: bold" type="submit">
                                 Register
@@ -41,7 +39,7 @@
                 </div>
             </div>
             <div class="col-sm-6 px-0 d-none d-sm-block">
-                <img src="https://mdbcdn.b-cdn.net/img/Photos/new-templates/bootstrap-login-form/img3.webp"
+                <img src="{{asset("./images/young-doctor.jpg")}}"
                      alt="Login image" class="w-100 vh-100" style="object-fit: cover; object-position: left;">
             </div>
         </div>

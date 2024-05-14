@@ -9,7 +9,6 @@
             <td>ID</td>
             <td>Name</td>
             <td>Email</td>
-            <td>Address</td>
 {{--            <td>Edit</td>--}}
 {{--            <td>Delete</td>--}}
         </tr>
@@ -18,7 +17,6 @@
             <td> {{ $customer-> id }}</td>
             <td> {{ $customer -> name }}</td>
             <td> {{ $customer -> email }}</td>
-            <td> {{ $customer -> address }}</td>
 {{--            <td>--}}
 {{--                <a class="nav-link link-primary" href="{{ route('customer.edit', $customer) }}"> Edit </a>--}}
 {{--            </td>--}}

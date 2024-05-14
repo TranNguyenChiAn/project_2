@@ -28,7 +28,8 @@ class ClientController extends Controller
         $doctors = Doctor::with('specialization')
             ->with('gender')
             ->orderBy('id', 'desc')
-            ->get();
+            ->paginate(8)
+            ->withQueryString();
 
 
         return view('customer.homepage.index', [
@@ -74,22 +75,19 @@ class ClientController extends Controller
         ]);
     }
 
-    public function specialization_list(){
-        $specializations = Specialization::all();
+    public function appointment_list(){
+        $appointments = Appointment::with('doctor')
+            ->orderBy('id', 'desc')
+            ->paginate(5);
 
-        return view('customer.appointment.specialization_list', [
-            'specializations ' => $specializations
+        return view('customer.appointment.index', [
+            'appointments' => $appointments
         ]);
     }
 
 
     public function appointmentForm(int $id)
     {
-        $shift_detail = ShiftDetail::with('doctor')
-            ->with('shift')
-            ->where('doctor_id', $id)
-            ->get();
-
         $genders = Gender::all();
         $customers = Customer::all();
         $doctors = Doctor::with('specialization')
@@ -134,15 +132,16 @@ class ClientController extends Controller
     }
 
     public function storeForm(Request $request) {
-        $admin_id = Auth::guard('admin')->id();
+        $customerId = Auth::guard('customer')->id();
+
         $appointment = [];
-        $appointment  = Arr::add($appointment, 'customer_name', $request->name);
-        $appointment  = Arr::add($appointment , 'date_birth', $request->date_birth);
-        $appointment  = Arr::add($appointment , 'gender_id', $request-> input('gender_id'));
-        $appointment  = Arr::add($appointment , 'insurance_number', $request->insurance_number);
-        $appointment  = Arr::add($appointment , 'phone', $request->phone_number);
         $appointment = Arr::add($appointment, 'doctor_id', $request->doctor_id);
-        $appointment = Arr::add($appointment, 'admin_id', $admin_id);
+        $appointment = Arr::add($appointment, 'customer_id', $customerId);
+        $appointment = Arr::add($appointment, 'customer_name', $request->name);
+        $appointment = Arr::add($appointment , 'date_birth', $request->date_birth);
+        $appointment = Arr::add($appointment , 'gender_id', $request-> input('gender_id'));
+        $appointment = Arr::add($appointment , 'insurance_number', $request->insurance_number);
+        $appointment = Arr::add($appointment , 'phone', $request->phone_number);
         $appointment = Arr::add($appointment, 'date', $request->date);
         $appointment = Arr::add($appointment, 'time', $request->appointment_time);
         $appointment = Arr::add($appointment, 'status', 1);

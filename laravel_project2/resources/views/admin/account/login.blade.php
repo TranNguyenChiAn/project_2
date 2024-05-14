@@ -11,7 +11,7 @@
                     <form style="width: 23rem;" class="row g-3 needs-validation" novalidate
                           method="post" action="{{ route('admin.loginProcess') }}">
                         @csrf
-                        <h3 class="fw-normal mb-3 pb-3" style="letter-spacing: 1px;">LOG IN</h3>
+                        <h3 class="fw-normal mb-3 pb-3" style="letter-spacing: 1px;">LOG IN ADMIN</h3>
 
                         <div class="form-outline mb-4">
                             <label class="form-label" for="form2Example18">Email address</label>
@@ -28,13 +28,11 @@
                             <button class="btn btn-info btn-lg" style="width:22rem;color: white; font-weight: bold" type="submit">Login</button>
                         </div>
 
-                        <div class="pt-2 mb-4">
+                        <div class="pt-2 mb-4 d-flex justify-content-between">
                             <a class="nav-link link-dark" href="{{ route('password.request') }}"
                                style="font-weight: bold" type="submit">
-                                Forget password
+                                Forgot password
                             </a>
-                        </div>
-                        <div class="pt-2 mb-4">
                             <a class="nav-link link-dark" href="{{ route('admin.register') }}"
                                style="font-weight: bold" type="submit">
                                 Register

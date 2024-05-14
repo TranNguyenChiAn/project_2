@@ -1,7 +1,6 @@
-<title>Admin Register</title>
 @vite(["resources/sass/app.scss", "resources/js/app.js"])
 
-<title> Register </title>
+<title> Admin Register </title>
 <section style="font-family: Inter">
     <img height="100%" width="100%" class="float-end top-0 position-absolute object-fit-cover"
          src="{{ asset('')}}">

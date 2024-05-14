@@ -60,6 +60,8 @@ CREATE TABLE doctors (
     foreign key (gender_id) references genders(id) ON DELETE CASCADE
 );
 
+select * from doctors;
+
 create table shifts(
 	id INT auto_increment primary key,
     start_time TIME NOT NULL,

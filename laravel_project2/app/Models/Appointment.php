@@ -12,7 +12,7 @@ class Appointment extends Model
 
     protected $table = 'appointments';
     protected $primaryKey = 'id';
-    protected $fillable = ['doctor_id', 'admin_id', 'customer_name','date_birth','gender_id', 'phone','date', 'time','status', 'note', 'room_id'];
+    protected $fillable = ['doctor_id', 'admin_id','customer_id', 'customer_name','date_birth','gender_id', 'phone','date', 'time','status', 'note', 'room_id', 'timestamp'];
 
     public function doctor(){
         return $this->belongsTo(Doctor::class);

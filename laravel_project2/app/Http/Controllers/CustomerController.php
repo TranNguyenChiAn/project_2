@@ -50,14 +50,12 @@ class CustomerController extends Controller
         $loginInfor = ['email' => $request->email, 'password' => $request->password];
 
         if(Auth::guard('customer')->attempt($loginInfor)){
-
-            //Lấy thông tin của admin đang login
+            //Lấy thông tin của customer đang login
             $customer = Auth::guard('customer')->user();
             //Cho login
             Auth::guard('customer')->login($customer);
             //Ném thông tin customer đăng nhập lên session
             session(['customer' => $customer]);
-//            $request->session()->regenerate();
             return redirect()->route('index');
         }
         return Redirect::back() ->with('alert','Wrong password');

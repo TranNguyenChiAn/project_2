@@ -2,7 +2,7 @@
 @include('customer.layout.nav')
 
 <section style="font-family: Inter">
-    <div class="row d-flex mt-4">
+    <div class="row d-flex mt-4 w-100">
         <div class="col-lg-4">
             <div class="mb-4">
                 <div class="text-center">
@@ -12,9 +12,9 @@
             </div>
         </div>
         <div class="col-lg-6">
-            <div class="card mb-4 p-4">
+            <div class="card mb-4 p-4  bg-white">
                 <div class="card-body">
-                    <div class="row">
+                    <div class="row ">
                         <div class="col-sm-3">
                             <p class="mb-0">Name</p>
                         </div>

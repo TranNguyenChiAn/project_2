@@ -3,7 +3,7 @@
 
 <title>Homepage</title>
 <section>
-    <img src="{{ asset('./images/banner_doctor.webp') }}" width="100%">
+    <img class="object-fit-cover" src="{{ asset('./images/banner_doctor.png') }}" width="100%">
 </section>
 <section class="pt-0 pt-sm-5" >
     <div class="container">
@@ -79,4 +79,9 @@
         </div>
     </div>
     <br>
+    <div class="d-flex justify-content-center">
+        {{$doctors -> links()}}
+    </div>
 </section>
+
+@include('admin.layout.footer')

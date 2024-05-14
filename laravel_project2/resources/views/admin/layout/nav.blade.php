@@ -19,9 +19,15 @@
     <ul class="nav nav-pills flex-column mb-auto justify-content-around text"
         style="font-family: Inter; font-weight: bold">
         <li class="nav-item">
-            <a href="{{ route('appointment.showData') }}" class="nav-link">
+            <a href="{{ route('admin.dashboard') }}" class="nav-link">
                 <svg class="bi me-2" width="16" height="16"><use xlink:href="#speedometer2"></use></svg>
                 Dashboard
+            </a>
+        </li>
+        <li class="nav-item">
+            <a href="{{ route('appointment.showData') }}" class="nav-link">
+                <svg class="bi me-2" width="16" height="16"><use xlink:href="#speedometer2"></use></svg>
+                Schedule
             </a>
         </li>
         <li>

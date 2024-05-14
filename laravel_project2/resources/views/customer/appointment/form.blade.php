@@ -91,7 +91,8 @@
                                     </div>
                                 </div>
                                 <div>
-                                    <button type="submit" class="btn btn-primary">Submit</button>
+                                    <button id="submit_button" type="submit" class="btn btn-primary">Submit</button>
+                                    <div id="error-message" style="color: red;"></div>
                                 </div>
                             </form>
                         </div>
@@ -101,4 +102,25 @@
         </div>
     </div>
 </section>
+<script>
+    $(document).ready(function(){
+        $('.mb-3').on('input', function() {
+            let allFieldsFilled = true;
 
+            $('.mb-3').each(function() {
+                if ($(this).val().trim() === '') {
+                    allFieldsFilled = false;
+                    return false; // Dừng vòng lặp nếu một trường rỗng được tìm thấy
+                }
+            });
+
+            if (allFieldsFilled) {
+                $('#submit_button').prop('disabled', false);
+                $('#error-message').text('');
+            } else {
+                $('#submit_button').prop('disabled', true);
+                $('#error-message').text('Please fill in all required fields');
+            }
+        });
+    });
+</script>
