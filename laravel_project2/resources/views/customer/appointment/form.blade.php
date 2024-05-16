@@ -11,7 +11,8 @@
                 <div class="col-md-12">
                     <div class="card mt-2">
                         <div class="card-body">
-                            <form action="{{route('appointment.storeForm')}}" method="post" enctype="multipart/form-data">
+                            <form action="{{route('appointment.storeForm')}}" method="post" enctype="multipart/form-data"
+                            id="appointmentForm">
                                 @csrf
                                 <ul class="nav nav-tabs" id="myTab" role="tablist">
                                     <li class="nav-item" role="presentation">
@@ -91,7 +92,10 @@
                                     </div>
                                 </div>
                                 <div>
-                                    <button id="submit_button" type="submit" class="btn btn-primary">Submit</button>
+                                    <button id="submit_button" type="submit" onclick="saveQuantity()"
+                                            class="btn btn-primary">
+                                        Submit
+                                    </button>
                                     <div id="error-message" style="color: red;"></div>
                                 </div>
                             </form>
@@ -123,4 +127,26 @@
             }
         });
     });
+
 </script>
+
+<script type="text/javascript">
+    $(document).ready(function() {
+        $('#appointmentForm').on('submit', function(e) {
+            e.preventDefault();
+            $.ajax({
+                url: '{{ route('filter') }}',
+                method: 'POST',
+                data: $(this).serialize(),
+                success: function(response) {
+                    alert(response.message);
+                    $('#appointmentForm')[0].reset();
+                },
+                error: function(xhr) {
+                    alert(xhr.responseJSON.message);
+                }
+            });
+        });
+    });
+</script>
+

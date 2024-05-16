@@ -22,8 +22,13 @@ class ClientController extends Controller
 
     public function index()
     {
+        return view('customer.homepage.index');
+    }
+
+    public function findDoctor()
+    {
         $genders = Gender::all();
-        $specialization = Specialization::all();
+        $specializations = Specialization::all();
 
         $doctors = Doctor::with('specialization')
             ->with('gender')
@@ -32,10 +37,10 @@ class ClientController extends Controller
             ->withQueryString();
 
 
-        return view('customer.homepage.index', [
+        return view('customer.homepage.doctor', [
             'doctors' => $doctors,
             'genders' => $genders,
-            'specialization' => $specialization
+            'specializations' => $specializations
         ]);
     }
 
@@ -148,7 +153,7 @@ class ClientController extends Controller
         $appointment = Arr::add($appointment, 'note', $request->note);
         Appointment::create($appointment);
 
-        return Redirect::route('index');
+        return Redirect::route('home')->with('success', 'Appointment created successfully!');
     }
 
 

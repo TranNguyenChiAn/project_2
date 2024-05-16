@@ -1,43 +1,58 @@
 @vite(["resources/sass/app.scss", "resources/js/app.js"])
 
-<header class="d-flex justify-content-around align-items-center py-3 px-0" style="background-color: #ffffff;font-family: Inter; font-weight: bold">
+<style>
+    .nav-link {
+        color: #dcdcdc;
+    }
+
+    .nav-link:hover{
+        color: #2f2ffe;
+    }
+
+    .link-custom {
+        color: #bdbbbb;
+        margin: 0.2rem;
+        border: none;
+        padding: 0.5rem 1rem;
+        border-radius: 5px;
+        text-decoration: none;
+        display: inline-block;
+    }
+
+    .link-custom.active {
+        color: #2f2ffe;
+    }
+
+</style>
+<header class="d-flex justify-content-around align-items-center py-3 px-0" style="background-color: #ffffff; font-weight: bold">
     <div class="float-start">
         <img src="{{asset('./images/daolua.png')}}" alt="brand" height="50px" class="rounded">
     </div>
     <div>
-        <ul class="nav">
-            <li class="nav-item d-flex">
-                <a class="nav-link link-dark px-0" href="{{ route('index') }}"> DOCTORS </a>
-                <button class="nav-link link-dark dropdown-toggle p-2" role="button" data-bs-toggle="dropdown"
-                        aria-expanded="false"></button>
-                @php
-                    $specializations = \App\Models\Specialization::all();@endphp
-                <ul class="dropdown-menu">
-                    @foreach($specializations  as $specialization)
-                        <li class="dropdown-item">
-                            <a class="nav-link link-dark" href=" {{route('filter', $specialization->id)}}"> {{$specialization->name}} </a>
-                        </li>
-                    @endforeach
-                </ul>
-{{--            </li>--}}
-{{--            <li class="nav-item">--}}
-{{--                <a href="{{route('appointment.choose')}}" class="nav-link link-dark">--}}
-{{--                    APPOINTMENT--}}
-{{--                </a>--}}
-{{--            </li>--}}
+        <ul class="nav align-items-center">
             <li class="nav-item">
-                <a href="#" class="nav-link link-dark">
-                    CONTACT
+                <a class="nav-link link-primary link-custom" id="homepage" href="{{ route('index') }}">
+                    Homepage
                 </a>
             </li>
             <li class="nav-item">
-                <a href="#"
-                   class="nav-link text-black">
-                    ABOUT US
+                <a class="nav-link" href="{{ route('findDoctor') }}" id="findDoctor" style="color: grey">
+                    Find your Doctor
+                </a>
+            </li>
+            <li class="nav-item">
+                <a href="#" class="nav-link link-custom" id="contact" style="color: grey">
+                    Contact
+                </a>
+            </li>
+            <li class="nav-item">
+                <a href="#" class="nav-link link-custom" id="about_us" style="color: grey">
+                    About us
                 </a>
             </li>
         </ul>
     </div>
+
     <!-- Profile dropdown START -->
     <div class="ms-3 dropdown float-end">
         <!-- Avatar -->
@@ -72,3 +87,34 @@
         </ul>
     </div>
 </header>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        // Function to set active class from localStorage
+        function setActiveLink() {
+            const activeLinkId = localStorage.getItem('activeLinkId');
+            if (activeLinkId) {
+                document.getElementById(activeLinkId).classList.add('active');
+            }
+        }
+
+        // Set active class on page load
+        setActiveLink();
+
+        // Add click event listeners to all custom links
+        document.querySelectorAll('.link-custom, .nav-link').forEach(link => {
+            link.addEventListener('click', function(event) {
+                // Remove 'active' class from all links
+                document.querySelectorAll('.link-custom, .nav-link').forEach(l => {
+                    l.classList.remove('active');
+                });
+
+                // Add 'active' class to the clicked link
+                this.classList.add('active');
+
+                // Store the active link's ID in localStorage
+                localStorage.setItem('activeLinkId', this.id);
+            });
+        });
+    });
+</script>

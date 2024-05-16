@@ -1,9 +1,10 @@
 @vite(["resources/sass/app.scss", "resources/js/app.js"])
+<script src="https://cdn.jsdelivr.net/npm/alpinejs@2" defer></script>
 
 <title>Manage appointments</title>
 <section style=" font-family: Inter" class="m-5">
     <div class="avatar me-3">
-        <img class="avatar-img rounded-circle shadow" src="{{ asset('./images/' . $doctor->image) }}"
+        <img class="avatar-img rounded-circle shadow" src=""
              alt="avatar" height="50px">
         <p> {{session('doctor.name')}}</p>
     </div>
@@ -40,4 +41,9 @@
     <div class="d-flex justify-content-center pt-3 w-10">
         {{$appointments->links()}}
     </div>
+    <a class="btn btn-primary" href="{{route('doctor.logout')}}">
+        Submit
+    </a>
 </section>
+
+<x-flash-message/>

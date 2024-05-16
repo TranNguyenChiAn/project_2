@@ -2,6 +2,7 @@
 
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\DoctorController;
+use App\Http\Controllers\StaticController;
 use App\Http\Controllers\SpecializationController;
 use App\Http\Controllers\CustomerController;
 use App\Http\Controllers\ClientController;
@@ -16,6 +17,8 @@ use App\Http\Middleware\CheckLoginDoctor;
 
 
 Route::get('/', [ClientController::class, 'index'])->name('home');
+Route::get('/find_doctor', [ClientController::class, 'findDoctor'])->name('findDoctor');
+Route::post('/doctor/specialization', [DoctorController::class, 'filter'])->name('filter');
 
 //   RESISTER AND LOGIN
 Route::get('/login', [AdminController::class, 'login'])->name('admin.login');
@@ -29,18 +32,19 @@ Route::post('/forgot-password', [ForgotPasswordController::class, 'sendResetLink
 Route::get('/reset-password/{token}', [ResetPasswordController::class, 'showResetForm'])->name('password.reset');
 Route::post('/reset-password', [ResetPasswordController::class, 'reset'])->name('password.update');
 
-
+Route::middleware(CheckLoginAdmin::class)->group(function (){
+        Route::get('/admin/index', [StaticController::class, 'index'])->name('admin.index');
+});
 
 //STATIC MANAGE
 Route::middleware(CheckLoginAdmin::class)->group(function (){
     Route::prefix('manage_static')->group(function (){
-        Route::get('/index', [DoctorController::class, 'index'])->name('admin.static');
+        Route::get('/statistic/index', [StaticController::class, 'index'])->name('static.index');
 //        Route::get('/create', [DoctorController::class, 'create'])->name('doctor.create');
 //        Route::post('/create', [DoctorController::class, 'store'])->name('doctor.store');
 //        Route::get('/{doctor}/edit', [DoctorController::class, 'edit'])->name('doctor.edit');
 //        Route::put('/{doctor}/edit', [DoctorController::class, 'update'])->name('doctor.update');
 //        Route::delete('{doctor}', [DoctorController::class, 'destroy'])->name('doctor.destroy');
-        Route::get('/logout', [AdminController::class, 'logout'])->name('admin.logout');
     });
 
 });
@@ -131,7 +135,6 @@ Route::prefix('customer')->group(function () {
 
     Route::get('{profile}/edit', [ClientController::class, 'edit'])->name('profile.edit');
     Route::put('{profile}/edit', [ClientController::class, 'update'])->name('profile.update');
-    Route::get('/specialization_{id}', [DoctorController::class, 'filter'])->name('filter');
 
     Route::get("/doctor_{doctor}/detail", [ClientController::class, 'doctorDetail'])->name('doctor_detail');
 });

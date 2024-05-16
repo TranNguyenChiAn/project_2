@@ -44,7 +44,7 @@ class AdminController extends Controller
             //Ném thông tin customer đăng nhập lên session
             session(['admin' => $admin]);
 //            $request->session()->regenerate();
-            return redirect()->route('admin.doctor');
+            return redirect()->route('appointment.showData');
         }
         return Redirect::back() ->with('alert','Wrong password');
     }

@@ -42,7 +42,7 @@ class DoctorController extends Controller
 
     public function filter(int $id) {
         $genders = Gender::all();
-        $specialization = Specialization::all();
+        $specializations = Specialization::all();
 
         $doctors = Doctor::with('specialization')
             ->with('gender')
@@ -50,11 +50,10 @@ class DoctorController extends Controller
             ->paginate(8)
             ->withQueryString();
 
-
-        return view('customer.homepage.filter', [
+        return view('customer.homepage.doctor', [
             'doctors' => $doctors,
             'genders' => $genders,
-            'specialization' => $specialization
+            'specializations' => $specializations
         ]);
     }
 
@@ -63,7 +62,7 @@ class DoctorController extends Controller
         $specialization = Specialization::all();
         $shifts = Shift::all();
 
-        return view('admin.doctor_manage.create',[
+        return view('admin.doctor_manage.creat/.e',[
             'genders' => $genders,
             'specialization' => $specialization,
             'shifts' => $shifts
@@ -208,13 +207,11 @@ class DoctorController extends Controller
 
     public function logout()
     {
-        Auth::guard('doctor')->logout();
-        session()->forget('doctor');
-        return Redirect::route('doctor.login');
+        return Redirect::route('doctor.appointmentList')->with('success', 'Appointment created successfully!');
     }
 
     public function appointment_list() {
-        $doctor = Auth::user();
+        $doctor = Auth::guard('doctor')->check();
         $appointments = Appointment::with('doctor')
             ->orderBy('id', 'desc')
             ->paginate(5);
