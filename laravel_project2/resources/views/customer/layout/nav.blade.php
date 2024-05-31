@@ -1,5 +1,5 @@
 @vite(["resources/sass/app.scss", "resources/js/app.js"])
-
+<link rel="icon" href="{{asset('./images/logo_fraud.png')}}" type="image/png">
 <style>
     .nav-link {
         color: #dcdcdc;
@@ -89,32 +89,24 @@
 </header>
 
 <script>
+    // JavaScript để thêm lớp 'active' vào mục menu được nhấn
     document.addEventListener('DOMContentLoaded', function() {
-        // Function to set active class from localStorage
-        function setActiveLink() {
-            const activeLinkId = localStorage.getItem('activeLinkId');
-            if (activeLinkId) {
-                document.getElementById(activeLinkId).classList.add('active');
-            }
-        }
-
-        // Set active class on page load
-        setActiveLink();
-
-        // Add click event listeners to all custom links
-        document.querySelectorAll('.link-custom, .nav-link').forEach(link => {
-            link.addEventListener('click', function(event) {
-                // Remove 'active' class from all links
-                document.querySelectorAll('.link-custom, .nav-link').forEach(l => {
-                    l.classList.remove('active');
+        let links = document.querySelectorAll('.nav-link');
+        links.forEach(function(link) {
+            link.addEventListener('click', function() {
+                links.forEach(function(link) {
+                    link.classList.remove('active');
                 });
-
-                // Add 'active' class to the clicked link
                 this.classList.add('active');
-
-                // Store the active link's ID in localStorage
-                localStorage.setItem('activeLinkId', this.id);
             });
+        });
+
+        // Giữ nguyên định dạng đổi màu khi tải lại trang
+        let currentPath = window.location.pathname.split("/").pop();
+        links.forEach(function(link) {
+            if (link.getAttribute('href') === currentPath) {
+                link.classList.add('active');
+            }
         });
     });
 </script>

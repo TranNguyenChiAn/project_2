@@ -3,7 +3,7 @@
 <title> Reset password </title>
 <section style="font-family: Inter">
     <div class="w-50">
-        <form method="post" action="{{ route('password.email') }}"
+        <form method="post" action="{{ route('doctor.requestEmail') }}"
               class="form-control rounded-4" novalidate
               style="z-index: 3;border: none; margin: 20% 0 0 60%; width: 80%">
             @csrf

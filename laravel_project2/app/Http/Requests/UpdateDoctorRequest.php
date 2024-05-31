@@ -44,7 +44,7 @@ class UpdateDoctorRequest extends FormRequest
             'contact_number.required' => 'Phone is required',
             'contact_number.regex' => 'Phone is not correct format',
             'address.required' => 'Address is required',
-            'specialization.required' => 'Specialization is required',
+            'specialization.required' => 'Department is required',
             'gender.required' => 'Gender is required',
         ];
     }

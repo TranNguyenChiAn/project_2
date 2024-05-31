@@ -31,12 +31,10 @@
         @endforeach
     </table>
     <br>
-    <div class=" d-flex justify-content-end">
-        <button class="btn btn-primary" type="submit">
-            <a class="nav-link" href="{{ route('shift.create')}}">
-                + Add a shift
-            </a>
-        </button>
+    <div class="d-flex justify-content-end">
+        <a class="btn btn-primary" type="submit" href="{{ route('shift.create')}}">
+            + Add a shift
+        </a>
     </div>
 
     <div class="d-flex justify-content-center">

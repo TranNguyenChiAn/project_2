@@ -2,23 +2,24 @@
 
 namespace App\Models;
 
+use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class Doctor extends Model
+class Doctor extends Authenticatable
 {
     use HasFactory;
 
     protected $table = 'doctors';
     protected $primaryKey = 'id';
     public $timestamps = false;
-    protected $fillable = ['name', 'email','password','gender_id', 'specialization_id', 'contact_number','address', 'image'];
+    protected $fillable = ['name', 'email','password','gender_id', 'department_id', 'contact_number','address', 'image', 'status'];
 
     public function gender(){
         return $this->belongsTo(Gender::class);
     }
-    public function specialization(){
-        return $this->belongsTo(Specialization::class);
+    public function department(){
+        return $this->belongsTo(Department::class);
     }
 
     public function appointment(){

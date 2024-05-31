@@ -2,14 +2,13 @@
 
 namespace App\Http\Controllers;
 
-use App\Http\Requests\StoreDoctorRequest;
-use App\Http\Requests\UpdateDoctorRequest;
 use App\Models\Appointment;
 use App\Models\Doctor;
 use App\Models\Gender;
+use App\Models\Room;
 use App\Models\Shift;
 use App\Models\ShiftDetail;
-use App\Models\Specialization;
+use App\Models\Department;
 use Illuminate\Http\Request;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\Auth;
@@ -22,156 +21,6 @@ use function PHPUnit\Framework\isNull;
 
 class DoctorController extends Controller
 {
-    public function index() {
-        $genders = Gender::all();
-        $specialization = Specialization::all();
-
-        $doctors = Doctor::with('specialization')
-        ->with('gender')
-            ->orderBy('id','desc')
-        -> paginate(3)
-        ->withQueryString();
-
-
-        return view('admin.doctor_manage.index', [
-            'doctors' => $doctors,
-            'genders' => $genders,
-            'specialization' => $specialization
-        ]);
-    }
-
-    public function filter(int $id) {
-        $genders = Gender::all();
-        $specializations = Specialization::all();
-
-        $doctors = Doctor::with('specialization')
-            ->with('gender')
-            ->where('specialization_id', '=', $id)
-            ->paginate(8)
-            ->withQueryString();
-
-        return view('customer.homepage.doctor', [
-            'doctors' => $doctors,
-            'genders' => $genders,
-            'specializations' => $specializations
-        ]);
-    }
-
-    public function create() {
-        $genders = Gender::all();
-        $specialization = Specialization::all();
-        $shifts = Shift::all();
-
-        return view('admin.doctor_manage.creat/.e',[
-            'genders' => $genders,
-            'specialization' => $specialization,
-            'shifts' => $shifts
-        ]);
-    }
-
-    public function store(Request $request){
-
-        $image = $request->file('image');
-        $imageName = $image->getClientOriginalName();
-        $image->move(public_path('images'), $imageName);
-
-        $array = [];
-        $array = Arr::add($array, 'name', $request->name);
-        $array = Arr::add($array, 'email', $request->email);
-        $array = Arr::add($array, 'password', Hash::make($request->password));
-        $array = Arr::add($array, 'gender_id', $request->gender_id);
-        $array = Arr::add($array, 'specialization_id', $request->specialization_id);
-        $array = Arr::add($array, 'contact_number', $request->contact_number);
-        $array = Arr::add($array, 'address', $request->address);
-        $array = Arr::add($array, 'image', $imageName);
-
-        //Lấy dữ liệu từ form và lưu lên db
-        $doctor = Doctor::create($array);
-
-        $selectedShiftIds = $request->input('shifts');
-        foreach ($selectedShiftIds as $shiftId) {
-            ShiftDetail::create(
-                [
-                    'doctor_id' => $doctor->id,
-                    'shift_id' => $shiftId
-                ]);
-        }
-
-        return Redirect::route('admin.doctor');
-    }
-
-    public function edit(Doctor $doctor, Request $request)
-    {
-        $shifts = Shift::all();
-        $shift_details = ShiftDetail::with('doctor')
-        ->with('shift')
-        ->where('doctor_id', $doctor -> id)
-        ->get();
-
-        $genders = Gender::all();
-        $specialization = Specialization::all();
-
-        //Gọi đến view để sửa
-        return view('admin.doctor_manage.edit', [
-            'doctor' => $doctor,
-            'specialization' => $specialization,
-            'genders' => $genders,
-            'shifts' => $shifts,
-            'shift_details' => $shift_details
-        ]);
-    }
-
-    public function update(Request $request, Doctor $doctor)
-    {
-        if ($request->hasFile('image') && $request->file('image')->isValid()) {
-            $image = $request->file('image');
-            $imageName = $image->getClientOriginalName();
-
-            // Lưu ảnh vào thư mục public/images
-            $image->move(public_path('images'), $imageName);
-        }else{
-            $imageName = $doctor -> image;
-        }
-
-        $doctor = Doctor::findOrFail($doctor->id);
-        $shifts = $request->input('shifts');
-
-        // Xóa hết các ca làm việc cũ của bác sĩ
-        $doctor->shifts()->detach();
-
-        // Thêm các ca làm việc mới được chọn cho bác sĩ
-        foreach ($shifts as $shiftId) {
-            ShiftDetail::create(
-                [
-                    'doctor_id' => $doctor->id,
-                    'shift_id' => $shiftId
-                ]);
-        }
-
-        //Lấy dữ liệu trong form và update lên db
-        $array = [];
-        $array = Arr::add($array, 'name', $request->name);
-        $array = Arr::add($array, 'email', $request->email);
-        $array = Arr::add($array, 'specialization_id', $request->specialization);
-        $array = Arr::add($array, 'contact_number', $request->contact_number);
-        $array = Arr::add($array, 'address', $request->address);
-        $array = Arr::add($array, 'gender_id', $request->gender);
-        $array = Arr::add($array, 'image', $imageName);
-        $doctor->update($array);
-
-        return Redirect::route('admin.doctor');
-    }
-
-    public function destroy(Doctor $doctor)
-    {
-        $shift_details = ShiftDetail::with('doctor')
-            ->where('doctor_id', $doctor->id);
-        $shift_details->delete();
-        $doctor->delete();
-        return Redirect::route('admin.doctor')->with('success', 'Delete a doctor successfully!');
-
-    }
-
     public function login(){
         return view('doctor.account.login');
     }
@@ -200,14 +49,21 @@ class DoctorController extends Controller
             Auth::guard('doctor')->login($doctor);
             //Ném thông tin doctor đăng nhập lên session
             session(['doctor' => $doctor]);
-            return redirect()->route('doctor.appointmentList');
+            return redirect()->route('doctor.index');
         }
         return Redirect::back() ->with('alert','Wrong password');
     }
 
     public function logout()
     {
-        return Redirect::route('doctor.appointmentList')->with('success', 'Appointment created successfully!');
+        Auth::guard('doctor')->logout();
+        session()->forget('doctor');
+        return Redirect::route('doctor.login');
+    }
+
+    public function index() {
+        $appointments = Appointment::all();
+        return view('doctor.index', compact('appointments'));
     }
 
     public function appointment_list() {
@@ -220,5 +76,54 @@ class DoctorController extends Controller
             'appointments' => $appointments,
             'doctor' => $doctor
         ]);
+    }
+
+    public function filter(Request $request) {
+        $department_id = $request->department_id;
+        $genders = Gender::all();
+        $departments = Department::all();
+
+        $doctors = Doctor::with('department')
+            ->with('gender')
+            ->where('department_id', '=', $department_id )
+            ->paginate(8)
+            ->withQueryString();
+
+        return view('customer.homepage.doctor', [
+            'doctors' => $doctors,
+            'genders' => $genders,
+            'departments' => $departments
+        ]);
+    }
+
+    public function schedule(){
+        $appointments = Appointment::all();
+        return view('doctor.index', compact('appointments'));
+    }
+
+    public function show($id)
+    {
+        $appointment = Appointment::with('doctor')->findOrFail($id);
+        return response()->json($appointment);
+    }
+
+    public function editAppointment(Appointment $appointment){
+        $rooms = Room::all();
+
+        return view("doctor.appointment.edit", [
+            'appointment' => $appointment,
+            'rooms' => $rooms
+        ]);
+
+    }
+
+    public function updateAppointment(Appointment $appointment, Request $request){
+        $array = [];
+        $array = Arr::add($array, 'room_id', $request->room_id);
+        $array = Arr::add($array, 'approval_status', $request->approval_status);
+        $array = Arr::add($array, 'appointment_status', $request->appointment_status);
+        $appointment->update($array);
+
+        return Redirect::route('doctor.appointmentList');
     }
 }

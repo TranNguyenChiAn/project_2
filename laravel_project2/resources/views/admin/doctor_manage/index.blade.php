@@ -37,7 +37,7 @@
                     <th>Image</th>
                     <th>Name</th>
                     <th>Email</th>
-                    <th>Specialization</th>
+                    <th>Department</th>
                     <th>Contact number</th>
                     <th>Address</th>
                     <th>Edit</th>
@@ -53,7 +53,7 @@
                         </td>
                         <td> {{ $doctor -> name }}</td>
                         <td> {{ $doctor -> email }}</td>
-                        <td> {{ $doctor -> specialization -> name }}</td>
+                        <td> {{ $doctor -> department -> name }}</td>
                         <td> {{ $doctor -> contact_number }}</td>
                         <td> {{ $doctor -> address }}</td>
                         <td>

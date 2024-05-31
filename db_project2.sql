@@ -1,6 +1,5 @@
 create database project2;
 use project2;
-
 drop database project2;
 
 create table admins(
@@ -10,24 +9,22 @@ create table admins(
     password VARCHAR(255) NOT NULL,
     primary key(id)
 );
-insert into admins (name, email, password) values ('Tu Nguyen', 'tunguyen@gmail.com', '123456');
 select * from admins;
 
 create table genders(
 	id INT auto_increment primary key,
     name VARCHAR(20) NOT NULL
 );
-
 insert into genders (name) values ('Male'), ('Female');
 select * from genders;
 
 
-create table specialization(
+create table departments(
 	id INT auto_increment primary key,
     name VARCHAR(255) NOT NULL
 );
 
-insert into specialization( name) Values 
+insert into departments( name) Values 
 ('Rheumatology'), 
 ('Dermatology'), 
 ('Dentistry '),
@@ -35,16 +32,7 @@ insert into specialization( name) Values
 ('Ophthalmology'),
 ('Urology'), 
 ('Neurology');
-select * from specialization;
 
-insert into doctors (name, gender_id, email, password, specialization_id, contact_number) values
-('Tran Canh Nguyen', 1, 'canhnguyen@gmail.com', '123456789', 3, '0987654321');
-
-update doctors set gender_id = 1 where id = 6;
-
-select * from doctors;
-insert into doctors (name, gender_id, email, password, specialization_id, contact_number, address) 
-values ('Name', 1, '123@gmail.com', '12jnskdjf', 3, '0897653421', 'HCM');
 
 CREATE TABLE doctors (
     id INT AUTO_INCREMENT PRIMARY KEY,
@@ -52,13 +40,17 @@ CREATE TABLE doctors (
     gender_id INT NOT NULL,
 	email TEXT UNIQUE NOT NULL,
     password VARCHAR(255) NOT NULL,
-    specialization_id INT NOT NULL,
+    department_id INT NOT NULL,
     contact_number VARCHAR(15) UNIQUE NOT NULL,
     address TEXT NOT NULL,
     image text,
-    foreign key (specialization_id) references specialization(id) ON DELETE CASCADE,
+    status INT,
+    foreign key (department_id) references departments(id) ON DELETE CASCADE,
     foreign key (gender_id) references genders(id) ON DELETE CASCADE
 );
+
+alter table doctors add column status INT;
+update doctors set status = 0;
 
 select * from doctors;
 
@@ -78,12 +70,10 @@ create table shift_details (
 );
 
 select * from shift_details;
-
-drop table shifts;
-
 select * from shifts;
+
 SET SQL_SAFE_UPDATES = 0;
-drop table shifts;
+
 
 create table customers(
 	id INT auto_increment primary key,
@@ -93,7 +83,6 @@ create table customers(
     address TEXT,
     password VARCHAR(255) NOT NULL
 );
-
 select * from customers;
 
 create table consulting_rooms(
@@ -104,6 +93,7 @@ create table consulting_rooms(
 );
 
 insert into consulting_rooms ( floor,  room ) Values 
+(0, 0),
 (1, 101),
 (1, 102),
 (1, 103),
@@ -113,9 +103,6 @@ insert into consulting_rooms ( floor,  room ) Values
 (3, 301),
 (3, 302),
 (3, 303);
-
-update consulting_rooms set room = 202 where id = 5;
-
 select * from consulting_rooms;
 
 create table payment_method(
@@ -123,30 +110,45 @@ create table payment_method(
     name VARCHAR(100) NOT NULL
 );
 insert into payment_method (name) values ('Cash'), ('Banking'), ('Card'), ('VNPAY');
-
+select * from payment_method;
 
 CREATE TABLE appointments (
     id INT AUTO_INCREMENT PRIMARY KEY,
     doctor_id INT NOT NULL,
-    admin_id INT NOT NULL,
+    customer_id INT,
     customer_name VARCHAR(255) NOT NULL,
     date_birth DATE NOT NULL,
-    gender_id INT,
+    gender_id INT NOT NULL,
     date DATE NOT NULL,
-    time TIME,
-    room_id INT,
-    status INT,
+    time TIME NOT NULL,
+    phone VARCHAR(10) NOT NULL,
+    room_id INT NOT NULL,
+    status INT NOT NULL,
     payment_method INT,
-    note TEXT,
+    customer_note TEXT,
+    update_by INT,
     FOREIGN KEY (doctor_id) REFERENCES doctors(id) ON DELETE CASCADE,
     foreign key (gender_id) references genders(id) ON delete cascade,
     FOREIGN KEY (room_id) REFERENCES consulting_rooms(id) ON DELETE CASCADE,
     FOREIGN KEY (payment_method) REFERENCES payment_method(id) ON DELETE CASCADE,
-    foreign key (admin_id) references admins(id) ON DELETE CASCADE
+    foreign key (update_by) references admins(id) ON DELETE CASCADE,
+    foreign key (customer_id) references customers(id) ON DELETE CASCADE
 );
 
-ALTER TABLE appointments
-ADD COLUMN phone VARCHAR(255) NOT NULL AFTER date_birth;
+
+alter table appointments change note customer_notes TEXT;
+alter table appointments add column doctor_notes TEXT;
+alter table appointments add column payment_status INT;
+
+update appointments set fee_status = 1;
+update appointments set approval_status = 1 where id = 19;
+
+update appointments set payment_status = 0;
+
+set sql_safe_updates = 0;
+
+select * from appointments;
+
 
 select doctors.*, shifts.start_time, shifts.end_time 
 from doctors

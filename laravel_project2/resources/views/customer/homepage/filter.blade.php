@@ -51,7 +51,7 @@
                                 <h5>
                                     <b>{{ $doctor -> name}} </b>
                                 </h5>
-                                <!-- Specialization -->
+                                <!-- Department -->
                                 <p> {{ $doctor -> specialization -> name}} </p>
                             </div>
 
@@ -75,3 +75,4 @@
         </div>
     </div>
 </section>
+@include('customer.layout.footer')

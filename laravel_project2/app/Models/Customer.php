@@ -19,4 +19,8 @@ class Customer extends Authenticatable
     protected $table = 'customers';
     public $timestamps = false;
     protected $fillable = ['name', 'email','phone', 'address', 'password'];
+
+    public function appointment(){
+        return $this->belongsTo(Appointment::class);
+    }
 }

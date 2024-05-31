@@ -44,7 +44,7 @@ class CustomerController extends Controller
         ]);
 
         if($validator->fails()){
-            return redirect()->route('customer.login')->withErrors($validator)->withInput();
+            return Redirect::back()->withErrors($validator)->withInput();
         }
 
         $loginInfor = ['email' => $request->email, 'password' => $request->password];
@@ -56,7 +56,7 @@ class CustomerController extends Controller
             Auth::guard('customer')->login($customer);
             //Ném thông tin customer đăng nhập lên session
             session(['customer' => $customer]);
-            return redirect()->route('index');
+            return redirect()->intended(route('index'));
         }
         return Redirect::back() ->with('alert','Wrong password');
     }
@@ -99,13 +99,6 @@ class CustomerController extends Controller
 
     public function update(UpdateCustomerRequest $request, Customer $customer)
     {
-        //Lấy dữ liệu trong form và update lên db
-//        $array = [];
-//        $array = Arr::add($array, 'name', $request->name);
-//        $array = Arr::add($array, 'email', $request->email);
-//        $array = Arr::add($array, 'phone', $request->phone);
-//        $array = Arr::add($array, 'address', $request->address);
-
         $customer->update($request->all());
 
         return Redirect::route('customer.index');
@@ -117,4 +110,5 @@ class CustomerController extends Controller
         return Redirect::route('customer.index');
 
     }
+
 }

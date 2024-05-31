@@ -1,5 +1,13 @@
 @vite(["resources/sass/app.scss", "resources/js/app.js"])
 
+
+<head>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-icons/1.10.2/font/bootstrap-icons.min.css">
+    <link rel="icon" href="{{asset('./images/logo_fraud.png')}}" type="image/png">
+    <link rel="stylesheet" href="{{ asset('frontend/css/app.css') }}">
+</head>
+
+
 <style>
     .nav-link {
         color: #dcdcdc;
@@ -18,11 +26,6 @@
         text-decoration: none;
         display: inline-block;
     }
-
-    .link-custom.active {
-        color: #2f2ffe;
-    }
-
 </style>
 <div class="d-flex flex-column flex-shrink-0 position-fixed"
      style="width: 246px;height: 100vh; position: absolute; background-color: white">
@@ -33,6 +36,7 @@
                 <b>{{session('admin.name')}}</b>
             </p>
             <p style="color: #b7b6b6; font-size: 12px"> Dashboard</p>
+
         </div>
     </div>
     <ul class="nav flex-column mt-4 align-content-center"
@@ -56,9 +60,9 @@
             </a>
         </li>
         <li>
-            <a href="{{ route('specialization.index') }}" id="specialization_link"  class="nav-link link-custom">
+            <a href="{{ route('department.index') }}" id="specialization_link"  class="nav-link link-custom">
                 <i class="bi bi-list"></i>
-                Specialization
+                Department
             </a>
         </li>
         <li>
@@ -87,35 +91,5 @@
         </li>
     </ul>
 </div>
-<script>
-    document.addEventListener('DOMContentLoaded', function() {
-        // Function to set active class from localStorage
-        function setActiveLink() {
-            const activeLinkId = localStorage.getItem('activeLinkId');
-            if (activeLinkId) {
-                document.getElementById(activeLinkId).classList.add('active');
-            }
-        }
-
-        // Set active class on page load
-        setActiveLink();
-
-        // Add click event listeners to all custom links
-        document.querySelectorAll('.link-custom, .nav-link').forEach(link => {
-            link.addEventListener('click', function(event) {
-                // Remove 'active' class from all links
-                document.querySelectorAll('.link-custom, .nav-link').forEach(l => {
-                    l.classList.remove('active');
-                });
-
-                // Add 'active' class to the clicked link
-                this.classList.add('active');
-
-                // Store the active link's ID in localStorage
-                localStorage.setItem('activeLinkId', this.id);
-            });
-        });
-    });
-</script>
-
+<script defer src="{{ asset('frontend/js/activePage.js')}}"></script>
 

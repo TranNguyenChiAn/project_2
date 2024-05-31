@@ -14,7 +14,7 @@ class Room extends Model
     protected $table = 'consulting_rooms';
     protected $fillable = ['floor', 'room'];
 
-    public function Doctor(){
-        return $this->hasMany(Doctor::class);
+    public function appointment(){
+        return $this->hasMany(Appointment::class);
     }
 }

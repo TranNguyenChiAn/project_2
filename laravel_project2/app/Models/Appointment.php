@@ -12,14 +12,18 @@ class Appointment extends Model
 
     protected $table = 'appointments';
     protected $primaryKey = 'id';
-    protected $fillable = ['doctor_id', 'admin_id','customer_id', 'customer_name','date_birth','gender_id', 'phone','date', 'time','status', 'note', 'room_id', 'timestamp'];
+    protected $fillable = ['doctor_id', 'admin_id','customer_id', 'customer_name','date_birth','gender_id', 'phone',
+        'date', 'time','approval_status','appointment_status','insurance_number', 'payment_status', 'customer_notes','doctor_notes', 'room_id', 'timestamp'];
 
     public function doctor(){
         return $this->belongsTo(Doctor::class);
     }
+    public function gender(){
+        return $this->belongsTo(Gender::class);
+    }
 
-    public function patient(){
-        return $this->belongsTo(Patient::class);
+    public function customer(){
+        return $this->belongsTo(Customer::class);
     }
 
     public function admin(){
@@ -28,6 +32,10 @@ class Appointment extends Model
 
     public function room(){
         return $this->belongsTo(Room::class);
+    }
+
+    public function payment_method(){
+        return $this->belongsTo(PaymentMethod::class);
     }
 
 }

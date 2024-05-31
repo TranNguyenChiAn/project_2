@@ -1,5 +1,8 @@
 @vite(["resources/sass/app.scss", "resources/js/app.js"])
 @include('customer.layout.nav')
+<head>
+    <link rel="icon" href="{{asset('./images/logo_fraud.png')}}" type="image/png">
+</head>
 
 <title>Homepage</title>
 <section>
@@ -96,3 +99,5 @@
 </section>
 <script src="https://cdn.jsdelivr.net/npm/alpinejs@2" defer></script>
 <x-flash-message/>
+
+@include('customer.layout.footer')

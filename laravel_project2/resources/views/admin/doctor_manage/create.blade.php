@@ -5,49 +5,53 @@
 <section class="position-absolute start-50 translate-middle-x" style="font-size: 14px; font-family: Inter">
     <h2 align="center" style="font-weight: bold;color: #2f2ffe; margin-top: 30px"> Add a doctor </h2>
     <div class="row g-6">
-        <form class="row g-3 bg-white rounded-3" method="post" action="{{ route('doctor.store') }}"
+        <form class="row g-3 bg-white rounded-3" method="post" action="{{ route('doctor.store') }}" id="myForm"
               style="padding: 10px 24px"
               enctype="multipart/form-data">
             @csrf
             <div class="col-md-6">
                 <label class="form-label">Name</label>
-                <input class="form-control" type="text" name="name" placeholder="Name">
+                <input class="form-control" type="text" name="name" placeholder="Name" required
+                value="{{old('name')}}">
                 @if($errors->has('name'))
-                    {{ $errors->first('name') }}
+                    <p class="text-danger">{{ $errors->first('name') }}</p>
                 @endif
             </div>
             <div class="col-md-6">
                 <label class="form-label">Email </label>
-                <input class="form-control" placeholder="Email" type="email" name="email">
+                <input class="form-control" placeholder="Email" type="email" name="email" required
+                       value="{{old('email')}}">
                 @if($errors->has('email'))
-                    {{ $errors->first('email') }}
+                    <p class="text-danger">{{ $errors->first('email') }}</p>
                 @endif
             </div>
             <div class="col-md-6">
                 <label class="form-label">Password </label>
-                <input class="form-control" placeholder="Password" type="password" name="password">
+                <input class="form-control" placeholder="Password" type="password" name="password" required
+                       value="{{old('password')}}">
             </div>
             <div class="col-md-6">
                 <label class="form-label"> Gender:</label><br>
-                @foreach($genders as $gender)
-                    <input class="form-check-input" checked type="radio" name="gender_id" value="{{ $gender -> id}}"> {{ $gender -> name}}
-                @endforeach
+                    <input class="form-check-input" checked type="radio" name="gender_id" value="1"> Male
+                    <input class="form-check-input" type="radio" name="gender_id" value="2"> Female
             </div>
             <div class="col-md-6">
                 <label class="form-label">Contact number</label>
-                <input class="form-control" type="phone" name="contact_number" placeholder="Contact number">
+                <input class="form-control" type="tel" name="contact_number"
+                       placeholder="Contact number" maxlength="10" minlength="10" value="{{old('contact_number')}}">
             </div>
 
             <div class="col-md-6">
                 <label class="form-label"> Address </label>
-                <input class="form-control" type="address" name="address" placeholder="Address">
+                <input class="form-control" type="text" name="address" placeholder="Address" required
+                       value="{{old('address')}}">
             </div>
             <div class="col-md-6">
-                <label class="form-label">Specialization</label><br>
-                <select class="form-select dropdown" name="specialization_id" required>
+                <label class="form-label">Department</label><br>
+                <select class="form-select dropdown" name="department_id" required>
                     <option disabled selected> -- Choose --</option>
-                    @foreach($specialization as $specialization)
-                        <option class="form-control" value="{{$specialization -> id}}"> {{$specialization -> name}} </option>
+                    @foreach($departments as $department )
+                        <option class="form-control" value="{{$department -> id}}"> {{$department -> name}} </option>
                     @endforeach
                 </select>
             </div>
@@ -61,7 +65,7 @@
             <div class="col-md-6">
                 <label class="form-label"> Image:</label>
                 <input type="file" class="form-control" name="image" id="imageFile"
-                       accept="image/*" onchange="chooseFile(this)" required >
+                       accept="image/*" onchange="chooseFile(this)" required>
                 <style>
                     #image img {
                         height: 150px;
@@ -94,4 +98,22 @@
             fileReader.readAsDataURL(fileToLoad);
         }
     }
+</script>
+<script>
+    const form = document.getElementById('myForm');
+    const checkboxes = form.querySelectorAll('input[type="checkbox"]');
+
+    form.addEventListener('submit', function (event) {
+        let checkedCount = 0;
+        checkboxes.forEach(checkbox => {
+            if (checkbox.checked) {
+                checkedCount++;
+            }
+        });
+
+        if (checkedCount === 0) {
+            alert('Vui lòng chọn ít nhất một ca làm việc.');
+            event.preventDefault(); // Prevent form submission
+        }
+    });
 </script>

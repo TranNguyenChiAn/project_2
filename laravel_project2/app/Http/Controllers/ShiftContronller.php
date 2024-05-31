@@ -3,7 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Shift;
-use App\Models\Specialization;
+use App\Models\Department;
 use Illuminate\Http\Request;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\Redirect;

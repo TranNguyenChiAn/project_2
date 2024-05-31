@@ -17,7 +17,7 @@ class Gender extends Model
         return $this->hasMany(Doctor::class);
     }
 
-    public function patient(){
-        return $this->hasMany(Patient::class);
+    public function appointment(){
+        return $this->hasMany(Appointment::class);
     }
 }

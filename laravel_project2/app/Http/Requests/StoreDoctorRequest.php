@@ -40,7 +40,7 @@ class StoreDoctorRequest extends Controller
             'name.required' => 'Name is required',
             'email.required' => 'Email is required',
             'gender.required' => 'Gender is required',
-            'specialization.required' => 'Specialization is required',
+            'specialization.required' => 'Department is required',
             'contact_number.required' => 'Phone is required',
             'address.required' => 'Address is required',
             'image.required' => 'Image is required'

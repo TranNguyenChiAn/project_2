@@ -33,4 +33,25 @@ class ForgotPasswordController extends Controller
         return Redirect::route('password.reset', $token);
 
     }
+
+    public function showDoctorRequestForm()
+    {
+        return view('doctor.account.forgot_password');
+    }
+
+    public function sendResetLinkDoctorEmail(Request $request)
+    {
+        $request->validate(['email' => 'required|email']);
+
+        $user = Admin::where('email', $request->email)->first();
+
+        if (!$user) {
+            return back()->withErrors(['email' => 'Email không tồn tại trong hệ thống.']);
+        }
+
+        // Tạo và lưu token vào cơ sở dữ liệu
+        $token = Str::random(60);
+        return Redirect::route('password.reset', $token);
+
+    }
 }

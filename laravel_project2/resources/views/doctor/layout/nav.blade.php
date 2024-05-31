@@ -1,46 +1,50 @@
+@vite(["resources/sass/app.scss", "resources/js/app.js"])
 <style>
     .nav-link {
         color: #cecdcd;
     }
 
     .nav-link:hover{
-        color:white;
+        color: #2f2ffe;
     }
 </style>
-<div class="d-flex flex-column flex-shrink-0 p-3"
-     style="width: 246px;height: 100%; position: absolute; background-image: linear-gradient(180deg, #4e73df 10%, #224abe 100%);">
-    <a class="d-flex nav-link align-items-center text-decoration-none text-white">
-        <svg class="bi me-2" width="32" height="28"><use xlink:href="#bootstrap"></use></svg>
-        <span class="fs-4">
-            <b>{{session('admin.name')}}</b>
-        </span>
-    </a>
-    <hr style="border: 1px solid black">
+<div class="d-flex flex-column flex-shrink-0 p-3" style="width: 270px;height: 100%;
+        position: fixed;background-color: #c3dcdb">
+    <div class="d-flex justify-content-around align-items-center mt-5">
+        <i class="fs-1 bi bi-person-circle"></i>
+        <div class="d-block">
+            <p class="text-dark m-0">
+                <b>{{session('doctor.name')}}</b>
+            </p>
+            <p class="m-0" style="color:grey">
+                {{session('doctor.email')}}
+            </p>
+        </div>
+
+    </div>
+    <br>
+    <button class="btn btn-outline-info mb-4">
+        <a href="{{ route('doctor.logout') }}" class="text-decoration-none">
+            Logout
+        </a>
+    </button>
+
+    <hr>
     <ul class="nav nav-pills flex-column mb-auto justify-content-around text"
-        style="font-family: Inter; font-weight: bold">
+        style="font-weight: bold">
         <li class="nav-item">
-            <a href="{{ route('appointment.showData') }}" class="nav-link">
-                <svg class="bi me-2" width="16" height="16"><use xlink:href="#speedometer2"></use></svg>
+            <a href="{{ route('doctor.schedule') }}" class="nav-link text-dark">
+                <i class="bi bi-calendar"></i>
                 Schedule
             </a>
         </li>
         <li>
-            <a href="{{ route('appointment.index') }}" class="nav-link">
-                <svg class="bi me-2" width="16" height="16"><use xlink:href="#table"></use></svg>
+            <a href="{{ route('doctor.appointmentList') }}" class="nav-link text-dark">
+                <i class="bi bi-journal"></i>
                 Appointments
             </a>
         </li>
-        <li>
-            <a href="{{ route('admin.logout') }}" class="nav-link">
-                <svg class="bi me-2" width="16" height="16">
-                    <use xlink:href="#speedometer2"></use>
-                </svg>
-                Logout
-            </a>
-        </li>
-
     </ul>
-    <hr>
 </div>
 
 

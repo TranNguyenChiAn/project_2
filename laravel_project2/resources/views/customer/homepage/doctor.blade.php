@@ -2,6 +2,7 @@
 @include('customer.layout.nav')
 
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+<title> Doctors </title>
     <div class="container">
     <!-- Title -->
         <div class="d-flex justify-content-between mb-4 mt-3 w-100">
@@ -9,15 +10,19 @@
                 <h2 style="font-family: Inter; font-weight: bold"> Choose Your Doctor</h2>
             </div>
             <div>
-                <form action="{{route('filter')}}" method="get">
-                    <select class="form-select select2-dropdown" id="specialization">
+                <form class="d-flex" action="{{route('filter')}}" method="post">
+                    @csrf
+                    @method('post')
+                    <select class="form-select select2-dropdown"  id="departmentSelect" name="department_id"
+                            onChange="fetchDoctorsByDepartment(this.value)">
                         <option class="" disabled> --Choose -- </option>
-                        @foreach($specializations  as $specialization)
-                            <option value="{{$specialization->id}}" name="specialization_id">
-                                {{$specialization->name}}
+                        @foreach($departments  as $department)
+                            <option value="{{$department->id}}" name="department_id">
+                                {{$department->name}}
                             </option>
                         @endforeach
                     </select>
+                    <button class="btn btn-primary mx-2" type="submit">Submit</button>
                 </form>
             </div>
         </div>
@@ -63,7 +68,7 @@
                             <h5>
                                 <b>{{ $doctor -> name}} </b>
                             </h5>
-                            <p> {{ $doctor -> specialization -> name}} </p>
+                            <p> {{ $doctor -> department-> name}} </p>
                         </div>
 
                         <!-- Buttons -->
@@ -71,7 +76,7 @@
                             <button class="btn bg-black rounded-5 px-lg-5">
                                 <a href="{{route('doctor_detail', $doctor)}}" class="nav-link p-0 text-white"
                                    style="font-size: 12px">
-                                    View detail
+                                    Make appointment
                                     <i class="bi bi-arrow-right ms-1"></i>
                                 </a>
                             </button>
@@ -84,9 +89,9 @@
             @endphp
         @endforeach
     </div>
-</div>
 <br>
 <div class="d-flex justify-content-center">
     {{$doctors -> links()}}
 </div>
 
+@include('customer.layout.footer')

@@ -2,8 +2,9 @@
 
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\DoctorController;
+use App\Http\Controllers\ManageDoctorController;
 use App\Http\Controllers\StaticController;
-use App\Http\Controllers\SpecializationController;
+use App\Http\Controllers\DepartmentController;
 use App\Http\Controllers\CustomerController;
 use App\Http\Controllers\ClientController;
 use App\Http\Controllers\AppointmentController;
@@ -14,37 +15,37 @@ use App\Http\Controllers\AdminController;
 use App\Http\Controllers\Auth\ForgotPasswordController;
 use App\Http\Controllers\Auth\ResetPasswordController;
 use App\Http\Middleware\CheckLoginDoctor;
+use App\Http\Controllers\MailController;
+use App\Http\Controllers\VnpayController;
 
 
 Route::get('/', [ClientController::class, 'index'])->name('home');
 Route::get('/find_doctor', [ClientController::class, 'findDoctor'])->name('findDoctor');
-Route::post('/doctor/specialization', [DoctorController::class, 'filter'])->name('filter');
+Route::post('/get-doctors', [DoctorController::class, 'filter'])->name('filter');
 
 //   RESISTER AND LOGIN
-Route::get('/login', [AdminController::class, 'login'])->name('admin.login');
-Route::post('/login', [AdminController::class, 'loginProcess'])->name('admin.loginProcess');
+Route::prefix('admin')->group(function (){
+    Route::get('/login', [AdminController::class, 'login'])->name('admin.login');
+    Route::post('/login', [AdminController::class, 'loginProcess'])->name('admin.loginProcess');
 
-Route::get('/register', [AdminController::class, 'register'])->name('admin.register');
-Route::post('/registerProcess', [AdminController::class, 'registerProcess'])->name('admin.registerProcess');
+    Route::get('/register', [AdminController::class, 'register'])->name('admin.register');
+    Route::post('/registerProcess', [AdminController::class, 'registerProcess'])->name('admin.registerProcess');
 
-Route::get('/forgot-password', [ForgotPasswordController::class, 'showLinkRequestForm'])->name('password.request');
-Route::post('/forgot-password', [ForgotPasswordController::class, 'sendResetLinkEmail'])->name('password.email');
-Route::get('/reset-password/{token}', [ResetPasswordController::class, 'showResetForm'])->name('password.reset');
-Route::post('/reset-password', [ResetPasswordController::class, 'reset'])->name('password.update');
+    Route::get('/forgot-password', [ForgotPasswordController::class, 'showLinkRequestForm'])->name('password.request');
+    Route::post('/forgot-password', [ForgotPasswordController::class, 'sendResetLinkEmail'])->name('password.email');
+    Route::get('/reset-password/{token}', [ResetPasswordController::class, 'showResetForm'])->name('password.reset');
+    Route::post('/reset-password', [ResetPasswordController::class, 'reset'])->name('password.update');
+});
+
 
 Route::middleware(CheckLoginAdmin::class)->group(function (){
         Route::get('/admin/index', [StaticController::class, 'index'])->name('admin.index');
 });
 
-//STATIC MANAGE
+//STATISTIC MANAGE
 Route::middleware(CheckLoginAdmin::class)->group(function (){
     Route::prefix('manage_static')->group(function (){
-        Route::get('/statistic/index', [StaticController::class, 'index'])->name('static.index');
-//        Route::get('/create', [DoctorController::class, 'create'])->name('doctor.create');
-//        Route::post('/create', [DoctorController::class, 'store'])->name('doctor.store');
-//        Route::get('/{doctor}/edit', [DoctorController::class, 'edit'])->name('doctor.edit');
-//        Route::put('/{doctor}/edit', [DoctorController::class, 'update'])->name('doctor.update');
-//        Route::delete('{doctor}', [DoctorController::class, 'destroy'])->name('doctor.destroy');
+        Route::get('/index', [StaticController::class, 'index'])->name('static.index');
     });
 
 });
@@ -53,12 +54,12 @@ Route::middleware(CheckLoginAdmin::class)->group(function (){
 //     DOCTOR MANAGE
 Route::middleware(CheckLoginAdmin::class)->group(function (){
     Route::prefix('manage_doctor')->group(function (){
-        Route::get('/index', [DoctorController::class, 'index'])->name('admin.doctor');
-        Route::get('/create', [DoctorController::class, 'create'])->name('doctor.create');
-        Route::post('/create', [DoctorController::class, 'store'])->name('doctor.store');
-        Route::get('/{doctor}/edit', [DoctorController::class, 'edit'])->name('doctor.edit');
-        Route::put('/{doctor}/edit', [DoctorController::class, 'update'])->name('doctor.update');
-        Route::delete('{doctor}', [DoctorController::class, 'destroy'])->name('doctor.destroy');
+        Route::get('/index', [ManageDoctorController::class, 'index'])->name('admin.doctor');
+        Route::get('/create', [ManageDoctorController::class, 'create'])->name('doctor.create');
+        Route::post('/create', [ManageDoctorController::class, 'store'])->name('doctor.store');
+        Route::get('/{doctor}/edit', [ManageDoctorController::class, 'edit'])->name('doctor.edit');
+        Route::put('/{doctor}/edit', [ManageDoctorController::class, 'update'])->name('doctor.update');
+        Route::delete('{doctor}', [ManageDoctorController::class, 'destroy'])->name('doctor.destroy');
         Route::get('/logout', [AdminController::class, 'logout'])->name('admin.logout');
     });
 
@@ -80,18 +81,18 @@ Route::middleware(CheckLoginAdmin::class)->group(function(){
 });
 
 
-//      Specialization Manage
+//      Department Manage
 Route::middleware(CheckLoginAdmin::class)->group( function(){
-    Route::prefix('manage_specialization')->group(function (){
-        Route::get('/index', [SpecializationController::class, 'index'])->name('specialization.index');
-        Route::get('/create', [SpecializationController::class, 'create'])->name('specialization.create');
-        Route::post('/create', [SpecializationController::class, 'store'])->name('specialization.store');
-        Route::get('{specialization}/edit', [SpecializationController::class, 'edit'])
-            ->name('specialization.edit');
-        Route::put('{specialization}/edit', [SpecializationController::class, 'update'])
-            ->name('specialization.update');
-        Route::delete('{specialization}', [SpecializationController::class, 'destroy'])
-            ->name('specialization.destroy');
+    Route::prefix('manage_department')->group(function (){
+        Route::get('/index', [DepartmentController::class, 'index'])->name('department.index');
+        Route::get('/create', [DepartmentController::class, 'create'])->name('department.create');
+        Route::post('/create', [DepartmentController::class, 'store'])->name('department.store');
+        Route::get('{department}/edit', [DepartmentController::class, 'edit'])
+            ->name('department.edit');
+        Route::put('{department}/edit', [DepartmentController::class, 'update'])
+            ->name('department.update');
+        Route::delete('{department}', [DepartmentController::class, 'destroy'])
+            ->name('department.destroy');
     });
 
 });
@@ -100,12 +101,13 @@ Route::middleware(CheckLoginAdmin::class)->group( function(){
 Route::middleware(CheckLoginAdmin::class)->group(function(){
     Route::prefix('manage_appointment')->group(function () {
         Route::get('/index', [AppointmentController::class, 'index'])->name('appointment.index');
+        Route::get('/appointments/{id}', [AppointmentController::class, 'show']);
+
         Route::get('/create', [AppointmentController::class, 'create'])->name('appointment.create');
         Route::post('/create', [AppointmentController::class, 'store'])->name('appointment.store');
         Route::get('{appointment}/edit', [AppointmentController::class, 'edit'])->name('appointment.edit');
         Route::put('{appointment}/edit', [AppointmentController::class, 'update'])->name('appointment.update');
         Route::delete('{appointment}', [AppointmentController::class, 'destroy'])->name('appointment.destroy');
-//        Route::get('/events', [AppointmentController::class, 'getEvents'])->name('appointment.getEvent');
         Route::get('/schedule', [AppointmentController::class, 'showData'])->name('appointment.showData');
     });
 });
@@ -135,38 +137,68 @@ Route::prefix('customer')->group(function () {
 
     Route::get('{profile}/edit', [ClientController::class, 'edit'])->name('profile.edit');
     Route::put('{profile}/edit', [ClientController::class, 'update'])->name('profile.update');
-
-    Route::get("/doctor_{doctor}/detail", [ClientController::class, 'doctorDetail'])->name('doctor_detail');
 });
 
 Route::middleware(CheckLoginCustomer::class)->group(function() {
-    Route::delete('{doctor}', [ClientController::class, 'destroy'])->name('client.destroy');
-
-    Route::get('/appointment', [ClientController::class, 'appointment'])->name('appointment.choose');
+    Route::get("/doctor_{doctor}/detail", [ClientController::class, 'doctorDetail'])->name('doctor_detail');
     Route::get('/doctor_list', [ClientController::class, 'doctor_list'])->name('appointment.doctor_list');
+    Route::get('/book_doctor_{id}', [ClientController::class, 'appointmentForm'])->name('appointment.Form');
+
     Route::get('/appointment_list', [ClientController::class, 'appointment_list'])
         ->name('appointment.list');
-    Route::get('/book_doctor_{id}', [ClientController::class, 'appointmentForm'])->name('appointment.Form');
+    Route::get('/appointment_{appointment}_detail', [ClientController::class, 'appointment_detail'])
+        ->name('appointment.detail');
+    Route::get('/edit_appointment/{appointment}', [ClientController::class, 'editAppointment'])
+        ->name('customer.editAppointment');
+    Route::put('/edit_appointment/{appointment}', [ClientController::class, 'updateAppointment'])
+        ->name('customer.updateAppointment');
+    Route::put('/cancel_appointment/{appointment}', [ClientController::class, 'cancelAppointment'])
+        ->name('customer.cancelAppointment');
+    Route::put('/undoCancel_appointment/{appointment}', [ClientController::class, 'undoCancel'])
+        ->name('customer.undoCancel');
+
     Route::post('/store', [ClientController::class, 'storeForm'])->name('appointment.storeForm');
 
     Route::get('/logout', [CustomerController::class, 'logout'])->name('customer.logout');
+
+    Route::get('/payment/appointmentId={appointments}', [ClientController::class, 'payment'])->name('customer.payment');
+    Route::post('/vnpay_payment', [VnpayController::class, 'createPayment'])->name('vnpay.payment');
+    Route::get('/vnpay_return', [VnpayController::class, 'vnpayReturn'])->name('vnpay.return');
 });
 
 
 //      Doctor
-//Route::prefix('doctor')->group(function () {
-//    Route::get('login', [DoctorController::class, 'login'])->name('doctor.login');
-//    Route::post('login', [DoctorController::class, 'loginProcess'])->name('doctor.loginProcess');
-//
-//    Route::get('{profile}/edit', [DoctorController::class, 'edit'])->name('doctor.editProfile');
-//    Route::put('{profile}/edit', [DoctorController::class, 'update'])->name('doctor.updateProfile');
-//});
-
 Route::prefix('doctor')->group(function () {
-    Route::get('/appointment', [DoctorController::class, 'appointment_list'])
-        ->name('doctor.appointmentList');
-    Route::get('/doctor/logout', [DoctorController::class, 'logout'])->name('doctor.logout');
+    Route::get('login', [DoctorController::class, 'login'])->name('doctor.login');
+    Route::post('login', [DoctorController::class, 'loginProcess'])->name('doctor.loginProcess');
+
+    Route::get('/forgot-password', [ForgotPasswordController::class, 'showDoctorRequestForm'])->name('doctor.requestPw');
+    Route::post('/forgot-password', [ForgotPasswordController::class, 'sendResetLinkDoctorEmail'])->name('doctor.requestEmail');
+    Route::get('/reset-password/{token}', [ResetPasswordController::class, 'showDoctorResetForm'])->name('doctor.resetPw');
+    Route::post('/reset-password', [ResetPasswordController::class, 'resetDoctorPw'])->name('doctor.updatePw');
+
+    Route::get('{profile}/edit', [DoctorController::class, 'edit'])->name('doctor.editProfile');
+    Route::put('{profile}/edit', [DoctorController::class, 'update'])->name('doctor.updateProfile');
 });
+
+Route::middleware(CheckLoginDoctor::class)->group(function() {
+    Route::prefix('doctor')->group(function () {
+        Route::get('/index', [DoctorController::class, 'index'])
+            ->name('doctor.index');
+        Route::get('/appointment', [DoctorController::class, 'appointment_list'])
+            ->name('doctor.appointmentList');
+        Route::get('/edit_appointment/{appointment}', [DoctorController::class, 'editAppointment'])
+            ->name('doctor.editAppointment');
+        Route::put('/edit_appointment/{appointment}', [DoctorController::class, 'updateAppointment'])
+            ->name('doctor.updateAppointment');
+        Route::get('/schedule', [DoctorController::class, 'schedule'])
+            ->name('doctor.schedule');
+        Route::get('/logout', [DoctorController::class, 'logout'])->name('doctor.logout');
+    });
+});
+
+Route::get('/send-mail', [MailController::class, 'sendMail']);
+
 
 
 

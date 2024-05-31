@@ -19,16 +19,16 @@
                 <input class="form-control" type="email" name="email" value="{{ $doctor->email  }}"><br>
             </div>
             <div class="col-md-6">
-                <label class="form-label">Specialization</label>
-                <select class="form-select dropdown" type="text" name="specialization" >
+                <label class="form-label">Department</label>
+                <select class="form-select dropdown" type="text" name="department_id" >
                     <option disabled selected> -- Choose -- </option>
-                    @foreach($specialization as $specialization)
-                        <option value="{{ $specialization->id }}"
-                        @if($doctor->specialization_id == $specialization->id)
+                    @foreach($departments as $department)
+                        <option value="{{ $department->id }}"
+                        @if($doctor->department_id == $department->id)
                             {{ 'selected' }}
                             @endif
                         >
-                        {{ $specialization -> name}}
+                        {{ $department -> name}}
                     @endforeach
                 </select><br>
             </div>
