@@ -24,15 +24,12 @@
     <div class="col-4">
         <div>
             <h4 class="d-flex justify-content-center"> Payment Method </h4>
-{{--            <button type="submit" name="payment_method" style="border-radius: 0; width:100%" class="btn btn-success px-4" value="1">--}}
-{{--                Pay with cash--}}
-{{--            </button>--}}
-{{--               <button type="submit" name="payment_method" style="border-radius: 0; width:100%" class="btn btn-warning px-4" value="2">--}}
-{{--                   Banking--}}
-{{--               </button>--}}
-{{--               <button type="submit" name="payment_method" style="background-color: #f3209f" class="payment_button" value="3">--}}
-{{--                   Pay with Momo--}}
-{{--               </button>--}}
+               <button type="submit" name="payment_method" style="border-radius: 0; width:100%" class="btn btn-warning px-4" value="2">
+                   Banking
+               </button>
+               <button type="submit" name="payment_method" style="background-color: #f3209f" class="payment_button" value="3">
+                   Pay with Momo
+               </button>
             <form class="d-block" id="paymentForm" method="POST" action="{{ route('vnpay.payment',$appointments )}}" enctype="application/x-www-form-urlencoded">
                 @csrf
                 @method('post')

@@ -6,12 +6,13 @@ use App\Models\Appointment;
 use Exception;
 use Illuminate\Http\Request;
 use Illuminate\Support\Arr;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Redirect;
 
 class VnpayController extends Controller
 {
-    public function createPayment(Request $request)
+    public function createPayment(Request $request, Appointment $appointments)
     {
         $vnp_Url = "https://sandbox.vnpayment.vn/paymentv2/vpcpay.html";
         $vnp_Returnurl = "http://fraud.com/vnpay_return";
@@ -47,9 +48,6 @@ class VnpayController extends Controller
             "vnp_ReturnUrl" => $vnp_Returnurl,
             "vnp_TxnRef" => $vnp_TxnRef,
         );
-
-        // Lưu thông tin vào session
-        session(['vnp_TxnRef' => $vnp_TxnRef, 'vnp_Amount' => $vnp_Amount]);
 
         if (isset($vnp_BankCode) && $vnp_BankCode != "") {
             $inputData['vnp_BankCode'] = $vnp_BankCode;
@@ -90,7 +88,7 @@ class VnpayController extends Controller
         }
     }
 
-    public function vnpayReturn(Request $request, Appointment $appointment)
+    public function vnpayReturn(Request $request)
     {
         $returnData = array();
         $inputData = $request->all();
@@ -116,21 +114,19 @@ class VnpayController extends Controller
         $secureHash = hash_hmac('sha512', $hashData, $vnp_HashSecret);
 
         if ($secureHash == $vnp_SecureHash) {
-            // Lấy thông tin từ session
-            $vnp_TxnRef = session('vnp_TxnRef');
-            $vnp_Amount = session('vnp_Amount');
-
             if ($inputData['vnp_ResponseCode'] == '00') {
-                // Thanh toán thành công
-                $array = [];
-                $array = Arr::add($array, 'payment_status', 1);
-                $array = Arr::add($array, 'payment_method', 4);
-                Appointment::where('id', $vnp_TxnRef)->update($array);
+                $customerId = Auth::guard('customer')->id();
+                $appointments = Appointment::where('customer_id', $customerId)
+                    ->latest()->first();
+                $appointments->payment_status = 2;
+                $appointments->payment_method = 4;
+                $appointments->update();
 
-                return Redirect::route('index')->with('success', 'Appointment created successfully!');
+                return Redirect::route('index')
+                    ->with('success', 'Appointment created successfully!');
             } else {
                 // Thanh toán thất bại
-                return view('customer.payment.failure', ['txnRef' => $vnp_TxnRef, 'amount' => $vnp_Amount]);
+                return view('customer.payment.failure');
             }
         } else {
             // Sai chữ ký

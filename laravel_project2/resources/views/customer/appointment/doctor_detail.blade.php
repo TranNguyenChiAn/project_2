@@ -14,19 +14,22 @@
     <div class="card mt-3 shadow-sm rounded-0 bg-white border-0 mb-3" style="width: 80%">
         <div class="card-body">
             <div class="row">
-                <div class="col-4">
+                <div class="col-3">
                     <img class="rounded-circle" height="180px" width="180px"
                          src="{{ asset('./images/'. $doctors->image)}}"
                          style="object-fit: cover; object-position: top" alt="doctor_portrait">
                 </div>
-                <div class="col-8">
+                <div class="col-6 mt-3">
                     <b>Name:</b> {{$doctors -> name }}<br>
                     <b>Department:</b> {{$doctors -> department-> name }}<br>
                     <b>Email:</b> {{$doctors -> email}}<br>
                     <b>Time:</b>
                     @foreach($shift_details as $shift_detail)
-                        <p class="text-muted mb-0">{{$shift_detail -> shift -> start_time}} - {{$shift_detail -> shift-> end_time}}</p>
+                        <span class="text-muted mb-0 px-1">{{$shift_detail -> shift -> start_time}} - {{$shift_detail -> shift-> end_time}} |</span>
                     @endforeach
+                </div>
+                <div class="col-2">
+                    <h4 class="text-success" style="font-weight: bold"> 150.000 VND</h4>
                 </div>
             </div>
         </div>
@@ -142,3 +145,4 @@
 </script>
 </body>
 </html>
+@include('customer.layout.footer')

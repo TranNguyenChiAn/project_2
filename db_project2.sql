@@ -1,5 +1,6 @@
 create database project2;
 use project2;
+
 drop database project2;
 
 create table admins(
@@ -125,6 +126,7 @@ CREATE TABLE appointments (
     room_id INT NOT NULL,
     status INT NOT NULL,
     payment_method INT,
+    payment_status INT,
     customer_note TEXT,
     update_by INT,
     FOREIGN KEY (doctor_id) REFERENCES doctors(id) ON DELETE CASCADE,
@@ -136,25 +138,30 @@ CREATE TABLE appointments (
 );
 
 
-alter table appointments change note customer_notes TEXT;
+delete from appointments where id = 57 or id = 58 ;
+
+alter table appointments change created_id created_at timestamp;
 alter table appointments add column doctor_notes TEXT;
 alter table appointments add column payment_status INT;
+alter table appointments add column created_id timestamp;
 
-update appointments set fee_status = 1;
 update appointments set approval_status = 1 where id = 19;
 
-update appointments set payment_status = 0;
+update appointments set payment_status = 1 where payment_status = 0;
 
 set sql_safe_updates = 0;
 
 select * from appointments;
 
+select * from appointments where payment_status = 2;
 
 select doctors.*, shifts.start_time, shifts.end_time 
 from doctors
 join shifts on shifts.doctor_id = doctors.id;
 
-select * from appointments;
+SELECT * FROM appointments WHERE date = '2024-31-05' AND doctor_id = 5;
 
+select * from customers;
 
+select count(*) from appointments where date >= '2024-06-03' and date < '2024-06-10';
 

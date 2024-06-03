@@ -41,12 +41,12 @@
                 </a>
             </li>
             <li class="nav-item">
-                <a href="#" class="nav-link link-custom" id="contact" style="color: grey">
+                <a href="{{route('customer.contact')}}" class="nav-link link-custom" id="contact" style="color: grey">
                     Contact
                 </a>
             </li>
             <li class="nav-item">
-                <a href="#" class="nav-link link-custom" id="about_us" style="color: grey">
+                <a href="{{route('customer.about_us')}}" class="nav-link link-custom" id="about_us" style="color: grey">
                     About us
                 </a>
             </li>

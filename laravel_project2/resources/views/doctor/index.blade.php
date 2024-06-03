@@ -1,7 +1,6 @@
 @vite(["resources/sass/app.scss", "resources/js/app.js"])
 @include('doctor.layout.nav')
 
-
 <title>Schedule</title>
 <style>
     thead {
@@ -14,27 +13,37 @@
         text-decoration: none;
     }
 </style>
-<section style="margin-left: 260px; margin-right: 30px;">
+<section style="margin-left: 190px">
     <div class="container">
-        <div class="row">
-            <div class="d-flex justify-content-between p-4">
-                <h2 class="m-0" style="margin-top: 18px"><b> Schedule </b></h2>
-                <button class="btn btn-primary rounded-5 p-2 px-3">
-                    <a href="{{ route('appointment.create') }}" class="nav-link text-white">
-                        Create New
-                        <i class="bi bi-plus-square"></i>
-                    </a>
-                </button>
-
+        <h2 class="mx-3"><b> Schedule </b></h2>
+        <div class="container d-flex">
+            <div class="card rounded-3" style="border: 2px solid #5b9591e0; width: 100%">
+                <div class="card-body">
+                    <div id="calendar" ></div>
+                </div>
+            </div>
+            {{--            Today--}}
+            <div class="card h-100" style="margin-left: 18px; border: 2px solid #5b9591e0; width: 260px">
+                <div class="card-body d-flex flex-column">
+                    <p><b> Today's customers </b></p>
+                    @if($appointments_today_count > 0)
+                        @foreach($appointments_today as $appointment_today)
+                            <button class="btn rounded-3" style="background-color: #8ae8d4">
+                                <a class="text-dark text-decoration-none" href="{{route('doctor.editAppointment', $appointment_today)}}">
+                                    <div class="d-flex flex-column align-items-center">
+                                        <p class="text-white m-0">{{$appointment_today -> time}}</p>
+                                        <p class="m-0"><b>{{$appointment_today -> customer_name}}</b></p>
+                                    </div>
+                                </a>
+                            </button>
+                        @endforeach
+                    @else
+                        <p>No appointments for today.</p>
+                    @endif
+                </div>
             </div>
         </div>
 
-        <div class="card">
-            <div class="card-body">
-                <div id="calendar"></div>
-
-            </div>
-        </div>
     </div>
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/fullcalendar@6.1.8/index.global.min.js"></script>
@@ -54,15 +63,14 @@
                 right: 'dayGridMonth,timeGridWeek,timeGridDay'
             },
             events: [
-                    @foreach ($appointments as $appointment) {
-                    title: 'Dr. {{ $appointment->doctor->name }}',
-                    start: '{{ $appointment->date }}T{{ $appointment->time }}',
-                    url: '{{ route('doctor.editAppointment', $appointment )}}',
-                    backgroundColor: '#2f2ffe',
+                    @foreach ($appointments_today as $appointment_today) {
+                    title: '{{ $appointment_today->customer_name }}',
+                    start: '{{ $appointment_today->date }}',
+                    url: '{{ route('doctor.editAppointment', $appointment_today)}}',
+                    backgroundColor: '#5777dc',
                 },
                 @endforeach
             ],
-
         });
         calendar.render();
     });

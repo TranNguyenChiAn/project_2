@@ -15,7 +15,7 @@
                     @method('post')
                     <select class="form-select select2-dropdown"  id="departmentSelect" name="department_id"
                             onChange="fetchDoctorsByDepartment(this.value)">
-                        <option class="" disabled> --Choose -- </option>
+                        <option class="form-control" disabled> -- Choose -- </option>
                         @foreach($departments  as $department)
                             <option value="{{$department->id}}" name="department_id">
                                 {{$department->name}}

@@ -62,8 +62,20 @@ class DoctorController extends Controller
     }
 
     public function index() {
-        $appointments = Appointment::all();
-        return view('doctor.index', compact('appointments'));
+        // Lấy ngày hiện tại
+        $today = date('Y-m-d');
+
+        $doctorId = Auth::guard('doctor')->id();
+        $appointments_today = Appointment::with('doctor')
+            ->where('date', $today)
+            ->where('doctor_id', $doctorId)
+            ->get();
+        $appointments_today_count = $appointments_today->count();
+
+        return view('doctor.index', [
+            'appointments_today' => $appointments_today,
+            'appointments_today_count' => $appointments_today_count,
+        ]);
     }
 
     public function appointment_list() {
@@ -97,8 +109,19 @@ class DoctorController extends Controller
     }
 
     public function schedule(){
-        $appointments = Appointment::all();
-        return view('doctor.index', compact('appointments'));
+        // Lấy ngày hiện tại
+        $today = date('Y-m-d');
+
+        $doctorId = Auth::guard('doctor')->id();
+        $appointments_today = Appointment::with('doctor')
+            ->where('date', $today)
+            ->where('doctor_id', $doctorId)
+            ->get();
+        $appointments_today_count = $appointments_today->count();
+        return view('doctor.index', [
+            'appointments_today' => $appointments_today,
+            'appointments_today_count' => $appointments_today_count,
+        ]);
     }
 
     public function show($id)

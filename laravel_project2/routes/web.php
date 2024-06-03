@@ -3,7 +3,7 @@
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\DoctorController;
 use App\Http\Controllers\ManageDoctorController;
-use App\Http\Controllers\StaticController;
+use App\Http\Controllers\StatisticController;
 use App\Http\Controllers\DepartmentController;
 use App\Http\Controllers\CustomerController;
 use App\Http\Controllers\ClientController;
@@ -37,16 +37,17 @@ Route::prefix('admin')->group(function (){
     Route::post('/reset-password', [ResetPasswordController::class, 'reset'])->name('password.update');
 });
 
-
+// STATISTIC
 Route::middleware(CheckLoginAdmin::class)->group(function (){
-        Route::get('/admin/index', [StaticController::class, 'index'])->name('admin.index');
+        Route::get('/admin/index', [StatisticController::class, 'index'])->name('admin.index');
 });
 
 //STATISTIC MANAGE
 Route::middleware(CheckLoginAdmin::class)->group(function (){
-    Route::prefix('manage_static')->group(function (){
-        Route::get('/index', [StaticController::class, 'index'])->name('static.index');
+    Route::prefix('manage_statistic')->group(function (){
+        Route::get('/index', [StatisticController::class, 'index'])->name('statistic.index');
     });
+    Route::post('/get-appointments-data', [StatisticController::class, 'getData'])->name('statistic.getAppointmentsData');
 
 });
 
@@ -134,9 +135,11 @@ Route::prefix('customer')->group(function () {
     Route::post('login', [CustomerController::class, 'loginProcess'])->name('customer.loginProcess');
     Route::get('/register', [CustomerController::class, 'register'])->name('customer.register');
     Route::post('/register', [CustomerController::class, 'registerProcess'])->name('customer.registerProcess');
+    Route::get('/contact_us', [ClientController::class, 'contact_us'])->name('customer.contact');
+    Route::get('/about_us', [ClientController::class, 'about_us'])->name('customer.about_us');
 
-    Route::get('{profile}/edit', [ClientController::class, 'edit'])->name('profile.edit');
-    Route::put('{profile}/edit', [ClientController::class, 'update'])->name('profile.update');
+    Route::get('/{profile}/edit', [ClientController::class, 'edit'])->name('profile.edit');
+    Route::put('/{profile}/edit', [ClientController::class, 'update'])->name('profile.update');
 });
 
 Route::middleware(CheckLoginCustomer::class)->group(function() {

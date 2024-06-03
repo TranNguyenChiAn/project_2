@@ -216,5 +216,13 @@ class ClientController extends Controller
 
     }
 
+    public function contact_us() {
+        return view('customer.homepage.contact_us');
+    }
+
+    public function about_us() {
+        return view('customer.homepage.about_us');
+    }
+
 
 }

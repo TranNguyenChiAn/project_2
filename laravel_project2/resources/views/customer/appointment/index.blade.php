@@ -3,7 +3,7 @@
 
 <title>My appointments</title>
 <section style=" font-family: Inter" class="m-5">
-    <h2 style="font-weight: bold" align="center"> MANAGE APPOINTMENTS </h2>
+    <h2 style="font-weight: bold" align="center"> MY APPOINTMENTS </h2>
     <table class="table table-striped mt-3" style="font-size: 12px">
         <tr>
             <th>ID</th>
@@ -136,13 +136,13 @@
                                         </div>
                                         <div>
                                             <b>Payment status:</b>
-                                            @if( $appointment->payment_status == 1)
-                                                <span class="text-danger"> Not complete </span
-                                            @elseif($appointment->payment_status == 2)
-                                                <span class="text-success"> Completed </span>
-                                                <a href="{{ asset('')}}">
+                                            @if( $appointment->payment_status == 1 and $appointment->approval_status == 1)
+                                                <span class="text-danger"> Not complete </span>
+                                                <a href="{{ route('customer.payment', $appointment)}}">
                                                     Complete now
                                                 </a>
+                                            @elseif($appointment->payment_status == 2)
+                                                <span class="text-success"> Completed </span>
                                             @endif
                                         </div>
                                     </div>
