@@ -17,6 +17,7 @@ use App\Http\Controllers\Auth\ResetPasswordController;
 use App\Http\Middleware\CheckLoginDoctor;
 use App\Http\Controllers\MailController;
 use App\Http\Controllers\VnpayController;
+use App\Http\Controllers\RoomController;
 
 
 Route::get('/', [ClientController::class, 'index'])->name('home');
@@ -61,7 +62,11 @@ Route::middleware(CheckLoginAdmin::class)->group(function (){
         Route::get('/{doctor}/edit', [ManageDoctorController::class, 'edit'])->name('doctor.edit');
         Route::put('/{doctor}/edit', [ManageDoctorController::class, 'update'])->name('doctor.update');
         Route::delete('{doctor}', [ManageDoctorController::class, 'destroy'])->name('doctor.destroy');
+        Route::post('/get-rooms',[ManageDoctorController::class, 'getRooms'])->name('doctor.getRooms');
+
+
         Route::get('/logout', [AdminController::class, 'logout'])->name('admin.logout');
+
     });
 
 });
@@ -126,6 +131,19 @@ Route::middleware(CheckLoginAdmin::class)->group(function(){
     });
 });
 
+//  ROOM MANAGE
+Route::middleware(CheckLoginAdmin::class)->group(function(){
+    Route::prefix('manage_room')->group(function () {
+        Route::get('/index', [RoomController::class, 'index'])->name('room.index');
+        Route::get('/create', [RoomController::class, 'create'])->name('room.create');
+        Route::post('/create', [RoomController::class, 'store'])->name('room.store');
+        Route::get('edit/{room}', [RoomController::class, 'edit'])->name('room.edit');
+        Route::put('edit/{room}', [RoomController::class, 'update'])->name('room.update');
+        Route::delete('{room}', [RoomController::class, 'destroy'])->name('room.destroy');
+
+    });
+});
+
 
 //      Client
 Route::prefix('customer')->group(function () {
@@ -164,7 +182,7 @@ Route::middleware(CheckLoginCustomer::class)->group(function() {
 
     Route::get('/logout', [CustomerController::class, 'logout'])->name('customer.logout');
 
-    Route::get('/payment/appointmentId={appointments}', [ClientController::class, 'payment'])->name('customer.payment');
+    Route::get('/payment/appointmentId={appointment}', [ClientController::class, 'payment'])->name('customer.payment');
     Route::post('/vnpay_payment', [VnpayController::class, 'createPayment'])->name('vnpay.payment');
     Route::get('/vnpay_return', [VnpayController::class, 'vnpayReturn'])->name('vnpay.return');
 });
@@ -190,6 +208,10 @@ Route::middleware(CheckLoginDoctor::class)->group(function() {
             ->name('doctor.index');
         Route::get('/appointment', [DoctorController::class, 'appointment_list'])
             ->name('doctor.appointmentList');
+        Route::get('/create_appointment', [DoctorController::class, 'createAppointment'])
+            ->name('doctor.createAppointment');
+        Route::post('/store', [DoctorController::class, 'storeAppointment'])
+            ->name('doctor.storeAppointment');
         Route::get('/edit_appointment/{appointment}', [DoctorController::class, 'editAppointment'])
             ->name('doctor.editAppointment');
         Route::put('/edit_appointment/{appointment}', [DoctorController::class, 'updateAppointment'])

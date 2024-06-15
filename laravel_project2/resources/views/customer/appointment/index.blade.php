@@ -4,7 +4,7 @@
 <title>My appointments</title>
 <section style=" font-family: Inter" class="m-5">
     <h2 style="font-weight: bold" align="center"> MY APPOINTMENTS </h2>
-    <table class="table table-striped mt-3" style="font-size: 12px">
+    <table class="table table-striped mt-3" style="font-size: 13px">
         <tr>
             <th>ID</th>
             <th>Doctor</th>
@@ -56,8 +56,8 @@
                                 </button>
                             </div>
                             <div class="modal-body">
-                                <p class="m-2"> <b>Personal information</b></p>
-                                <div class="card">
+                                <p> <b>Personal information</b></p>
+                                <div class="card bg-white">
                                     <div class="card-body">
                                         <div class="d-flex justify-content-start">
                                             <i class="bi bi-person-circle fs-1"></i>
@@ -68,7 +68,7 @@
                                                         {{ $appointment-> phone }}
                                                     </i>
                                                     <i class="bi bi-envelope mx-lg-5">
-                                                        {{ session('customer.email') }}
+                                                        {{ $appointment-> customer -> email }}
                                                     </i>
                                                 </div>
                                             </div>
@@ -76,7 +76,7 @@
 
                                         <div class="card mt-2 m-0">
                                             <div class="card-body m-0 p-2 rounded-3" style="background-color: #f4f5f8">
-                                                My notes: <p class="m-0"><b>{{ $appointment -> customer_notes}}</b></p>
+                                                Customer's notes: <p class="m-0"><b>{{ $appointment -> customer_notes}}</b></p>
                                             </div>
                                         </div>
                                         <div class="d-flex justify-content-between mt-2">
@@ -97,32 +97,32 @@
                                 </div>
 
                                 <p class="mt-3 m-2"> <b>Appointment information</b></p>
-                                <div class="card">
+                                <div class="card bg-white">
                                     <div class="card-body">
                                         <div class="d-flex justify-content-between">
                                             <p>
                                                 <b>Doctor: </b><br>
                                                 {{ $appointment-> doctor->name }} - {{ $appointment-> doctor-> department -> name}}
                                             </p>
+                                            <p> <b>Room: </b><br>
+                                                {{$appointment-> doctor -> room -> room_name}}
+                                            </p>
                                             <p><b>Date: </b> <br>
                                                 {{ \Carbon\Carbon::parse($appointment->date)->translatedFormat('l, jS F Y') }},
                                                 {{ \Carbon\Carbon::parse($appointment->time)->format('H:i A') }}
                                             </p>
                                         </div>
-
-                                        <span>
-                                            <b>Room: </b>
-                                            @if($appointment-> room -> room == 0)
-                                                 Pending
-                                            @else
-                                                {{ $appointment-> room -> room  }}
-                                            @endif
-                                        </span>
+                                        <div class="d-flex justify-content-between">
+                                            <p>
+                                                <b>Doctor's notes: </b><br>
+                                                {{ $appointment-> doctor_notes}}
+                                            </p>
+                                        </div>
                                     </div>
                                 </div>
 
                                 <p class="mt-3 m-2"> <b>Status</b></p>
-                                <div class="card">
+                                <div class="card bg-white">
                                     <div class="card-body">
                                         <div class="">
                                             <b>Approval status:</b>
@@ -136,15 +136,23 @@
                                         </div>
                                         <div>
                                             <b>Payment status:</b>
-                                            @if( $appointment->payment_status == 1 and $appointment->approval_status == 1)
+                                            @if( $appointment->payment_status == 1)
                                                 <span class="text-danger"> Not complete </span>
-                                                <a href="{{ route('customer.payment', $appointment)}}">
-                                                    Complete now
-                                                </a>
+                                                <a href="{{ route('customer.payment',  $appointment)}}">Pay now</a>
                                             @elseif($appointment->payment_status == 2)
                                                 <span class="text-success"> Completed </span>
                                             @endif
                                         </div>
+                                        @if($appointment->payment_status == 2)
+                                            <div>
+                                                <b>Payment method:</b>
+                                                @if( $appointment->payment_method == 4)
+                                                    <span class="text-primary"> VN Pay </span>
+                                                @elseif($appointment->payment_method == 2)
+                                                    <span class="text-success"> Completed </span>
+                                                @endif
+                                            </div>
+                                        @endif
                                     </div>
                                 </div>
                             </div>

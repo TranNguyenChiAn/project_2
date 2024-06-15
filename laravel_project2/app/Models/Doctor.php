@@ -13,13 +13,16 @@ class Doctor extends Authenticatable
     protected $table = 'doctors';
     protected $primaryKey = 'id';
     public $timestamps = false;
-    protected $fillable = ['name', 'email','password','gender_id', 'department_id', 'contact_number','address', 'image', 'status'];
+    protected $fillable = ['name', 'email','password','gender_id', 'department_id', 'contact_number', 'room_id','address', 'image', 'isDeleted'];
 
     public function gender(){
         return $this->belongsTo(Gender::class);
     }
     public function department(){
         return $this->belongsTo(Department::class);
+    }
+    public function room(){
+        return $this->belongsTo(Room::class);
     }
 
     public function appointment(){

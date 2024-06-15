@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Appointment;
+use App\Models\Customer;
 use App\Models\Doctor;
 use App\Models\Gender;
 use App\Models\Room;
@@ -68,7 +69,7 @@ class DoctorController extends Controller
         $doctorId = Auth::guard('doctor')->id();
         $appointments_today = Appointment::with('doctor')
             ->where('date', $today)
-            ->where('doctor_id', $doctorId)
+            ->where('doctor_id','=', $doctorId)
             ->get();
         $appointments_today_count = $appointments_today->count();
 
@@ -80,7 +81,9 @@ class DoctorController extends Controller
 
     public function appointment_list() {
         $doctor = Auth::guard('doctor')->check();
+        $doctorId = Auth::guard('doctor')->id();
         $appointments = Appointment::with('doctor')
+            ->where('doctor_id','=', $doctorId)
             ->orderBy('id', 'desc')
             ->paginate(5);
 
@@ -124,6 +127,29 @@ class DoctorController extends Controller
         ]);
     }
 
+    public function storeAppointment(Request $request){
+
+        $doctorId = Auth::guard('doctor')->id();
+        $maxCustomerId = Customer::max('customer_id') + 1;
+        $appointment = [];
+        $appointment = Arr::add($appointment, 'doctor_id', $doctorId);
+        $appointment = Arr::add($appointment, 'customer_id', $maxCustomerId);
+        $appointment = Arr::add($appointment, 'customer_name', $request->customer_name);
+        $appointment = Arr::add($appointment, 'date_birth', $request->date_birth);
+        $appointment = Arr::add($appointment, 'gender_id', $request-> input('gender_id'));
+        $appointment = Arr::add($appointment, 'phone', $request->phone_number);
+        $appointment = Arr::add($appointment, 'date', $request->date);
+        $appointment = Arr::add($appointment, 'time', $request->time);
+        $appointment = Arr::add($appointment, 'customer_notes', $request->customer_notes);
+        $appointment = Arr::add($appointment, 'insurance_number', $request->insurance_number);
+        $appointment = Arr::add($appointment, 'doctor_notes', $request->customer_notes);
+        $appointment = Arr::add($appointment, 'approval_status', 1);
+        $appointment = Arr::add($appointment, 'appointment_status', 1);
+        Appointment::create($appointment);
+
+        return Redirect::route('doctor.appointmentList');
+    }
+
     public function show($id)
     {
         $appointment = Appointment::with('doctor')->findOrFail($id);
@@ -142,9 +168,9 @@ class DoctorController extends Controller
 
     public function updateAppointment(Appointment $appointment, Request $request){
         $array = [];
-        $array = Arr::add($array, 'room_id', $request->room_id);
         $array = Arr::add($array, 'approval_status', $request->approval_status);
         $array = Arr::add($array, 'appointment_status', $request->appointment_status);
+        $array = Arr::add($array, 'doctor_notes', $request->doctor_notes);
         $appointment->update($array);
 
         return Redirect::route('doctor.appointmentList');

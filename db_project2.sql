@@ -28,12 +28,37 @@ create table departments(
 insert into departments( name) Values 
 ('Rheumatology'), 
 ('Dermatology'), 
-('Dentistry '),
+('Dentistry'),
 ('Cardiology'), 
 ('Ophthalmology'),
 ('Urology'), 
 ('Neurology');
+select * from departments;
 
+create table consulting_rooms(
+	id INT auto_increment,
+    floor INT NOT NULL,
+    room_name varchar(255) NOT NULL,
+    primary key(id)
+);
+
+insert into consulting_rooms ( floor,  room_name ) Values 
+(1,'Rheumatology 1'), 
+(1, 'Rheumatology 2'), 
+(1, 'Dermatology 1'), 
+(1, 'Dermatology 2'), 
+(2, 'Dentistry 1'),
+(2, 'Dentistry 2'),
+(2, 'Cardiology 1'), 
+(2, 'Cardiology 2'), 
+(3, 'Ophthalmology 1'),
+(3, 'Ophthalmology 2'),
+(3, 'Urology 1'), 
+(3, 'Urology 2'), 
+(4, 'Neurology 1'),
+(4, 'Neurology 2');
+
+select * from consulting_rooms;
 
 CREATE TABLE doctors (
     id INT AUTO_INCREMENT PRIMARY KEY,
@@ -43,16 +68,15 @@ CREATE TABLE doctors (
     password VARCHAR(255) NOT NULL,
     department_id INT NOT NULL,
     contact_number VARCHAR(15) UNIQUE NOT NULL,
+    room_id INT,
     address TEXT NOT NULL,
     image text,
+    status int NOT NULL,
     status INT,
     foreign key (department_id) references departments(id) ON DELETE CASCADE,
-    foreign key (gender_id) references genders(id) ON DELETE CASCADE
+    foreign key (gender_id) references genders(id) ON DELETE CASCADE,
+    foreign key (room_id) references rooms(id) ON DELETE CASCADE
 );
-
-alter table doctors add column status INT;
-update doctors set status = 0;
-
 select * from doctors;
 
 create table shifts(
@@ -75,36 +99,21 @@ select * from shifts;
 
 SET SQL_SAFE_UPDATES = 0;
 
-
 create table customers(
 	id INT auto_increment primary key,
     name VARCHAR(100) NOT NULL,
     email VARCHAR(255) NOT NULL unique,
     phone VARCHAR(10),
     address TEXT,
+    status INT,
     password VARCHAR(255) NOT NULL
 );
 select * from customers;
 
-create table consulting_rooms(
-	id INT auto_increment,
-    floor INT NOT NULL,
-    room INT NOT NULL,
-    primary key(id)
-);
+alter table customers add column status INT;
 
-insert into consulting_rooms ( floor,  room ) Values 
-(0, 0),
-(1, 101),
-(1, 102),
-(1, 103),
-(2, 201),
-(2, 202),
-(2, 203),
-(3, 301),
-(3, 302),
-(3, 303);
-select * from consulting_rooms;
+
+update customers set status = 0;
 
 create table payment_method(
 	id INT auto_increment primary key,
@@ -123,7 +132,6 @@ CREATE TABLE appointments (
     date DATE NOT NULL,
     time TIME NOT NULL,
     phone VARCHAR(10) NOT NULL,
-    room_id INT NOT NULL,
     status INT NOT NULL,
     payment_method INT,
     payment_status INT,
@@ -138,16 +146,19 @@ CREATE TABLE appointments (
 );
 
 
-delete from appointments where id = 57 or id = 58 ;
+delete from appointments where id = 78;
 
 alter table appointments change created_id created_at timestamp;
 alter table appointments add column doctor_notes TEXT;
 alter table appointments add column payment_status INT;
 alter table appointments add column created_id timestamp;
 
-update appointments set approval_status = 1 where id = 19;
+alter table appointments drop column room_id;
+SET FOREIGN_KEY_CHECKS=0;
 
-update appointments set payment_status = 1 where payment_status = 0;
+update appointments set approval_status = 1 where id = 76;
+
+update appointments set appointment_status = 1 where id = 76;
 
 set sql_safe_updates = 0;
 
@@ -155,13 +166,15 @@ select * from appointments;
 
 select * from appointments where payment_status = 2;
 
-select doctors.*, shifts.start_time, shifts.end_time 
-from doctors
-join shifts on shifts.doctor_id = doctors.id;
+select doctors.name as doctor_name, doctors.department_id, departments.name, shifts.start_time, shifts.end_time
+from shift_details
+join shifts on shift_details.shift_id = shifts.id
+join doctors on shift_details.doctor_id = doctors.id
+join departments on departments.id = doctors.department_id;
 
 SELECT * FROM appointments WHERE date = '2024-31-05' AND doctor_id = 5;
 
 select * from customers;
 
-select count(*) from appointments where date >= '2024-06-03' and date < '2024-06-10';
+
 

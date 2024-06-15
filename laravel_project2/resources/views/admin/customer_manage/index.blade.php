@@ -6,27 +6,19 @@
     <h2 style="font-weight: bold" align="center"> MANAGE CUSTOMERS </h2>
     <table class="table table-striped mt-3">
         <tr>
-            <td>ID</td>
-            <td>Name</td>
-            <td>Email</td>
-{{--            <td>Edit</td>--}}
-{{--            <td>Delete</td>--}}
+            <th>ID</th>
+            <th>Name</th>
+            <th>Email</th>
+            <th>Phone</th>
+            <th>Address</th>
         </tr>
         @foreach($customers as $customer)
         <tr>
             <td> {{ $customer-> id }}</td>
             <td> {{ $customer -> name }}</td>
             <td> {{ $customer -> email }}</td>
-{{--            <td>--}}
-{{--                <a class="nav-link link-primary" href="{{ route('customer.edit', $customer) }}"> Edit </a>--}}
-{{--            </td>--}}
-{{--            <td>--}}
-{{--                <form method="post" action="{{ route('customer.destroy', $customer) }}">--}}
-{{--                    @csrf--}}
-{{--                    @method('DELETE')--}}
-{{--                    <button type="submit" class="btn btn-danger">Delete</button>--}}
-{{--                </form>--}}
-{{--            </td>--}}
+            <td> {{ $customer -> phone }}</td>
+            <td> {{ $customer -> address }}</td>
         </tr>
         @endforeach
     </table>

@@ -3,21 +3,9 @@
 
 <script src="https://cdn.jsdelivr.net/npm/alpinejs@2" defer></script>
 <title>Doctor appointments</title>
-<section style="margin-left: 190px; padding: 18px; background-color: white" class="vh-100">
-    <form method="get" action="{{ route('doctor.index') }}" class="d-flex justify-content-between" role="search"
-          style="width: 360px">
-        @csrf
-        <input class="form-control p-2 px-3" name="search" type="text" aria-label="Search"
-               placeholder="Type to search..." style="width: 300px">
-        <button class="btn btn-primary ml-3" type="submit"> Search </button>
-    </form>
+<section style="margin-left: 190px; padding: 18px; background-color: white">
     <div class="d-flex justify-content-between mt-3">
         <h5 style="font-weight: bold"> All appointments </h5>
-        <button class="btn btn-primary float-end" type="submit">
-            <a class="nav-link text-white" href="{{ route('appointment.create')}}">
-                + Add an appointment
-            </a>
-        </button>
     </div>
 
     <div class="card mt-2">
@@ -25,7 +13,6 @@
             <table class="table table-borderless" style="font-size: 12px">
                 <tr class="border-bottom border-primary">
                     <th>ID</th>
-                    <th>Doctor</th>
                     <th>Customer's information</th>
                     <th>Date</th>
                     <th>Time</th>
@@ -37,7 +24,6 @@
                 @foreach($appointments as $appointment)
                     <tr>
                         <td> {{ $appointment -> id }}</td>
-                        <td> {{ $appointment-> doctor->name }}</td>
                         <td> {{ $appointment-> customer_name }}</td>
                         <td> {{ $appointment-> date }}</td>
                         <td> {{ $appointment-> time  }}</td>
@@ -84,8 +70,8 @@
                                         </button>
                                     </div>
                                     <div class="modal-body">
-                                        <p class="m-2"> <b>Customer's information</b></p>
-                                        <div class="card">
+                                        <p> <b>Customer's information</b></p>
+                                        <div class="card bg-white">
                                             <div class="card-body">
                                                 <div class="d-flex justify-content-start">
                                                     <i class="bi bi-person-circle fs-1"></i>
@@ -96,14 +82,24 @@
                                                                 {{ $appointment-> phone }}
                                                             </i>
                                                             <i class="bi bi-envelope mx-lg-5">
-                                                                {{ session('customer.email') }}
+                                                                @if($appointment-> customer->email != null)
+                                                                    {{ $appointment-> customer->email }}
+                                                                @else
+                                                                    <p>Empty</p>
+                                                                @endif
+
                                                             </i>
                                                         </div>
                                                     </div>
                                                 </div>
 
+                                                <div class="card mt-2 m-0">
+                                                    <div class="card-body m-0 p-2 rounded-3" style="background-color: #f4f5f8">
+                                                        Customer's notes: <p class="m-0"><b>{{ $appointment -> customer_notes}}</b></p>
+                                                    </div>
+                                                </div>
                                                 <div class="d-flex justify-content-between mt-2">
-                                                    <span><b>Insurance number: </b>{{ $appointment-> insurance_number }} </span>
+                                                    <span><b>Insurance number: <br>{{ $appointment-> insurance_number }} </b></span>
                                                     <div class="mx-lg-5">
                                                         <i class="bi bi-cake2">
                                                             <b>{{ $appointment-> date_birth }}</b>
@@ -113,43 +109,39 @@
                                                             <b>{{ $appointment-> gender->name }}</b>
                                                         </i>
                                                     </div>
+
                                                 </div>
 
-                                                <div class="card mt-2 m-0">
-                                                    <div class="card-body m-0 p-2 rounded-3" style="background-color: #f4f5f8">
-                                                        Customer's notes: <p class="m-0"><b>{{ $appointment -> customer_notes}}</b></p>
-                                                    </div>
-                                                </div>
                                             </div>
                                         </div>
 
                                         <p class="mt-3 m-2"> <b>Appointment information</b></p>
-                                        <div class="card">
+                                        <div class="card bg-white">
                                             <div class="card-body">
                                                 <div class="d-flex justify-content-between">
                                                     <p>
                                                         <b>Doctor: </b><br>
                                                         {{ $appointment-> doctor->name }} - {{ $appointment-> doctor-> department -> name}}
                                                     </p>
+                                                    <p> <b>Room: </b><br>
+                                                        {{$appointment-> doctor -> room -> room_name }}
+                                                    </p>
                                                     <p><b>Date: </b> <br>
                                                         {{ \Carbon\Carbon::parse($appointment->date)->translatedFormat('l, jS F Y') }},
                                                         {{ \Carbon\Carbon::parse($appointment->time)->format('H:i A') }}
                                                     </p>
                                                 </div>
-
-                                                <span>
-                                            <b>Room: </b>
-                                            @if($appointment-> room -> room == 0)
-                                                        Pending
-                                                    @else
-                                                        {{ $appointment-> room -> room  }}
-                                                    @endif
-                                        </span>
+                                                <div class="d-flex justify-content-between">
+                                                    <p>
+                                                        <b>Doctor's notes: </b><br>
+                                                        {{ $appointment-> doctor_notes}}
+                                                    </p>
+                                                </div>
                                             </div>
                                         </div>
 
                                         <p class="mt-3 m-2"> <b>Status</b></p>
-                                        <div class="card">
+                                        <div class="card bg-white">
                                             <div class="card-body">
                                                 <div class="">
                                                     <b>Approval status:</b>
@@ -169,6 +161,16 @@
                                                         <span class="text-success"> Completed </span>
                                                     @endif
                                                 </div>
+                                                @if($appointment->payment_status == 2)
+                                                    <div>
+                                                        <b>Payment method:</b>
+                                                        @if( $appointment->payment_method == 4)
+                                                            <span class="text-primary"> VN Pay </span>
+                                                        @elseif($appointment->payment_method == 2)
+                                                            <span class="text-success"> Completed </span>
+                                                        @endif
+                                                    </div>
+                                                @endif
                                             </div>
                                         </div>
                                     </div>
@@ -185,6 +187,69 @@
         {{$appointments->links()}}
     </div>
     <br>
+{{--    <button class="btn btn-primary float-end" data-bs-toggle="modal" data-bs-target="#addAppointment">--}}
+{{--        + Add an appointment--}}
+{{--    </button>--}}
+    <div class="mt-5" >
+        <!-- Modal -->
+        <div class="modal fade" id="addAppointment" tabindex="-1" role="dialog"
+             aria-labelledby="formModalLabel" aria-hidden="true">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <div class="modal-header d-flex justify-content-between">
+                        <h5 class="modal-title" id="formModalLabel">Appointment form</h5>
+                        <button type="button" class="btn btn-danger close" data-bs-dismiss="modal"
+                                aria-label="Close">
+                            <i class="bi bi-x"></i>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        <form method="POST" action="{{route('doctor.storeAppointment')}}" id="info_form">
+                            @csrf
+                            @method('post')
+                            <div class="form-group">
+                                <span><b>Date:</b></span>
+                                <input type="date" name="date" class="form-control" required>
+                                <span><b>Time: </b></span>
+                                <input type="time" name="time" class="form-control" required>
+                                <input type="hidden" name="doctor_id" id="doctor_id">
+                            </div>
+                            <div class="form-group mt-3">
+                                <input type="text" class="form-control" id="name" name="customer_name"
+                                       placeholder="Full name" required>
+                            </div>
+
+                            <div class="form-group mt-3">
+                                <input type="tel" name="phone_number" class="form-control"
+                                       placeholder="Phone number" required minlength="10" maxlength="10">
+                            </div>
+                            <div class="form-group mt-3">
+                                <label class=" align-content-center">Gender: </label>
+                                <input class="form-check-input" type="radio" name="gender_id" value="1" required checked> Male
+                                <input class="form-check-input" type="radio" name="gender_id" value="2"> Female
+                            </div>
+                            <div class="form-group mt-3">
+                                @php
+                                    $td = strtotime("today");
+                                    $maxToday = date("Y-m-d", $td);
+                                @endphp
+                                <label>Date birth</label>
+                                <input type="date" name="date_birth" max="{{$maxToday}}" class="form-control" required>
+                            </div>
+                            <div class="form-group mt-3">
+                                <input type="text" name="insurance_number" placeholder="Insurance number"
+                                       minlength="10" maxlength="10" class="form-control">
+                            </div>
+                            <div class="form-group mt-3">
+                                <input type="text" name="customer_notes" placeholder="Note" class="form-control">
+                            </div>
+                            <button type="submit" class="btn btn-primary mt-3 d-flex float-end">Submit</button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
 </section>
 
 <x-flash-message/>

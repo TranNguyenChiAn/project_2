@@ -2,9 +2,9 @@
 @include('admin.layout.nav')
 
 <title>Manage shifts</title>
-<section style="margin-left: 260px; margin-right: 30px; padding: 18px">
-    <h2> MANAGE SHIFTS</h2>
-    <table class="table table-hover">
+<section style="margin-left: 260px; margin-right: 30px; padding: 18px; font-family: Inter">
+    <h2 style="font-weight: bold" align="center"> MANAGE SHIFTS </h2>
+    <table class="table table-striped mt-3">
         <tr>
             <th>ID</th>
             <th>Star time</th>

@@ -1,6 +1,6 @@
 @vite(["resources/sass/app.scss", "resources/js/app.js"])
 @include('admin.layout.nav')
-@include('admin.layout.menu')
+{{--@include('admin.layout.menu')--}}
 
 <!doctype html>
 <html lang="en">
@@ -42,9 +42,10 @@
             <form method="post" action="{{route('statistic.getAppointmentsData')}}" class="d-flex">
                 @csrf
                 @method('post')
-                <input type="month" class="form-control w-50" name="month" value="{{$this_month}}"
-                       max="{{ $this_month}}">
-                <button class="btn btn-primary mx-2" type="submit"> Submit </button>
+{{--                <input type="month" class="form-control w-50" name="month" value="{{$this_month}}"--}}
+{{--                       max="{{ $this_month}}">--}}
+{{--                <button class="btn btn-primary mx-2" type="submit"> Submit </button>--}}
+                <p style="font-size: 14px"><b>This month</b></p>
             </form>
             <div class="content">
                 {{--      TOTAL         --}}
@@ -74,7 +75,6 @@
                                     <p class="m-0"><b>{{ $total_profit }}VND</b></p>
                                     <p>Total Profit</p>
                                 </div>
-                                <i class="bi bi-arrow-right-circle fs-5"></i>
                             </div>
                         </div>
 
@@ -121,7 +121,7 @@
                 <div class="card" style="">
                     <div class="card-body">
                         <div class="d-flex justify-content-between">
-                            <h4><b>Compare 3 month</b></h4>
+                            <h4><b>Compare 5 month</b></h4>
                         </div>
                         <canvas id="compareChart"></canvas>
                     </div>

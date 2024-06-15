@@ -23,6 +23,7 @@ class AppointmentController extends Controller
     public function index() {
         $appointments = Appointment::with('doctor')
             ->with('gender')
+            ->with('room')
             ->orderBy('id', 'desc')
             ->paginate(5);
 
@@ -32,18 +33,15 @@ class AppointmentController extends Controller
     }
 
     public function edit(Appointment $appointment){
-        $rooms = Room::all();
 
         return view("admin.appointment_management.edit", [
             'appointment' => $appointment,
-            'rooms' => $rooms
         ]);
 
     }
 
     public function update(Appointment $appointment, Request $request){
         $array = [];
-        $array = Arr::add($array, 'room_id', $request->room_id);
         $array = Arr::add($array, 'approval_status', $request->status);
         $appointment->update($array);
 
@@ -51,7 +49,8 @@ class AppointmentController extends Controller
     }
 
     public function showData(){
-        $appointments = Appointment::all();
+        $appointments = Appointment::all()
+        ->where( 'approval_status','=',2);
         return view('admin.appointment_management.calendar', compact('appointments'));
     }
 

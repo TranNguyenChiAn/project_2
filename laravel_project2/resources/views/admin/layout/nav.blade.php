@@ -1,5 +1,11 @@
 @vite(["resources/sass/app.scss", "resources/js/app.js"])
 
+<style>
+    .nav-link .active {
+        font-weight: bold; /* hoặc bất kỳ kiểu định dạng nào bạn muốn */
+        color: #2f2ffe; /* màu sắc của liên kết active */
+    }
+</style>
 <head>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-icons/1.10.2/font/bootstrap-icons.min.css">
     <link rel="icon" href="{{asset('./images/logo_fraud.png')}}" type="image/png">
@@ -60,6 +66,12 @@
             <a href="{{ route('shift.index')}}" id="shift_link"  class="nav-link link-secondary">
                 <i class="bi bi-clock-fill"></i>
                 Shifts
+            </a>
+        </li>
+        <li>
+            <a href="{{ route('room.index')}}" id="room_link"  class="nav-link link-secondary">
+                <i class="bi bi-house"></i>
+                Rooms
             </a>
         </li>
         <li>

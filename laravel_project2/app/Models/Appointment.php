@@ -14,7 +14,7 @@ class Appointment extends Model
     protected $primaryKey = 'id';
     protected $fillable = ['doctor_id', 'admin_id','customer_id', 'customer_name','date_birth','gender_id', 'phone',
         'date', 'time','approval_status','appointment_status','insurance_number', 'payment_status','payment_method',
-        'customer_notes','doctor_notes', 'room_id', 'created_at'];
+        'customer_notes','doctor_notes','created_at'];
 
     public function doctor(){
         return $this->belongsTo(Doctor::class);

@@ -30,6 +30,9 @@
                 <input class="form-control" placeholder="Password" type="password" name="password" required
                        value="{{old('password')}}">
             </div>
+            @if($errors->has('email'))
+                <p class="text-danger">{{ $errors->first('email') }}</p>
+            @endif
             <div class="col-md-6">
                 <label class="form-label"> Gender:</label><br>
                     <input class="form-check-input" checked type="radio" name="gender_id" value="1"> Male
@@ -40,6 +43,9 @@
                 <input class="form-control" type="tel" name="contact_number"
                        placeholder="Contact number" maxlength="10" minlength="10" value="{{old('contact_number')}}">
             </div>
+            @if($errors->has('contact_number'))
+                <p class="text-danger">{{ $errors->first('contact_number') }}</p>
+            @endif
 
             <div class="col-md-6">
                 <label class="form-label"> Address </label>
@@ -63,6 +69,23 @@
                 @endforeach
             </div>
             <div class="col-md-6">
+                <label class="form-label">Consulting room</label><br>
+                <select class="form-select dropdown">
+                    <option disabled selected> -- Choose --</option>
+                    @foreach($rooms as $room)
+                        <option class="form-check-input" name="room_id" value="{{$room->id}}"> {{$room->room_name}}<br>
+                    @endforeach
+                </select>
+            </div>
+            <div class="col-md-6">
+                <label class="form-label">Status</label><br>
+                <select class="form-select dropdown">
+                    <option class="form-check-input" name="status" value="0"> Active </option>
+                    <option class="form-check-input" name="status" value="1"> Locked </option>
+                    <option class="form-check-input" name="status" value="2"> Deleted </option>
+                </select>
+            </div>
+            <div class="col-md-6">
                 <label class="form-label"> Image:</label>
                 <input type="file" class="form-control" name="image" id="imageFile"
                        accept="image/*" onchange="chooseFile(this)" required>
@@ -75,7 +98,6 @@
                 <div id="image">
                 </div><br>
             </div>
-
 
             <button class="btn btn-primary" style="margin-top: 24px">Add</button>
         </form>
@@ -117,3 +139,4 @@
         }
     });
 </script>
+

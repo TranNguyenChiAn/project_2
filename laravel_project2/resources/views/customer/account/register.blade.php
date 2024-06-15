@@ -22,16 +22,16 @@
                     <div class="text-center">
                         <h1 style="font-weight: bold; color:#2F2FFE">Sign up now</h1>
                     </div>
-                    <div class="form-group mb-3">
-                        <input type="text" name="name" class="form-control"
-                               placeholder="Full name"
-                               value="{{ old('name') }}">
-                    </div>
                     @if($errors -> has('name'))
                         <div class="md-3">
                             <span class="text-danger"> {{ $errors -> first('name') }} </span>
                         </div>
                     @endif
+                    <div class="form-group mb-3">
+                        <input type="text" name="name" class="form-control"
+                               placeholder="Full name"
+                               value="{{ old('name') }}">
+                    </div>
 
                     @if($errors -> has('email'))
                         <div class="">
@@ -55,6 +55,21 @@
                                value="{{ old('password') }}">
                     </div>
 
+                    @if($errors -> has('phone'))
+                        <div class="">
+                            <span class="text-danger"> {{ $errors -> first('phone') }} </span>
+                        </div>
+                    @endif
+                    <div class="mb-3">
+                        <input type="tel" name="phone" class="form-control"
+                               placeholder="Phone number" minlength="10" maxlength="10"
+                               value="{{ old('phone') }}">
+                    </div>
+                    <div class="mb-3">
+                        <input type="text" name="address" class="form-control"
+                               placeholder="Address"
+                               value="{{ old('address') }}">
+                    </div>
                     <br>
                     <div class="mb-3 d-flex justify-content-center">
                         <button class="col-md-12 btn px-4 align-content-center"

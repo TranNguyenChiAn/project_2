@@ -45,11 +45,11 @@
                     Contact
                 </a>
             </li>
-            <li class="nav-item">
-                <a href="{{route('customer.about_us')}}" class="nav-link link-custom" id="about_us" style="color: grey">
-                    About us
-                </a>
-            </li>
+{{--            <li class="nav-item">--}}
+{{--                <a href="{{route('customer.about_us')}}" class="nav-link link-custom" id="about_us" style="color: grey">--}}
+{{--                    About us--}}
+{{--                </a>--}}
+{{--            </li>--}}
         </ul>
     </div>
 
@@ -81,8 +81,6 @@
             <!-- Links -->
             <li> <hr class="dropdown-divider"></li>
             <li><a class="dropdown-item" href="{{route("appointment.list")}}"><i class="bi bi-bookmark-check fa-fw me-2"></i>My Bookings</a></li>
-            <li><a class="dropdown-item" href="#"><i class="bi bi-gear fa-fw me-2"></i>Settings</a></li>
-            <li><a class="dropdown-item" href="#"><i class="bi bi-info-circle fa-fw me-2"></i>Help Center</a></li>
             <li><a class="dropdown-item bg-danger-soft-hover" href="{{route('customer.logout')}}"><i class="bi bi-power fa-fw me-2"></i>Sign Out</a></li>
         </ul>
     </div>

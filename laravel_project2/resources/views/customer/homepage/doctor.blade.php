@@ -15,7 +15,7 @@
                     @method('post')
                     <select class="form-select select2-dropdown"  id="departmentSelect" name="department_id"
                             onChange="fetchDoctorsByDepartment(this.value)">
-                        <option class="form-control" disabled> -- Choose -- </option>
+                        <option class="form-control" selected disabled> -- Choose -- </option>
                         @foreach($departments  as $department)
                             <option value="{{$department->id}}" name="department_id">
                                 {{$department->name}}
@@ -33,7 +33,7 @@
         $colorIndex = 0; // Biến đếm màu
     @endphp
 
-    <div class="row g-3 p-lg-3" style="font-family: Inter; width:100%">
+    <div class="row g-3 px-lg-5" style="font-family: Inter; width:100%">
         <!-- Card item -->
         @foreach($doctors as $doctor)
             <div class="col-sm-6 col-lg-4 col-xl-3">
@@ -43,7 +43,7 @@
                         <!-- Image -->
                         <img src="{{asset('./images/' . $doctor->image)}}"
                              class="card-img-top object-fit-cover top-0 rounded-4" alt="Card image"
-                             style="height: 380px; overflow: hidden; position: relative">
+                             style="height: 360px; overflow: hidden; position: relative">
                         <!-- Overlay -->
                         <div class="card-img-overlay p-3 z-index-1">
                             @if($doctor -> gender -> id == 1)

@@ -69,7 +69,7 @@
         <div class="modal-dialog" role="document">
             <div class="modal-content">
                 <div class="modal-header d-flex justify-content-between">
-                    <h5 class="modal-title" id="formModalLabel">Form</h5>
+                    <h5 class="modal-title" id="formModalLabel">Appointment form</h5>
                     <button type="button" class="btn btn-danger close" data-bs-dismiss="modal" aria-label="Close">
                         <i class="bi bi-x"></i>
                     </button>
@@ -94,7 +94,7 @@
 
                         <div class="form-group mt-3">
                             <input type="text" name="phone_number" class="form-control"
-                                   placeholder="Phone number" required>
+                                   placeholder="Phone number" required value="{{ $customer->phone }}">
                         </div>
                         <div class="form-group mt-3">
                             <label class=" align-content-center">Gender: </label>
@@ -104,7 +104,7 @@
                         <div class="form-group mt-3">
                             @php
                                 $td = strtotime("today");
-                                $maxToday = date("Y-m-d", $td);
+                                $maxToday = date("d-m-y", $td);
                             @endphp
                             <label>Date birth</label>
                             <input type="date" name="date_birth" max="{{$maxToday}}" class="form-control" required>
@@ -115,7 +115,7 @@
                         <div class="form-group mt-3">
                             <input type="text" name="customer_notes" placeholder="Note" class="form-control">
                         </div>
-                        <button type="submit" class="btn btn-primary">Submit</button>
+                        <button type="submit" class="btn btn-primary mt-2 float-end">Submit</button>
                     </form>
                 </div>
             </div>

@@ -1,9 +1,6 @@
 @vite(["resources/sass/app.scss", "resources/js/app.js"])
 @include('admin.layout.nav')
 
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
-
-
 <title> Edit doctor</title>
 <section class="position-absolute start-50 translate-middle-x" style="font-size: 18px; font-family: Inter">
     <h2 align="center" style="font-weight: bold; color: #2f2ffe; margin-top: 30px"> EDIT DOCTOR </h2>
@@ -22,17 +19,8 @@
                 <input class="form-control" type="email" name="email" value="{{ $doctor->email  }}"><br>
             </div>
             <div class="col-md-6">
-                <label class="form-label">Address</label>
-                <input class="form-control" type="text" name="address" value="{{ $doctor-> address }}">
-            </div>
-            <div class="col-md-6">
-                <label class="form-label">Contact number</label>
-                <input class="form-control" type="number" name="contact_number"
-                       value="{{ $doctor->contact_number }}"><br>
-            </div>
-            <div class="col-md-6">
                 <label class="form-label">Department</label>
-                <select id="department_select" class="form-select dropdown" type="text" name="department_id" >
+                <select class="form-select dropdown" type="text" name="department_id" >
                     <option disabled selected> -- Choose -- </option>
                     @foreach($departments as $department)
                         <option value="{{ $department->id }}"
@@ -45,30 +33,13 @@
                 </select><br>
             </div>
             <div class="col-md-6">
-                <label class="form-label">Consulting room</label><br>
-                <select id="room_select" class="form-select dropdown" type="text" name="room_id" >
-                    <option disabled selected> -- Choose -- </option>
-                    @foreach($rooms as $room)
-                        <option value="{{ $room->id }}"
-                        @if($doctor->room_id == $room->id)
-                            {{ 'selected' }}
-                                @endif
-                        >
-                            Floor {{ $room -> floor}}, {{ $room -> room_name}}
-                    @endforeach
-                </select><br>
+                <label class="form-label">Contact number</label>
+                <input class="form-control" type="number" name="contact_number"
+                       value="{{ $doctor->contact_number }}"><br>
             </div>
             <div class="col-md-6">
-                <label class="form-label">Shift</label><br>
-                @foreach($shifts as $shift)
-                    <input class="form-check-input" type="checkbox" name="shifts[]" value="{{$shift->id}}"
-                    @foreach($shift_details as $shift_detail)
-                        @if($shift->id == $shift_detail->shift_id)
-                            {{ 'checked' }}
-                        @endif
-                    @endforeach
-                    <p>{{$shift-> start_time}} - {{$shift-> end_time}}</p><br>
-                @endforeach
+                <label class="form-label">Address</label>
+                <input class="form-control" type="text" name="address" value="{{ $doctor-> address }}">
             </div>
             <div class="col-md-6">
                 <br>
@@ -80,6 +51,18 @@
                         {{ 'checked' }}
                             @endif
                     > {{ $gender -> name}}
+                @endforeach
+            </div>
+            <div class="col-md-6">
+                <label class="form-label">Shift</label><br>
+                @foreach($shifts as $shift)
+                    <input class="form-check-input" type="checkbox" name="shifts[]" value="{{$shift->id}}"
+                    @foreach($shift_details as $shift_detail)
+                        @if($shift->id == $shift_detail->shift_id)
+                            {{ 'checked' }}
+                        @endif
+                    @endforeach
+                    <p>{{$shift-> start_time}} - {{$shift-> end_time}}</p><br>
                 @endforeach
             </div>
             <div class="col-md-5">
@@ -104,8 +87,6 @@
     </div>
 </section>
 
-<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.2/dist/umd/popper.min.js"></script>
 
 <script type="text/javascript">
     function chooseFile() {
@@ -123,21 +104,6 @@
             fileReader.readAsDataURL(fileToLoad);
         }
     }
-</script>
-<script>
-    $('#department_select').change(function(){
-        let department = $(this).val();
-        $.ajax({
-            url: '/get-rooms/' + department,
-            type: 'GET',
-            success: function(response){
-                $('#room_select').empty();
-                $.each(response, function(index, room){
-                    $('#room_select').append('<option value="' + room.id + '">Floor ' + room.floor + ', ' + room.room_name + '</option>');
-                });
-            }
-        });
-    });
 </script>
 
 

@@ -45,13 +45,14 @@ class ClientController extends Controller
     }
 
     public function doctorDetail(Doctor $doctor){
-
         $doctors = Doctor::with('department')
             ->with('gender')
             ->where('id', $doctor->id)
             ->first();
-
-        $customers = Customer::all();
+        $customerId = Auth::guard('customer')->id();
+        $customer = Customer::with('appointment')
+        ->where('id','=', $customerId)
+        ->first();
 
         $shift_details = ShiftDetail::with('doctor')
             ->with('shift')
@@ -60,7 +61,7 @@ class ClientController extends Controller
 
         // Tạo danh sách ngày trong 4 ngày tiếp theo
         $dates = [];
-        for ($i = 0; $i < 4; $i++) {
+        for ($i = 1; $i < 5; $i++) {
             $dates[] = Carbon::now()->addDays($i)->format('d-m-Y');
         }
 
@@ -76,9 +77,9 @@ class ClientController extends Controller
             $interval = $start->copy();
 
             while ($interval->lte($end)) {
-                $appointment_time = $interval->format('H:i');
+                $appointment_time = $interval->format('H:i:s');
                 if (!$appointments->contains($appointment_time)) {
-                    $available_times[] = $interval->format('H:i');
+                    $available_times[] = $interval->format('H:i:s');
                 }
                 $interval->addMinutes(30);
             }
@@ -89,7 +90,7 @@ class ClientController extends Controller
             'shift_details' => $shift_details,
             'availableTime' => $available_times,
             'dates' => $dates,
-            'customers' => $customers,
+            'customer' => $customer,
             'appointments' => $appointments,
         ]);
     }
@@ -113,7 +114,11 @@ class ClientController extends Controller
     }
 
     public function appointment_list(){
+        $customerId = Auth::guard('customer')->id();
         $appointments = Appointment::with('doctor')
+            ->with('room')
+            ->with('gender')
+            ->where('customer_id', $customerId)
             ->orderBy('id', 'desc')
             ->paginate(5);
 
@@ -177,39 +182,39 @@ class ClientController extends Controller
         $date = $request->date;
 
         $formattedDate = Carbon::createFromFormat('d-m-Y', $date)->format('Y-m-d');
-        $appointment = [];
-        $appointment = Arr::add($appointment, 'doctor_id', $request->doctor_id);
-        $appointment = Arr::add($appointment, 'customer_id', $customerId);
-        $appointment = Arr::add($appointment, 'customer_name', $request->name);
-        $appointment = Arr::add($appointment , 'date_birth', $request->date_birth);
-        $appointment = Arr::add($appointment , 'gender_id', $request-> input('gender_id'));
-        $appointment = Arr::add($appointment , 'insurance_number', $request->insurance_number);
-        $appointment = Arr::add($appointment , 'phone', $request->phone_number);
-        $appointment = Arr::add($appointment, 'date', $formattedDate);
-        $appointment = Arr::add($appointment, 'room_id', 1);
-        $appointment = Arr::add($appointment, 'time', $request->appointment_time);
-        $appointment = Arr::add($appointment, 'approval_status', 1);
-        $appointment = Arr::add($appointment, 'appointment_status', 1);
-        $appointment = Arr::add($appointment, 'payment_status', 1);
-        $appointment = Arr::add($appointment, 'customer_notes', $request->customer_notes);
+        $appointments = [];
+        $appointments = Arr::add($appointments, 'doctor_id', $request->doctor_id);
+        $appointments = Arr::add($appointments, 'customer_id', $customerId);
+        $appointments = Arr::add($appointments, 'customer_name', $request->name);
+        $appointments = Arr::add($appointments , 'date_birth', $request->date_birth);
+        $appointments = Arr::add($appointments , 'gender_id', $request-> input('gender_id'));
+        $appointments = Arr::add($appointments , 'insurance_number', $request->insurance_number);
+        $appointments = Arr::add($appointments , 'phone', $request->phone_number);
+        $appointments = Arr::add($appointments, 'date', $formattedDate);
+        $appointments = Arr::add($appointments, 'room_id', 1);
+        $appointments = Arr::add($appointments, 'time', $request->appointment_time);
+        $appointments = Arr::add($appointments, 'approval_status', 1);
+        $appointments = Arr::add($appointments, 'appointment_status', 1);
+        $appointments = Arr::add($appointments, 'payment_status', 1);
+        $appointments = Arr::add($appointments, 'customer_notes', $request->customer_notes);
 
-       Appointment::create($appointment);
-        $appointments = Appointment::where('customer_id', $customerId)
+       Appointment::create($appointments);
+        $appointment = Appointment::where('customer_id', $customerId)
             ->max('id');
         
 
 //        ->with('success', 'Appointment created successfully!')
-        return Redirect::route('customer.payment', $appointments);
+        return Redirect::route('customer.payment', $appointment);
     }
 
-    public function payment(Appointment $appointments){
+    public function payment(Appointment $appointment){
         $customerId = Auth::guard('customer')->id();
         $gender = Gender::all();
         $doctor = Doctor::all();
 
 //        dd($appointment);
         return view("customer.payment.index", [
-            'appointments' => $appointments,
+            'appointment' => $appointment,
             'gender' => $gender,
             'doctor' => $doctor,
         ]);

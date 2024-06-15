@@ -69,12 +69,15 @@ class CustomerController extends Controller
         $validator = Validator::make($request->all(), [
             'name' => 'required|max:255',
             'email'=>'required|unique:customers',
+            'phone' =>'required | unique:customers',
             'password'=> 'required'
         ], [
             'name.required' => 'Name can not be empty',
             'email.required'=>'Email can not be empty',
             'password.required'=>'Password can not be empty',
             'email.unique'=>'Email has been exist',
+            'phone.required'=>'Phone can not be empty',
+            'phone.unique'=>'Phone has been exist',
         ]);
 
         if($validator->fails()){
@@ -84,10 +87,12 @@ class CustomerController extends Controller
         $customer = new Customer();
         $customer->name = $request->name;
         $customer->email = $request->email;
+        $customer->phone = $request->phone;
+        $customer->address = $request->address;
         $customer->setPasswordAttributes($request->password);
         $customer->save();
 
-        return redirect()->route('admin.login');
+        return redirect()->route('customer.login');
     }
 
     public function logout()
