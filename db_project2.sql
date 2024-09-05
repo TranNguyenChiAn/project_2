@@ -120,7 +120,7 @@ create table payment_method(
     name VARCHAR(100) NOT NULL
 );
 insert into payment_method (name) values ('Cash'), ('Banking'), ('Card'), ('VNPAY');
-select * from payment_method;
+sselect * from payment_method;
 
 CREATE TABLE appointments (
     id INT AUTO_INCREMENT PRIMARY KEY,
